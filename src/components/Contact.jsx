@@ -1,38 +1,205 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Contact() {
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const emailAddress = 'diya.shr.business@gmail.com';
+
+  const handleEmailAction = (e) => {
+    e.preventDefault();
+    
+    // 1. Instantly copy to clipboard (Flawless on iOS, Android, and Desktop)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(emailAddress);
+      setCopied(true);
+    } else {
+      // Robust fallback for older legacy mobile webviews
+      const textArea = document.createElement('textarea');
+      textArea.value = emailAddress;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+      } catch (err) {
+        console.error('Fallback copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    // 2. Reset the UI text after a brief delay
+    setTimeout(() => setCopied(false), 2500);
+
+    // 3. Smoothly attempt to launch the device's native mail app as a convenience
+    setTimeout(() => {
+      window.location.href = `mailto:${emailAddress}`;
+    }, 300);
+  };
+
   return (
-    <section id="contact" className="section-padding" style={{ backgroundColor: '#FAFAFA', borderTop: '1px solid #EEEEEE' }}>
+    <section id="contact" style={{ padding: '140px 8%', backgroundColor: '#FAFAFA', borderTop: '1px solid #EEEEEE' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div className="grid-2" style={{ gap: '64px', marginBottom: '80px' }}>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '64px',
+          marginBottom: '80px'
+        }}>
+          {/* Left Side: Keeping your exact copywriting cleanly separated */}
           <div>
-            <h2 style={{ fontSize: 'calc(2rem + 2vw)', fontWeight: '400', margin: '0 0 24px 0', lineHeight: 1.2 }}>
-              Let’s make something <span style={{ fontStyle: 'italic' }}>unforgettable</span>.
+            <span style={{
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              color: '#F472B6',
+              display: 'block',
+              marginBottom: '20px',
+              fontFamily: 'monospace',
+              fontWeight: '600'
+            }}>
+              ✦ Let's Talk
+            </span>
+            <h2 style={{
+              fontSize: 'clamp(32px, 4vw, 50px)',
+              fontWeight: '400',
+              margin: '0 0 20px 0',
+              lineHeight: 1.2,
+              fontFamily: '"Times New Roman", Times, Georgia, serif',
+              letterSpacing: '-1px'
+            }}>
+              I'm looking for<br />
+              my next full-time<br />
+              <span style={{ fontStyle: 'italic', color: '#F472B6' }}>role.</span>
             </h2>
-            <p style={{ color: '#6B7280', fontSize: '18px', fontWeight: '300', margin: 0, lineHeight: 1.6 }}>
-              Currently accepting selective consulting partnerships, strategic agency positions, and creative speaking engagements.
+            <p style={{ color: '#6B7280', fontSize: '16px', fontWeight: '300', margin: '0 0 16px 0', lineHeight: 1.7, maxWidth: '420px' }}>
+              Social media strategy, brand marketing, or content — if you're building something that needs a marketer who owns the full picture, let's talk.
+            </p>
+            <p style={{ color: '#ADADAD', fontSize: '13px', fontWeight: '300', margin: 0, lineHeight: 1.6, maxWidth: '380px' }}>
+              Open to corporate & agency roles, in-house brand teams, and remote positions. Now based in Dubai, UAE.
             </p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '16px' }}>
-            <a href="mailto:hello@diyashresth.com" className="contact-card">
-              <div style={{ fontSize: '20px' }}>✉</div>
+
+          {/* Right Side: Channels Layout */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '12px' }}>
+            
+            {/* Unified Email Card Component */}
+            <button
+              onClick={handleEmailAction}
+              onMouseEnter={() => setHoveredIdx(0)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '24px',
+                backgroundColor: '#FFFFFF',
+                border: hoveredIdx === 0 ? (copied ? '1px solid #10B981' : '1px solid #F472B6') : '1px solid #E5E7EB',
+                transform: hoveredIdx === 0 ? 'translateY(-2px)' : 'none',
+                boxShadow: hoveredIdx === 0 ? '0 12px 24px rgba(0, 0, 0, 0.05)' : 'none',
+                transition: 'all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1)',
+                width: '100%',
+                boxSizing: 'border-box',
+                cursor: 'pointer',
+                textAlign: 'left',
+                fontFamily: 'inherit'
+              }}
+            >
+              <div style={{
+                fontSize: '22px',
+                color: copied ? '#10B981' : '#F472B6',
+                width: '32px',
+                transition: 'color 0.2s ease',
+                marginRight: '20px'
+              }}>
+                {copied ? '✓' : '✉'}
+              </div>
               <div>
-                <div style={{ fontSize: '11px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Direct Drop</div>
-                <div style={{ color: '#1A1A1A', fontWeight: '500' }}>hello@diyashresth.com</div>
+                <div style={{ 
+                  fontSize: '10px', 
+                  color: copied ? '#10B981' : '#9CA3AF', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '1.5px', 
+                  fontFamily: 'monospace', 
+                  marginBottom: '3px',
+                  transition: 'color 0.2s ease'
+                }}>
+                  {copied ? 'Copied' : 'Email'}
+                </div>
+                <div style={{ 
+                  color: copied ? '#10B981' : '#1A1A1A', 
+                  fontWeight: '500', 
+                  fontSize: '15px',
+                  transition: 'color 0.2s ease'
+                }}>
+                  {copied ? 'Address copied to clipboard!' : emailAddress}
+                </div>
+              </div>
+            </button>
+
+            {/* LinkedIn Card Link */}
+            <a
+              href="https://www.linkedin.com/in/diya-shr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => setHoveredIdx(1)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '20px',
+                padding: '24px',
+                backgroundColor: '#FFFFFF',
+                border: hoveredIdx === 1 ? '1px solid #F472B6' : '1px solid #E5E7EB',
+                textDecoration: 'none',
+                transform: hoveredIdx === 1 ? 'translateY(-2px)' : 'none',
+                boxShadow: hoveredIdx === 1 ? '0 12px 24px rgba(0, 0, 0, 0.05)' : 'none',
+                transition: 'all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1)',
+                width: '100%',
+                boxSizing: 'border-box'
+              }}
+            >
+              <div style={{
+                fontSize: '18px',
+                fontWeight: '700',
+                color: '#0077B5',
+                width: '32px',
+                fontFamily: 'sans-serif'
+              }}>
+                in
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', fontFamily: 'monospace', marginBottom: '3px' }}>
+                  LinkedIn
+                </div>
+                <div style={{ color: '#1A1A1A', fontWeight: '500', fontSize: '15px' }}>
+                  linkedin.com/in/diya-shr
+                </div>
               </div>
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="contact-card">
-              <div style={{ fontSize: '20px', color: '#0077B5' }}>Linked<span>In</span></div>
-              <div>
-                <div style={{ fontSize: '11px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Professional Network</div>
-                <div style={{ color: '#1A1A1A', fontWeight: '500' }}>linkedin.com/in/diyashresth</div>
-              </div>
-            </a>
+
           </div>
         </div>
-        <div style={{ paddingTop: '32px', borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'between', fontSize: '12px', color: '#9CA3AF' }}>
-          <div>© 2026 Diya Shresth. All Rights Reserved.</div>
+
+        {/* Footer Area */}
+        <div style={{
+          paddingTop: '32px',
+          borderTop: '1px solid #E5E7EB',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '12px',
+          color: '#9CA3AF',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          <div>© 2026 Diya Shrestha. All Rights Reserved.</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#F472B6', display: 'inline-block' }} />
+            <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '1px' }}>DUBAI, UAE</span>
+          </div>
         </div>
+
       </div>
     </section>
   );
