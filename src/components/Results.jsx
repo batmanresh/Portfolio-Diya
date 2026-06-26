@@ -12,8 +12,9 @@ function AnimatedCounter({ targetValue, duration = 1800 }) {
       },
       { threshold: 0.1 }
     );
-    if (elementRef.current) observer.observe(elementRef.current);
-    return () => { if (elementRef.current) observer.unobserve(elementRef.current); };
+    const el = elementRef.current;
+    if (el) observer.observe(el);
+    return () => { if (el) observer.unobserve(el); };
   }, [hasStarted]);
 
   useEffect(() => {
