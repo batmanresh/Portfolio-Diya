@@ -4,8 +4,16 @@ export default function Hero() {
   const [primaryHover, setPrimaryHover] = useState(false);
   const [secondaryHover, setSecondaryHover] = useState(false);
 
-  // Maps to your local public/assets folder structure for 7 logos
-  const clients = Array.from({ length: 7 }, (_, i) => `/assets/logo${i + 1}.png`);
+  // Cloudinary-hosted logos — auto-optimized delivery (q_auto,f_auto keeps file size minimal)
+  const clients = [
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164704/logo1_vrznlj.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164705/logo2_apwghu.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164706/logo3_cj0so0.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164706/logo4_q8atau.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164707/logo5_chd6r9.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164707/logo6_vrsgzm.png",
+    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164708/logo7_ocmhe1.png",
+  ];
 
   return (
     <section
@@ -18,8 +26,7 @@ export default function Hero() {
         backgroundColor: '#FAF9F6',
         position: 'relative',
         overflow: 'hidden',
-        // RESTORED: Strict original padding to keep your layout intact
-        padding: '50px 8% 60px 8%', 
+        padding: '50px 8% 60px 8%',
         boxSizing: 'border-box'
       }}
     >
@@ -163,11 +170,6 @@ export default function Hero() {
             Brands I've worked with
           </p>
 
-          {/* 
-            FIXED: We break out horizontally using a margin-left/width trick. 
-            This forces the marquee track to bleed completely edge-to-edge on 100vw 
-            without warping or shifting any of your typography styles above.
-          */}
           <div 
             style={{ 
               position: 'relative', 
@@ -209,7 +211,7 @@ export default function Hero() {
               className="marquee"
               style={{
                 display: 'flex',
-                gap: '112px', // Big luxurious space between images
+                gap: '112px',
                 minWidth: '100%', 
                 width: 'max-content',
                 animation: 'scroll 38s linear infinite', 
@@ -227,22 +229,19 @@ export default function Hero() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: 'transparent', // Box containers remain invisible
+                    backgroundColor: 'transparent',
                   }}
                 >
                   <img
                     src={src}
-                    alt={`client logo ${i % 7 + 1}`}
+                    alt={`client logo ${i % clients.length + 1}`}
+                    loading="lazy"
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'contain',
-                      
-                      // Keeps images blended into background canvas
                       mixBlendMode: 'multiply', 
                       opacity: 0.75,
-                      
-                      // Mathematical crop tool to slice off baked-in boxes like image_1c8084.png
                       clipPath: 'circle(50% at 50% 50%)',
                       WebkitClipPath: 'circle(50% at 50% 50%)',
                     }}
@@ -251,7 +250,6 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Marquee Keyframes */}
             <style>{`
               .marquee:hover {
                 animation-play-state: paused;
@@ -259,7 +257,7 @@ export default function Hero() {
 
               @keyframes scroll {
                 0% { transform: translateX(0); }
-                100% { transform: translateX(calc(-50% - 56px)); } /* Half of 112px gap */
+                100% { transform: translateX(calc(-50% - 56px)); }
               }
             `}</style>
           </div>

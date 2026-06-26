@@ -10,56 +10,56 @@ const IG = {
   education: [
     {
       href: 'https://www.instagram.com/tv/Ca1N3OwFzRA/',
-      preview: '/assets/education1.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164687/education1_jxvtic.mp4',
       orientation: 'landscape',
       caption: 'Honoring the Women Who Built This Place',
       tags: ['Campaign Marketing', 'Brand Strategy', 'Experiential Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/CxqHwsjN7Fg/',
-      preview: '/assets/education2.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164681/education2_wtky2j.mp4',
       orientation: 'landscape',
       caption: 'The Unboxing That Sold the Story',
       tags: ['Influencer Marketing', 'Brand Strategy', 'Ad Campaigns'],
     },
     {
       href: 'https://www.instagram.com/p/CmbMvevB5V7/',
-      preview: '/assets/education3.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164681/education3_pvohza.mp4',
       orientation: 'landscape',
       caption: 'The Walk Across the Stage',
       tags: ['Ad Campaigns', 'Brand Strategy', 'Promotional Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/C5nnVntt0GP/',
-      preview: '/assets/education4.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164691/education4_kmq9ts.mp4',
       orientation: 'portrait',
       caption: 'What Campus Life Actually Looks Like',
       tags: ['Brand Strategy', 'Campaign Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/C0baMn2NHyz/',
-      preview: '/assets/education5.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164694/education5_n7syzq.mp4',
       orientation: 'landscape',
       caption: 'Four Years, One Moment',
       tags: ['Ad Campaigns', 'Brand Strategy', 'Lead Generation'],
     },
     {
       href: 'https://www.instagram.com/p/Crk_-7yuwg4/',
-      preview: '/assets/education6.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164703/education6_cvmwxs.mp4',
       orientation: 'landscape',
       caption: 'Energy You Can Feel Through the Screen',
       tags: ['Experiential Marketing', 'Brand Strategy'],
     },
     {
       href: 'https://www.instagram.com/p/CpgvofyIh-k/',
-      preview: '/assets/education7.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164703/education7_yqvupx.mp4',
       orientation: 'portrait',
       caption: 'A Thank You, Caught on Camera',
       tags: ['Experiential Marketing', 'Campaign Marketing', 'Brand Strategy'],
     },
     {
       href: 'https://www.instagram.com/tv/ClTO1_RNOzd/',
-      preview: '/assets/education8.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164705/education8_shkx96.mp4',
       orientation: 'landscape',
       caption: 'Making Higher Education Reachable',
       tags: ['Lead Generation', 'Ad Campaigns', 'Promotional Marketing'],
@@ -68,56 +68,62 @@ const IG = {
   events: [
     {
       href: 'https://www.instagram.com/p/DU25tpnk59x/',
-      preview: '/assets/events1.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164695/events1_ihussq.mp4',
       orientation: 'landscape',
       caption: 'The Ritual Before the Vows',
       tags: ['Experiential Marketing', 'Brand Strategy', 'Campaign Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/DWJPq32TC0C/',
-      preview: '/assets/events3.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164693/events3_axq7zy.mp4',
       orientation: 'portrait',
       caption: 'A Quiet Moment, Captured Loud',
       tags: ['Experiential Marketing', 'Engagement Strategy', 'Campaign Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/DWd1-epzsAG/',
-      preview: '/assets/events4.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164696/events4_ivxmyr.mp4',
       orientation: 'portrait',
       caption: 'Set, Styled, Ready',
       tags: ['Brand Strategy', 'Promotional Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/DXWrauVFUuA/',
-      preview: '/assets/events6.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164702/events6_q1hqnk.mp4',
       orientation: 'portrait',
       caption: 'Every Detail On Display',
       tags: ['Brand Strategy', 'Experiential Marketing', 'Promotional Marketing'],
     },
     {
       href: 'https://www.instagram.com/p/CrDEvbWPaQY/',
-      preview: '/assets/events7.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164710/events7_keblkm.mp4',
       orientation: 'portrait',
       caption: 'Sabin Rai Live — The Crowd Reacts',
       tags: ['Entertainment Marketing', 'Experiential Marketing', 'Engagement Strategy'],
     },
     {
       href: 'https://www.instagram.com/p/CyqIsfxMSDC/',
-      preview: '/assets/events8.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164706/events8_j3rczc.mp4',
       orientation: 'landscape',
       caption: 'A Production Built for the Brand',
       tags: ['Ad Campaigns', 'Experiential Marketing', 'Brand Strategy'],
     },
     {
       href: 'https://www.instagram.com/p/Crk_-7yuwg4/',
-      preview: '/assets/events9.mp4',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/events9_wqauxs.mp4',
       orientation: 'landscape',
       caption: 'Sabin Rai On Stage, In Full Scale',
       tags: ['Ad Campaigns', 'Experiential Marketing', 'Entertainment Marketing'],
     },
   ],
   realestate: [
-    { href: 'https://www.instagram.com/p/DCzbZLqAlRa/', preview: '/assets/previews/re-1.mp4' },
+    {
+      href: 'https://www.instagram.com/p/DCzbZLqAlRa/',
+      preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164710/realstate1_simcef.mp4',
+      orientation: 'landscape',
+      caption: 'Where the Right Buyer Sees Themselves',
+      tags: ['Brand Strategy', 'Content'],
+    },
     { href: 'https://www.instagram.com/p/DC8MnOAN4ZI/', preview: '/assets/previews/re-2.mp4' },
   ],
 };
@@ -381,12 +387,12 @@ function VideoCard({ asset, color }) {
           paddingTop: isPortrait ? '177.78%' : '56.25%',
           backgroundColor: '#050506', overflow: 'hidden',
         }}>
-          {asset.preview && !previewFailed ? (
+          {asset.preview && !previewFailed && hasAppeared ? (
             <video
               ref={videoRef}
               className="card-video"
               src={asset.preview}
-              muted loop playsInline preload="metadata"
+              muted loop playsInline preload="none"
               onError={() => setPreviewFailed(true)}
               style={{
                 position: 'absolute', inset: 0, width: '100%', height: '100%',
@@ -396,6 +402,11 @@ function VideoCard({ asset, color }) {
                 filter: hovered ? 'brightness(1.08)' : 'brightness(1)',
               }}
             />
+          ) : !hasAppeared ? (
+            // Nothing is requested over the network until the card is nearly
+            // in view — this is what keeps initial page load light even with
+            // 15+ video cards on a free hosting plan.
+            <div style={{ position: 'absolute', inset: 0, backgroundColor: '#050506' }} />
           ) : (
             <div style={{
               position: 'absolute', inset: 0,

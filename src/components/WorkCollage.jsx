@@ -6,9 +6,9 @@ export default function WorkCollage({ campaigns }) {
   const assetGrid = {
     // Index 0 (Ai-cha Nepal) - Grouped together
     0: [
-      "/assets/vanilla.mp4",          // Slot 1: Widescreen Hero Showpiece
-      "/assets/chocolate_crunch.mp4", // Slot 2: Tall Floating Specimen
-      "/assets/mango.mp4"             // Slot 3: Square Floating Specimen
+      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4",          // Slot 1: Widescreen Hero Showpiece
+      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4", // Slot 2: Tall Floating Specimen
+      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4"             // Slot 3: Square Floating Specimen
     ],
     // Index 1 (ING Group)
     1: [
@@ -42,10 +42,10 @@ export default function WorkCollage({ campaigns }) {
   const renderMedia = (src, altString) => {
     if (!src) return <div style={{ width: '100%', height: '100%', backgroundColor: '#1c1e22' }} />;
 
-    const isVideo = 
-      src.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) || 
-      src.includes("video") || 
-      src.includes("chocolate_crunch") || 
+    const isVideo =
+      src.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) ||
+      src.includes("video") ||
+      src.includes("chocolate_crunch") ||
       src.includes("mango") ||
       src.includes("vanilla") ||
       src.includes("asset_");
@@ -61,7 +61,6 @@ export default function WorkCollage({ campaigns }) {
     const assetStyles = {
       width: '100%',
       height: '100%',
-      // CHANGED: Forces 'cover' across everything so it explicitly forces the media to fill 100% of the visual block width/height
       objectFit: 'cover',
       objectPosition: objectPosition,
       transition: 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -69,9 +68,9 @@ export default function WorkCollage({ campaigns }) {
     };
 
     if (isVideo) {
-      return <video src={src} autoPlay loop muted playsInline style={assetStyles} />;
+      return <video src={src} autoPlay loop muted playsInline preload="none" style={assetStyles} />;
     }
-    return <img src={src} alt={altString} style={assetStyles} />;
+    return <img src={src} alt={altString} loading="lazy" style={assetStyles} />;
   };
 
   const renderList = campaigns || [];

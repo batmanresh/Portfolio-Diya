@@ -54,14 +54,14 @@ const TESTIMONIALS = [
     quote: "Diya was instrumental in our brand-building efforts. She demonstrated a natural talent for content idatetiion and storytelling, helping us craft a more compelling narrative for our brand. Diya is a highly motivated and capable individual with a strong grasp of both digital marketing and brand development. Any organization would be lucky to have her.",
     name: "Sarang Ranjitkar",
     title: "Brand Operations",
-    image: "/assets/sarang.jpg",
+    image: "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto,w_120,h_120,c_fill/v1782164709/sarang_bgzvxi.jpg",
     relation: "Managed Diya directly"
   },
   {
     quote: "Diya consistently demonstrated her strengths in campaign management, social media strategy, and content creation. She has a natural ability to understand audience behavior and tailor campaigns that not only engage but also drive measurable growth. What I admire most is her collaborative spirit and problem-solving mindset.",
     name: "Shruti Shrestha",
     title: "Marketing Professional · Building Brands",
-    image: "/assets/shruti.jpg",
+    image: "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto,w_120,h_120,c_fill/v1782164709/shruti_adx677.jpg",
     relation: "Worked on the same team"
   }
 ];
@@ -175,7 +175,7 @@ export default function Results() {
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
                     <span style={{ fontSize: '48px', color: '#0077B5', lineHeight: 0.5, fontFamily: 'Georgia, serif', opacity: 0.15 }}>
-                      “
+                      "
                     </span>
                     <div style={{ 
                       display: 'flex', 
@@ -209,6 +209,7 @@ export default function Results() {
                     <img 
                       src={t.image} 
                       alt={t.name}
+                      loading="lazy"
                       style={{
                         width: '42px',
                         height: '42px',
@@ -225,7 +226,7 @@ export default function Results() {
                       <div style={{ fontSize: '12px', color: '#7A7A72', lineHeight: 1.4, marginTop: '2px' }}>
                         {t.title}
                       </div>
-                      <div style={{ fontSize: '9px', color: '#0077B5', marginTop: '4px', fontFamily: 'monospace', transform: 'uppercase', letterSpacing: '0.5px', fontWeight: '500' }}>
+                      <div style={{ fontSize: '9px', color: '#0077B5', marginTop: '4px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '500' }}>
                         {t.relation}
                       </div>
                     </div>
