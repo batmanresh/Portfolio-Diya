@@ -71,7 +71,7 @@ export default function Hero() {
             gap: '8px',
           }}
         >
-          <span style={{ color: '#F472B6' }}>✦</span> Diya Shrestha — Social Media & Brand Strategist · Kathmandu, NP
+          <span style={{ color: '#F472B6' }}>✦</span> Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE
         </p>
 
         {/* Headline */}

@@ -73,7 +73,7 @@ export default function App() {
       <header style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: 'rgba(251, 251, 250, 0.95)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', zIndex: 1000, borderBottom: '1px solid #e8e8e3', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 8%' }}>
         <a href="#hero" style={{ textDecoration: 'none' }}>
           <div style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '22px', fontWeight: '400', letterSpacing: '-0.5px', color: '#1c1d21' }}>
-            diya<span style={{ fontStyle: 'italic', fontWeight: '500', color: '#F472B6' }}>s.</span>
+            diya<span style={{ fontStyle: 'italic', fontWeight: '500', color: '#F472B6' }}>shr.</span>
           </div>
         </a>
 
