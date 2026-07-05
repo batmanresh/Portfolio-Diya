@@ -263,7 +263,7 @@ function VideoCard({ asset, color }) {
   const cid   = React.useRef(asset.id).current;
   const isP   = asset.orientation === 'portrait';
   const extra = asset.tags ? asset.tags.slice(1) : [];
-  const cl    = color + '18';
+  //const cl    = color + '18';
 
   // Fade-in on first appearance
   React.useEffect(() => {
