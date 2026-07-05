@@ -87,7 +87,7 @@ export default function Hero() {
           }}
         >
           I grow brands<br />
-          on social — <span style={{ fontStyle: 'italic', color: '#F472B6' }}>with strategy,</span><br />
+          on social, <span style={{ fontStyle: 'italic', color: '#F472B6' }}>with strategy,</span><br />
           not just content.
         </h1>
 
@@ -103,7 +103,7 @@ export default function Hero() {
             fontFamily: '"Times New Roman", Times, Georgia, serif',
           }}
         >
-          From brand positioning to TikTok growth to full GTM execution — I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.
+          From brand positioning to TikTok growth to full GTM execution, I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.
         </p>
 
         {/* CTAs */}
