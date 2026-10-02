@@ -1,12 +1,8 @@
 import React from 'react';
-
-const skills = [
-  { label: 'Social Media Strategy', items: ['TikTok & Reels growth', 'Content calendar systems', 'Platform-specific storytelling', 'Community building'] },
-  { label: 'Brand & Positioning', items: ['Brand voice & identity', 'GTM strategy', 'Campaign architecture', 'Content audits'] },
-  { label: 'Execution', items: ['Ad direction & storyboarding', 'Paid social (Meta, TikTok)', 'Cross-channel campaigns', 'Physical & digital collateral'] }
-];
+import { getContent } from '../content/content';
 
 export default function About() {
+  const { note, intro, body, skills } = getContent('about');
   return (
     <section id="about" style={{ padding: 'clamp(80px, 10vw, 140px) 8%', backgroundColor: 'rgba(244, 114, 182, 0.04)', color: '#1c1d21' }}>
       <style>{`
@@ -80,7 +76,7 @@ export default function About() {
             fontSize: '15px', color: '#777772', lineHeight: 1.7,
             fontWeight: '300', margin: 0
           }}>
-            Based in Kathmandu. Open to full-time roles at agencies and brands — in Nepal or remote.
+            {note}
           </p>
         </div>
 
@@ -91,11 +87,11 @@ export default function About() {
             fontWeight: '300', lineHeight: 1.65, color: '#1c1d21', margin: 0,
             fontFamily: '"Times New Roman", Times, Georgia, serif'
           }}>
-            I've been the marketing department for a global brand's Nepal entry, the social media engine behind institutions reaching hundreds of thousands of students, and the strategist who turns a vague brief into a campaign that moves people.
+            {intro}
           </p>
 
           <p style={{ fontSize: '15px', fontWeight: '300', lineHeight: 1.75, color: '#555752', margin: 0 }}>
-            My work spans the full funnel — from positioning a brand before launch, to writing the copy, directing the ad shoot, building the content system, and reading the numbers after. I don't hand off at the strategy deck. I stay until it works.
+            {body}
           </p>
 
           <div className="skills-grid">

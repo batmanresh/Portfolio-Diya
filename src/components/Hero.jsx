@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
+import { getContent } from '../content/content';
 
 export default function Hero() {
   const [primaryHover, setPrimaryHover] = useState(false);
   const [secondaryHover, setSecondaryHover] = useState(false);
 
-  // Cloudinary-hosted logos — auto-optimized delivery (q_auto,f_auto keeps file size minimal)
-  const clients = [
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164704/logo1_vrznlj.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164705/logo2_apwghu.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164706/logo3_cj0so0.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164706/logo4_q8atau.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164707/logo5_chd6r9.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164707/logo6_vrsgzm.png",
-    "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto/v1782164708/logo7_ocmhe1.png",
-  ];
+  const { eyebrow, intro, logos } = getContent('hero');
+  const clients = logos.map(l => l.image).filter(Boolean);
 
   return (
     <section
@@ -71,7 +64,7 @@ export default function Hero() {
             gap: '8px',
           }}
         >
-          <span style={{ color: '#F472B6' }}>✦</span> Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE
+          <span style={{ color: '#F472B6' }}>✦</span> {eyebrow}
         </p>
 
         {/* Headline */}
@@ -103,7 +96,7 @@ export default function Hero() {
             fontFamily: '"Times New Roman", Times, Georgia, serif',
           }}
         >
-          From brand positioning to TikTok growth to full GTM execution, I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.
+          {intro}
         </p>
 
         {/* CTAs */}

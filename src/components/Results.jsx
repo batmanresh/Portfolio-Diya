@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getContent } from '../content/content';
 
 function AnimatedCounter({ targetValue, duration = 1800 }) {
   const [count, setCount] = useState("0");
@@ -42,63 +43,6 @@ function AnimatedCounter({ targetValue, duration = 1800 }) {
 
   return <span ref={elementRef}>{count}</span>;
 }
-
-const METRICS = [
-  { value: "650%", label: "Follower base growth achieved across key institutional social channels", context: "ING Skill Academy" },
-  { value: "80+", label: "Quality conversion leads generated inside a single campaign timeline", context: "Ai-cha Food Nepal" },
-  { value: "4+", label: "Years spent building identities and digital campaigns with true impact", context: "Market Presence" },
-  { value: "100%", label: "End-to-end campaign ownership — from strategy through execution", context: "Full-Funnel" }
-];
-
-const TESTIMONIALS = [
-  {
-    quote: "Diya was instrumental in our brand-building efforts. She demonstrated a natural talent for content ideation and storytelling, helping us craft a more compelling narrative for our brand. Diya is a highly motivated and capable individual with a strong grasp of both digital marketing and brand development. Any organization would be lucky to have her.",
-    name: "Sarang Ranjitkar",
-    title: "Brand Operations",
-    image: "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto,w_120,h_120,c_fill/v1782164709/sarang_bgzvxi.jpg",
-    relation: "Managed Diya directly"
-  },
-  {
-    quote: "Diya consistently demonstrated her strengths in campaign management, social media strategy, and content creation. She has a natural ability to understand audience behavior and tailor campaigns that not only engage but also drive measurable growth. What I admire most is her collaborative spirit and problem-solving mindset.",
-    name: "Shruti Shrestha",
-    title: "Marketing Professional · Building Brands",
-    image: "https://res.cloudinary.com/dvhs1dbxh/image/upload/q_auto,f_auto,w_120,h_120,c_fill/v1782164709/shruti_adx677.jpg",
-    relation: "Worked on the same team"
-  }
-];
-
-const EXPERIENCE = [
-  {
-    year: '2026 — Present',
-    role: 'National Marketing Manager',
-    company: 'AI-CHA FOOD NEPAL',
-    desc: 'Developing overarching brand strategy for Utopia, aligning voice and market positioning. Orchestrating brand-aligned event execution for Cue to heighten audience community engagement.'
-  },
-  {
-    year: '2024 — Present',
-    role: 'Digital Marketing Strategist',
-    company: 'Freelance Workspace',
-    desc: 'Formulating strategic brand assets and workflows. Designing and conducting hands-on training courses for digital marketing at DanpheLink covering analytics, SEO, and content structures.'
-  },
-  {
-    year: '2024 — 2025',
-    role: 'Growth Marketing Manager',
-    company: 'NAAMCHE Inc Pvt. Ltd',
-    desc: 'Oversaw active advertising targets across Google, Instagram, and Facebook Ads. Directed copy positioning and competitive market research loops for reAlpha, a US-based real estate AI platform.'
-  },
-  {
-    year: '2022 — 2024',
-    role: 'Digital Marketing Executive',
-    company: 'ING SKILL ACADEMY',
-    desc: 'Covered large-scale company events on-site. Authored content frameworks across TikTok, IG, and Facebook to generate deep platform tracking logs, elevating active follower numbers by 650%.'
-  },
-  {
-    year: '2021 — 2022',
-    role: 'Social Media Manager',
-    company: 'SURFPRO',
-    desc: 'Researched, scripted, and edited organic product tutorial lines on YouTube. Managed distribution metrics to cultivate visible subscriber growth paths and solid engagement parameters.'
-  }
-];
 
 const styles = `
   @media (max-width: 768px) {
@@ -163,6 +107,8 @@ export default function Results() {
   const [hoveredExp, setHoveredExp] = useState(null);
   const [hoveredTestimonial, setHoveredTestimonial] = useState(null);
   const [btnHover, setBtnHover] = useState(false);
+  const { metrics: METRICS, testimonials: TESTIMONIALS, experience: EXPERIENCE, resumeUrl } = getContent('results');
+  const { linkedin } = getContent('contact');
 
   return (
     <section id="resume" style={{ backgroundColor: '#EFEFEE', color: '#111111', margin: 0, padding: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
@@ -215,7 +161,7 @@ export default function Results() {
               return (
                 <a
                   key={i}
-                  href="https://www.linkedin.com/in/diya-shr/"
+                  href={linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   onMouseEnter={() => setHoveredTestimonial(i)}
@@ -313,7 +259,7 @@ export default function Results() {
               </p>
 
               <a
-                href="/resume.pdf"
+                href={resumeUrl}
                 download="Diya_Shrestha_Resume.pdf"
                 onMouseEnter={() => setBtnHover(true)}
                 onMouseLeave={() => setBtnHover(false)}
