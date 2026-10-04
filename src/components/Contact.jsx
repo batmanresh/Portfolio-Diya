@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { getContent } from '../content/content';
 
 export default function Contact() {
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  const emailAddress = 'diya.shr.business@gmail.com';
+  const { email: emailAddress, linkedin } = getContent('contact');
+  const linkedinLabel = linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
   const handleEmailAction = (e) => {
     e.preventDefault();
@@ -139,7 +141,7 @@ export default function Contact() {
 
             {/* LinkedIn Card Link */}
             <a
-              href="https://www.linkedin.com/in/diya-shr/"
+              href={linkedin}
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={() => setHoveredIdx(1)}
@@ -173,7 +175,7 @@ export default function Contact() {
                   LinkedIn
                 </div>
                 <div style={{ color: '#1A1A1A', fontWeight: '500', fontSize: '15px' }}>
-                  linkedin.com/in/diya-shr
+                  {linkedinLabel}
                 </div>
               </div>
             </a>
