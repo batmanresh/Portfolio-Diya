@@ -33,6 +33,7 @@ export function Field({ field, value, onChange }) {
         );
       case 'image':
       case 'video':
+      case 'media':
       case 'file':
         return <MediaInput field={field} value={value || ''} onChange={onChange} />;
       case 'list':
@@ -69,7 +70,8 @@ function LinesInput({ value, onChange }) {
 function MediaInput({ field, value, onChange }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const accept = field.accept || (field.type === 'image' ? 'image/*' : field.type === 'video' ? 'video/*' : '*');
+  const [previewKind, setPreviewKind] = useState('');
+  const accept = field.accept || (field.type === 'image' ? 'image/*' : field.type === 'video' ? 'video/*' : field.type === 'media' ? 'image/*,video/*' : '*');
 
   const handleFile = async e => {
     const file = e.target.files[0];
@@ -78,6 +80,7 @@ function MediaInput({ field, value, onChange }) {
     setError('');
     try {
       onChange(await uploadFile(file));
+      setPreviewKind(file.type.startsWith('video/') ? 'video' : 'image');
     } catch (err) {
       setError(`Upload failed: ${err.message}`);
     }
@@ -87,8 +90,8 @@ function MediaInput({ field, value, onChange }) {
 
   return (
     <div className="media">
-      {value && field.type === 'image' && <img src={value} alt="" className="preview" />}
-      {value && field.type === 'video' && <video src={value} className="preview" muted loop autoPlay playsInline />}
+      {value && (field.type === 'image' || (field.type === 'media' && (previewKind === 'image' || (!previewKind && /\.(png|jpe?g|gif|webp|avif)(\?|$)/i.test(value))))) && <img src={value} alt="" className="preview" />}
+      {value && (field.type === 'video' || (field.type === 'media' && (previewKind === 'video' || (!previewKind && /\.(mp4|webm|mov)(\?|$)/i.test(value))))) && <video src={value} className="preview" muted loop autoPlay playsInline />}
       <div className="media-controls">
         <input type="text" value={value} placeholder="Paste a link, or upload →" onChange={e => onChange(e.target.value)} />
         <label className="btn btn-small">
