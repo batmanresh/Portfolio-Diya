@@ -1,301 +1,38 @@
 import React from 'react';
+import { getContent } from '../content/content';
 
-export default function WorkCollage({ campaigns }) {
-
-  // EASY MANAGEMENT CENTRAL: All 9 slots live here
-  const assetGrid = {
-    // Index 0 (Ai-cha Nepal) - Grouped together
-    0: [
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4",          // Slot 1: Widescreen Hero Showpiece
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4", // Slot 2: Tall Floating Specimen
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4"             // Slot 3: Square Floating Specimen
-    ],
-    // Index 1 (ING Group)
-    1: [
-      "/assets/asset_04.mp4",         // Slot 4: Widescreen Hero
-      "/assets/asset_05.mp4",         // Slot 5: Tall Floating
-      "/assets/asset_06.mp4"          // Slot 6: Square Floating
-    ],
-    // Index 2 (Naamche & Utopia)
-    2: [
-      "/assets/asset_07.mp4",         // Slot 7: Widescreen Hero
-      "/assets/asset_08.mp4",         // Slot 8: Tall Floating
-      "/assets/asset_09.mp4"          // Slot 9: Square Floating
-    ]
-  };
-
-  const handleNodeMouseMove = (e) => {
-    const currentTarget = e.currentTarget;
-    const rect = currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    currentTarget.style.setProperty('--mouse-x', x);
-    currentTarget.style.setProperty('--mouse-y', y);
-  };
-
-  const handleNodeMouseLeave = (e) => {
-    const currentTarget = e.currentTarget;
-    currentTarget.style.setProperty('--mouse-x', 0);
-    currentTarget.style.setProperty('--mouse-y', 0);
-  };
-
-  const renderMedia = (src, altString) => {
-    if (!src) return <div style={{ width: '100%', height: '100%', backgroundColor: '#1c1e22' }} />;
-
-    const isVideo =
-      src.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) ||
-      src.includes("video") ||
-      src.includes("chocolate_crunch") ||
-      src.includes("mango") ||
-      src.includes("vanilla") ||
-      src.includes("asset_");
-
-    // Custom positioning presets to make sure vertical videos don't lose their subject matter when filling the frames
-    let objectPosition = 'center center';
-    if (src.includes("mango")) {
-      objectPosition = 'center 30%'; // Adjusts the crop point so the main focus stays perfectly in frame
-    } else if (src.includes("vanilla")) {
-      objectPosition = 'center center';
-    }
-
-    const assetStyles = {
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-      objectPosition: objectPosition,
-      transition: 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
-      pointerEvents: 'none'
-    };
-
-    if (isVideo) {
-      return <video src={src} autoPlay loop muted playsInline preload="none" style={assetStyles} />;
-    }
-    return <img src={src} alt={altString} loading="lazy" style={assetStyles} />;
-  };
-
-  const renderList = campaigns || [];
-
-  return (
-    <section 
-      id="visual-lookbook" 
-      style={{ 
-        backgroundColor: '#131518', 
-        position: 'relative', 
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
-      }}
-    >
-      {/* ARCHITECTURAL CORNER CROP MARKS */}
-      <div style={{ position: 'absolute', top: '40px', left: '40px', width: '16px', height: '16px', borderTop: '1px solid #2c2e35', borderLeft: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', top: '40px', right: '40px', width: '16px', height: '16px', borderTop: '1px solid #2c2e35', borderRight: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', bottom: '40px', left: '40px', width: '16px', height: '16px', borderBottom: '1px solid #2c2e35', borderLeft: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', bottom: '40px', right: '40px', width: '16px', height: '16px', borderBottom: '1px solid #2c2e35', borderRight: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-
-      {/* TOP CREATIVE NAVIGATION RAIL */}
-      <div style={{ width: '100%', padding: '0 60px', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', top: '44px', left: 0, zIndex: 10 }}>
-        <span style={{ fontSize: '10px', fontFamily: 'monospace', letterSpacing: '3px', color: '#eaeaea', fontWeight: '600' }}>
-          FEATURED SHOWCASE
-        </span>
-        <span style={{ fontSize: '10px', fontFamily: 'monospace', letterSpacing: '1px', color: '#6c6f7d', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          Swipe to explore <span className="pink-brand-pulse" />
-        </span>
-      </div>
-
-      {/* BOTTOM BRAND ROW */}
-      <div style={{ position: 'absolute', bottom: '40px', left: '80px', zIndex: 10, fontFamily: 'monospace', fontSize: '9px', color: '#6c6f7d', letterSpacing: '2px' }}>
-        SELECTED MARKETING CAMPAIGNS // SERIES 01
-      </div>
-
-      {/* MASTER HORIZONTAL LINE TRACK */}
-      <div 
-        className="master-horizontal-line"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          overscrollBehaviorX: 'contain', 
-          padding: '0 12vw', 
-          boxSizing: 'border-box',
-          gap: '180px', 
-          cursor: 'default',
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'smooth',
-          WebkitOverflowScrolling: 'touch',
-          zIndex: 2
-        }}
-      >
-        {renderList.map((campaign, index) => {
-          const currentAssets = assetGrid[index] || [];
-
-          return (
-            <div 
-              key={campaign.id}
-              onMouseMove={handleNodeMouseMove}
-              onMouseLeave={handleNodeMouseLeave}
-              className="filmstrip-project-node"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                position: 'relative',
-                height: '65vh',
-                width: '136vh', 
-                flexShrink: 0,
-                scrollSnapAlign: 'center',
-                '--mouse-x': 0,
-                '--mouse-y': 0
-              }}
-            >
-              
-              {/* ASSET 1: THE WIDESCREEN HERO SHOWPIECE */}
-              <div 
-                className="filmstrip-media-container asset-primary"
-                style={{
-                  width: '75vh', 
-                  height: '50vh', 
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  position: 'relative',
-                  boxShadow: '0 40px 90px -20px rgba(0, 0, 0, 0.6)', 
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  zIndex: 3
-                }}
-              >
-                {renderMedia(currentAssets[0], `${campaign.title} Main Look`)}
-                
-                <div style={{
-                  position: 'absolute',
-                  bottom: '32px',
-                  left: '32px',
-                  zIndex: 4,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '6px'
-                }}>
-                  <span style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '2px', color: 'rgba(255, 255, 255, 0.7)', textTransform: 'uppercase' }}>
-                    {campaign.category || 'Creative Direction'}
-                  </span>
-                  <h3 style={{ margin: 0, fontFamily: '"Playfair Display", "Didot", serif', fontWeight: '400', fontSize: '26px', letterSpacing: '0.5px', color: '#ffffff', textShadow: '0 4px 15px rgba(0,0,0,0.4)' }}>
-                    {campaign.title}
-                  </h3>
-                </div>
-              </div>
-
-              {/* ASSET 2: FLOATING TALL SPECIMEN */}
-              <div 
-                className="filmstrip-media-container asset-tall"
-                style={{
-                  width: '36vh',
-                  height: '48vh', 
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  boxShadow: '0 30px 70px -20px rgba(0, 0, 0, 0.5)',
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  position: 'absolute',
-                  left: '64vh', 
-                  bottom: '2vh',
-                  zIndex: 2
-                }}
-              >
-                {renderMedia(currentAssets[1], `${campaign.title} Alternate View`)}
-              </div>
-
-              {/* ASSET 3: FLOATING SQUARE SPECIMEN */}
-              <div 
-                className="filmstrip-media-container asset-square"
-                style={{
-                  width: '30vh',
-                  height: '30vh',
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  boxShadow: '0 30px 70px -20px rgba(0, 0, 0, 0.5)',
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  position: 'absolute',
-                  left: '94vh', 
-                  top: '2vh',
-                  zIndex: 4
-                }}
-              >
-                {renderMedia(currentAssets[2], `${campaign.title} Context`)}
-              </div>
-
-              {/* FIXED ALIGNMENT INDEX NUMBER END-CAP */}
-              <div 
-                style={{ 
-                  position: 'absolute', 
-                  right: 0, 
-                  height: '100%', 
-                  width: '6vh',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'flex-end',
-                  zIndex: 5
-                }}
-              >
-                <span 
-                  className="filmstrip-index-tag"
-                  style={{ 
-                    fontFamily: 'monospace', 
-                    fontSize: '11px', 
-                    color: '#2c2e35', 
-                    letterSpacing: '2px', 
-                    whiteSpace: 'nowrap', 
-                    fontWeight: '600',
-                    transform: 'rotate(-90deg) translateX(0px)',
-                    transformOrigin: 'center center',
-                    transition: 'color 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
-                  }}
-                >
-                  0{index + 1}
-                </span>
-              </div>
-
-            </div>
-          );
-        })}
-        
-        <div style={{ flex: '0 0 auto', width: '15vw', height: '1px' }} />
-      </div>
-
-      <style>{`
-        .master-horizontal-line::-webkit-scrollbar { display: none; }
-        .master-horizontal-line { -ms-overflow-style: none; scrollbar-width: none; }
-        .filmstrip-media-container { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease; }
-        
-        .filmstrip-project-node:hover .asset-primary {
-          transform: translateX(calc(var(--mouse-x) * 16px)) translateY(calc(var(--mouse-y) * 16px - 4px)) scale(1.005);
-          box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.75);
-        }
-        .filmstrip-project-node:hover .asset-tall {
-          transform: translateX(calc(var(--mouse-x) * 48px + 12px)) translateY(calc(var(--mouse-y) * 38px + 6px));
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.65);
-        }
-        .filmstrip-project-node:hover .asset-square {
-          transform: translateX(calc(var(--mouse-x) * 80px + 24px)) translateY(calc(var(--mouse-y) * 64px - 8px)) scale(1.01);
-          box-shadow: 0 45px 90px -15px rgba(0, 0, 0, 0.7);
-        }
-        .filmstrip-project-node:hover .filmstrip-index-tag { color: #ff8bb2 !important; transform: rotate(-90deg) translateY(-4px); }
-        .filmstrip-media-container img, .filmstrip-media-container video { transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .filmstrip-project-node:hover img, .filmstrip-project-node:hover video { transform: scale(1.04); }
-        .pink-brand-pulse { width: 5px; height: 5px; background-color: #ff8bb2; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px rgba(255, 139, 178, 0.6); animation: luxuryPulse 2.5s infinite ease-in-out; }
-        @keyframes luxuryPulse { 0% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.3; transform: scale(0.9); } }
-        
-        @media (max-width: 1024px) {
-          #visual-lookbook { height: auto !important; padding: 120px 24px 80px 24px !important; }
-          .master-horizontal-line { flex-direction: column !important; padding: 0 !important; gap: 100px !important; overflow-x: hidden !important; }
-          .filmstrip-project-node { flex-direction: column !important; width: 100% !important; height: auto !important; gap: 24px !important; scroll-snap-align: none !important; }
-          .filmstrip-media-container { position: relative !important; width: 100% !important; height: 340px !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; }
-          .filmstrip-project-node:hover .filmstrip-media-container { transform: none !important; }
-          .filmstrip-project-node > div:last-child { display: none !important; }
-        }
-      `}</style>
-    </section>
-  );
+const fallbackItems = [
+  { title: 'Ai-cha Food Nepal', category: 'Brand launch · F&B', src: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type: 'video', shape: 'wide' },
+  { title: 'ING Group', category: 'Social storytelling', src: '/assets/asset_04.mp4', type: 'video', shape: 'portrait' },
+  { title: 'Naamche & Utopia', category: 'Brand direction', src: '/assets/asset_07.mp4', type: 'video', shape: 'square' },
+];
+export default function WorkCollage() {
+ const saved=getContent('showcase')||{}, items=saved.items?.length?saved.items:fallbackItems;
+ return <section id="visual-lookbook" className="featured-showcase">
+  <div className="featured-head"><div><span className="featured-kicker">✳ A little visual diary</span><h2>Featured <em>showcase</em></h2></div><span className="featured-note">SELECTED MOMENTS · 01—{String(items.length).padStart(2,'0')}</span></div>
+  <div className="featured-track">{items.map((item,i)=>{const src=item.src||item.media||'';const type=item.type||(item.kind==='video'||/\.(mp4|webm|mov)(\?.*)?$/i.test(src)?'video':'image');const shape=item.shape||item.orientation||(i%3===1?'portrait':i%3===2?'square':'wide');return <article className={`featured-card shape-${shape}`} key={item.id||i}>
+   <div className="featured-media">{type==='video'?<video src={src} poster={item.thumbnail||undefined} autoPlay muted loop playsInline preload="metadata"/>:<img src={src} alt={item.title||'Featured creative work'} loading="lazy"/>}<span className="featured-index">0{i+1}</span><span className="featured-bow" aria-hidden="true">୨୧</span></div>
+   <div className="featured-caption"><div><span>{item.category||'Creative direction'}</span><h3>{item.title||'Untitled story'}</h3></div><span className="featured-arrow">↗</span></div>
+   {item.href&&<a className="featured-link" href={item.href} target="_blank" rel="noreferrer" aria-label={`Open ${item.title||'featured work'}`}/>}
+  </article>})}</div>
+  <div className="featured-foot"><span>STORYBOARDS, SHOOTS & SOCIAL STORIES</span><span>SCROLL TO EXPLORE ↓</span></div>
+  <style>{`
+   .featured-showcase{padding:clamp(58px,8vw,108px) 8%;background:#f7eaf0;color:#292329;overflow:hidden;position:relative}
+   .featured-head{display:flex;justify-content:space-between;align-items:end;gap:20px;max-width:1400px;margin:0 auto 34px}
+   .featured-kicker{font:10px monospace;letter-spacing:2px;text-transform:uppercase;color:#a45d80}
+   .featured-head h2{font:400 clamp(34px,5vw,62px)/1.05 'Playfair Display',Georgia,serif;margin:12px 0 0;letter-spacing:-1.8px}.featured-head h2 em{color:#c36e98;font-weight:400}
+   .featured-note,.featured-foot{font:9px monospace;letter-spacing:1.6px;color:#9d8190}
+   .featured-track{max-width:1400px;margin:auto;display:grid;grid-template-columns:1.35fr .85fr 1fr;align-items:center;gap:clamp(14px,2vw,28px)}
+   .featured-card{position:relative;min-width:0}.featured-card:nth-child(2){transform:translateY(34px)}
+   .featured-media{height:clamp(220px,34vw,470px);position:relative;overflow:hidden;background:#ead9e1;border:8px solid #fff;box-shadow:0 18px 50px #71465b18}
+   .shape-portrait .featured-media{height:clamp(260px,39vw,520px)}.shape-square .featured-media{height:clamp(210px,29vw,390px)}
+   .featured-media img,.featured-media video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+   .featured-card:hover .featured-media img,.featured-card:hover .featured-media video{transform:scale(1.04)}
+   .featured-index{position:absolute;top:12px;left:14px;font:10px monospace;color:#fff;text-shadow:0 1px 5px #000}.featured-bow{position:absolute;right:12px;top:8px;color:#fff;font-size:27px;text-shadow:0 1px 5px #000}
+   .featured-caption{display:flex;justify-content:space-between;align-items:center;padding:14px 4px}.featured-caption span:first-child{font:9px monospace;letter-spacing:1.2px;text-transform:uppercase;color:#a45d80}
+   .featured-caption h3{font:400 clamp(17px,2vw,23px) 'Playfair Display',Georgia,serif;margin:5px 0}.featured-arrow{font-size:22px;color:#b35e86}.featured-link{position:absolute;inset:0}
+   .featured-foot{max-width:1400px;margin:26px auto 0;display:flex;justify-content:space-between}
+   @media(max-width:760px){.featured-head{align-items:start;flex-direction:column}.featured-note{display:none}.featured-track{grid-template-columns:1fr;gap:12px}.featured-card:nth-child(2){transform:none}.featured-media,.shape-portrait .featured-media,.shape-square .featured-media{height:68vw;max-height:420px}.featured-foot{font-size:8px;gap:12px}}
+  `}</style>
+ </section>;
 }
