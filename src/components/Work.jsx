@@ -633,11 +633,11 @@ export default function Work() {
               ✦ Selected Work
             </span>
             <h2 style={{ fontSize:'clamp(28px, 4vw, 46px)', fontWeight:'300', margin:0, fontFamily:'"Times New Roman", Times, Georgia, serif', color: T.text, letterSpacing:'-0.5px', lineHeight:1.2 }}>
-              Real brands. Measurable results.
+              The thinking behind the pretty.
             </h2>
           </div>
           <p style={{ fontSize:'13px', color: T.textSub, fontWeight:'300', margin:0, maxWidth:'240px', lineHeight:1.6, textAlign:'right' }}>
-            Select an industry to see campaigns and video work.
+            Explore the campaigns, photographs and films behind each brand story.
           </p>
         </div>
 
