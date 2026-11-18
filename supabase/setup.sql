@@ -51,3 +51,16 @@ create policy "Anyone can view media" on storage.objects
 
 create policy "Admin can upload media" on storage.objects
   for insert with check (bucket_id = 'media' and public.is_admin());
+
+
+-- 4. Allow the admin to replace or remove media from the admin panel.
+-- Existing upload-only policies are not sufficient for file cleanup.
+drop policy if exists "Admin can update media" on storage.objects;
+drop policy if exists "Admin can delete media" on storage.objects;
+
+create policy "Admin can update media" on storage.objects
+  for update using (bucket_id = 'media' and public.is_admin())
+  with check (bucket_id = 'media' and public.is_admin());
+
+create policy "Admin can delete media" on storage.objects
+  for delete using (bucket_id = 'media' and public.is_admin());
