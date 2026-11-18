@@ -104,3 +104,31 @@
   .admin .user { display: none; }
   .admin .topbar { padding: 12px 16px; }
 }
+
+
+/* Editorial pink refresh */
+.admin{--bg:#fff9fb;--card:#fff;--border:#f0dce6;--text:#342832;--muted:#9a7e8c;--pink:#c66b94;--pink-soft:#fbedf3}
+.admin .topbar{background:rgba(255,249,251,.94);border-bottom-color:#f0dce6}
+.admin .logo{letter-spacing:-.6px}
+.admin .logo span{color:#c66b94}
+.admin .layout{max-width:1240px;grid-template-columns:205px minmax(0,1fr)}
+.admin .sidebar button{border-radius:999px;padding:11px 14px}
+.admin .sidebar button.active{background:#fbedf3;color:#6f3d57}
+.admin .editor{padding:38px 34px 0}
+.admin h1{font-size:clamp(30px,4vw,42px);letter-spacing:-1px}
+.admin .fields{gap:18px}
+.admin .field>label{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#8e6679}
+.admin input[type=text],.admin input[type=email],.admin input[type=password],.admin textarea,.admin select{border-color:#ecdce4;border-radius:12px;padding:12px 14px;background:#fff}
+.admin input:focus,.admin textarea:focus,.admin select:focus{border-color:#c66b94;box-shadow:0 0 0 3px #fbedf3}
+.admin .btn{background:#392c35;border-color:#392c35}
+.admin .btn:hover:not(:disabled){background:#c66b94;border-color:#c66b94}
+.admin .btn-ghost{background:#fff;color:#55424d;border-color:#ead9e2}
+.admin .list{gap:10px}
+.admin .list-item{border-radius:14px;border-color:#f0dce6;overflow:hidden}
+.admin .list-item.open{border-color:#d99ab5;box-shadow:0 8px 24px #9c54701a}
+.admin .list-head{padding:13px 15px}
+.admin .list-body{padding:18px;background:#fffafd;gap:16px}
+.admin .preview{max-width:280px;max-height:180px;border-radius:12px}
+.admin .savebar{padding:20px 0;background:linear-gradient(transparent,var(--bg) 35%)}
+.admin .savebar .btn{min-width:150px}
+@media(max-width:720px){.admin .layout{grid-template-columns:1fr}.admin .editor{padding:24px 16px 0}.admin .sidebar{background:#fff9fb}}
