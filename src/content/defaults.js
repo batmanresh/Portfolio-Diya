@@ -4,6 +4,13 @@
 // the saved version is used instead.
 
 const defaults = {
+  showcase: {
+    items: [
+      { title: 'Ai-cha Food Nepal', category: 'Brand launch · F&B', src: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type: 'video', shape: 'wide' },
+      { title: 'ING Group', category: 'Social storytelling', src: '/assets/asset_04.mp4', type: 'video', shape: 'portrait' },
+      { title: 'Naamche & Utopia', category: 'Brand direction', src: '/assets/asset_07.mp4', type: 'video', shape: 'square' }
+    ],
+  },
   hero: {
     eyebrow: 'Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE',
     intro: "From brand positioning to TikTok growth to full GTM execution, I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.",
