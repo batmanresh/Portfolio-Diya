@@ -15,6 +15,24 @@
 
 const sections = [
   {
+    key: 'showcase',
+    title: 'Featured Showcase',
+    description: 'Your visual first impression. Add photos or videos, choose their shape and tell a little story.',
+    fields: [
+      { key: 'items', label: 'Showcase moments', type: 'list', itemName: 'showcase item', titleKey: 'title',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'category', label: 'Small category line', type: 'text' },
+          { key: 'src', label: 'Photo or video', type: 'media' },
+          { key: 'type', label: 'Media type', type: 'select', options: ['video', 'image'] },
+          { key: 'thumbnail', label: 'Video thumbnail / poster (optional)', type: 'image' },
+          { key: 'shape', label: 'Card shape', type: 'select', options: ['wide', 'portrait', 'square'] },
+          { key: 'href', label: 'Optional link', type: 'text' },
+        ],
+      },
+    ],
+  },
+  {
     key: 'hero',
     title: 'Hero',
     description: 'The top of the page: intro text and the scrolling brand logos.',
@@ -47,7 +65,7 @@ const sections = [
   {
     key: 'work',
     title: 'Work',
-    description: 'Industries shown in "Selected Work", each with its own videos.',
+    description: 'Projects shown in Selected Work. Add photos and videos to each project gallery.',
     fields: [
       {
         key: 'industries', label: 'Industries', type: 'list', itemName: 'industry', titleKey: 'label',
@@ -66,7 +84,9 @@ const sections = [
             fields: [
               { key: 'caption', label: 'Caption', type: 'text' },
               { key: 'href', label: 'Instagram link', type: 'text' },
-              { key: 'preview', label: 'Preview video', type: 'video' },
+              { key: 'preview', label: 'Photo or video file', type: 'media' },
+              { key: 'thumbnail', label: 'Custom thumbnail / poster (optional)', type: 'image' },
+              { key: 'type', label: 'Media type', type: 'select', options: ['video', 'image'] },
               { key: 'orientation', label: 'Shape', type: 'select', options: ['landscape', 'portrait'] },
               { key: 'tags', label: 'Tags (one per line; should match the filter tags above)', type: 'lines' },
             ],
