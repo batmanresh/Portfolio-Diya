@@ -6,10 +6,70 @@
 const defaults = {
   showcase: {
     items: [
-      { title: 'Ai-cha Food Nepal', category: 'Brand launch · F&B', src: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type: 'video', shape: 'wide' },
-      { title: 'ING Group', category: 'Social storytelling', src: '/assets/asset_04.mp4', type: 'video', shape: 'portrait' },
-      { title: 'Naamche & Utopia', category: 'Brand direction', src: '/assets/asset_07.mp4', type: 'video', shape: 'square' }
-    ],
+          {
+                "title": "Ai-cha · Campaign Film 01",
+                "category": "Brand launch · F&B",
+                "src": "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4",
+                "type": "video",
+                "shape": "wide"
+          },
+          {
+                "title": "Ai-cha · Product Story 02",
+                "category": "Product storytelling",
+                "src": "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4",
+                "type": "video",
+                "shape": "portrait"
+          },
+          {
+                "title": "Ai-cha · Product Story 03",
+                "category": "Social campaign",
+                "src": "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4",
+                "type": "video",
+                "shape": "square"
+          },
+          {
+                "title": "ING Group · Campus Stories",
+                "category": "Education · Social growth",
+                "src": "/assets/asset_04.mp4",
+                "type": "video",
+                "shape": "wide"
+          },
+          {
+                "title": "ING Group · Student Life",
+                "category": "Content direction",
+                "src": "/assets/asset_05.mp4",
+                "type": "video",
+                "shape": "portrait"
+          },
+          {
+                "title": "ING Group · Campaign Cut",
+                "category": "Campaign storytelling",
+                "src": "/assets/asset_06.mp4",
+                "type": "video",
+                "shape": "square"
+          },
+          {
+                "title": "Naamche · Brand Film",
+                "category": "Brand strategy",
+                "src": "/assets/asset_07.mp4",
+                "type": "video",
+                "shape": "wide"
+          },
+          {
+                "title": "Utopia · Visual Story",
+                "category": "Social content",
+                "src": "/assets/asset_08.mp4",
+                "type": "video",
+                "shape": "portrait"
+          },
+          {
+                "title": "Creative Direction · Cut 09",
+                "category": "Campaign direction",
+                "src": "/assets/asset_09.mp4",
+                "type": "video",
+                "shape": "square"
+          }
+    ]
   },
   hero: {
     eyebrow: 'Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE',
