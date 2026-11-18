@@ -73,6 +73,21 @@ function MediaInput({ field, value, onChange }) {
   const [previewKind, setPreviewKind] = useState('');
   const accept = field.accept || (field.type === 'image' ? 'image/*' : field.type === 'video' ? 'video/*' : field.type === 'media' ? 'image/*,video/*' : '*');
 
+  const removeFile = async () => {
+    setError('');
+    try {
+      const marker = '/storage/v1/object/public/media/';
+      const at = value.indexOf(marker);
+      if (at >= 0) {
+        const storagePath = decodeURIComponent(value.slice(at + marker.length));
+        const { error: removeError } = await supabase.storage.from('media').remove([storagePath]);
+        if (removeError) throw removeError;
+      }
+      onChange('');
+      setPreviewKind('');
+    } catch (err) { setError(`Could not remove media: ${err.message}`); }
+  };
+
   const handleFile = async e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -99,6 +114,7 @@ function MediaInput({ field, value, onChange }) {
           <input type="file" accept={accept} onChange={handleFile} hidden disabled={uploading} />
         </label>
         {value && field.type === 'file' && <a href={value} target="_blank" rel="noreferrer" className="btn btn-small btn-ghost">Open</a>}
+        {value && field.type !== 'file' && <button type="button" className="btn btn-small btn-ghost" onClick={removeFile}>Remove</button>}
       </div>
       {error && <p className="error">{error}</p>}
     </div>
