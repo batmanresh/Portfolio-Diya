@@ -19,31 +19,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // LEAN DATA ARRAY: No asset paths here anymore
-  const campaigns = [
-    {
-      id: "camp-01",
-      title: "Ai-cha Nepal",
-      category: "Brand Strategy & GTM",
-      timeline: "2024",
-      tagline: "National Marketing Manager · Global Brand Entry"
-    },
-    {
-      id: "camp-02",
-      title: "ING Group / Herald College",
-      category: "TikTok & Social Growth",
-      timeline: "2023",
-      tagline: "Social Strategy · Millions of Views"
-    },
-    {
-      id: "camp-03",
-      title: "Naamche & Utopia",
-      category: "Brand & Content",
-      timeline: "2023 — 2024",
-      tagline: "Social Media Strategy & Creative Direction"
-    }
-  ];
-
   const menuItems = [
     { label: 'About', href: '#about' },
     { label: 'Work', href: '#work' },
@@ -102,7 +77,7 @@ export default function App() {
 
       <main style={{ paddingTop: '62px' }}>
         <Hero />
-        <WorkCollage campaigns={campaigns} />
+        <WorkCollage />
         <About />
         <div id="production-deep-dive">
           <Work />
