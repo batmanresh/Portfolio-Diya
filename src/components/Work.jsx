@@ -30,7 +30,7 @@ function buildAssets(items, prefix) {
     href:        item.href,
     preview:     cdnOpt(item.preview, 'q_auto,f_auto,vc_auto'),
     thumbnail:   item.thumbnail || '',
-    type:        item.type || (item.preview && /\.(png|jpe?g|gif|webp|avif)(\\?|$)/i.test(item.preview) ? 'image' : 'video'),
+    type:        item.type || (item.preview && /\.(png|jpe?g|gif|webp|avif)$/i.test(item.preview.split('?')[0]) ? 'image' : 'video'),
     orientation: item.orientation || 'landscape',
     tags:        item.tags || [],
     subcat:      item.tags ? item.tags[0] : 'Content',
