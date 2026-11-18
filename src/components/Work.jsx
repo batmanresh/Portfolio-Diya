@@ -86,11 +86,11 @@ const CSS = `
   .industry-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-    gap: 12px; margin-top: 36px;
+    gap: 18px; margin-top: 36px;
   }
   .ind-card {
     position: relative; overflow: hidden; cursor: pointer;
-    min-height: 280px; border-radius: 6px;
+    min-height: 340px; border-radius: 3px;
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
   .ind-card:hover { box-shadow: 0 20px 50px rgba(0,0,0,0.14); }
