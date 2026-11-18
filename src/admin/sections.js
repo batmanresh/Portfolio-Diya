@@ -24,7 +24,7 @@ const sections = [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'category', label: 'Small category line', type: 'text' },
           { key: 'src', label: 'Photo or video', type: 'media' },
-          { key: 'type', label: 'Media type', type: 'select', options: ['video', 'image'] },
+          { key: 'type', label: 'Media type', type: 'select', options: ['auto', 'video', 'image'] },
           { key: 'thumbnail', label: 'Video thumbnail / poster (optional)', type: 'image' },
           { key: 'shape', label: 'Card shape', type: 'select', options: ['wide', 'portrait', 'square'] },
           { key: 'href', label: 'Optional link', type: 'text' },
@@ -80,7 +80,7 @@ const sections = [
           { key: 'result', label: 'Result (leave empty to hide)', type: 'textarea' },
           { key: 'subcats', label: 'Filter tags shown in the gallery (one per line)', type: 'lines' },
           {
-            key: 'videos', label: 'Videos', type: 'list', itemName: 'video', titleKey: 'caption',
+            key: 'videos', label: 'Project gallery · photos & videos', type: 'list', itemName: 'media item', titleKey: 'caption',
             fields: [
               { key: 'caption', label: 'Caption', type: 'text' },
               { key: 'href', label: 'Instagram link', type: 'text' },
