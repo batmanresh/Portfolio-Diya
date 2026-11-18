@@ -335,7 +335,7 @@ function VideoCard({ asset, color }) {
               {asset.caption}
             </p>
             <span style={{ fontSize:'9px', fontFamily:'monospace', letterSpacing:'0.5px', transition:'color 0.2s', color: hovered ? color : 'rgba(255,255,255,0.6)' }}>
-              Watch on Instagram ↗
+              View the work ↗
             </span>
           </div>
         </div>
@@ -435,7 +435,7 @@ function Gallery({ industry, onClose }) {
         <div style={{ height:'1px', backgroundColor: T.border, margin:'0 26px' }} />
         <div style={{ padding:'16px 26px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px' }}>
           <span style={{ fontFamily:'monospace', fontSize:'9px', color: T.textMuted, letterSpacing:'1.5px', textTransform:'uppercase' }}>
-            {filtered.length} clips
+            {filtered.length} pieces
           </span>
           <button className="gl-close" style={{ '--c': color, '--cl': cl }} onClick={onClose}>✕ Close</button>
         </div>
@@ -495,7 +495,7 @@ function Gallery({ industry, onClose }) {
         ) : (
           <div style={{ padding:'80px 20px', textAlign:'center' }}>
             <p style={{ fontFamily:'monospace', fontSize:'10px', color: T.textMuted, letterSpacing:'2px', textTransform:'uppercase' }}>
-              No clips in this category yet
+              No work in this category yet
             </p>
           </div>
         )}
@@ -633,7 +633,7 @@ export default function Work() {
               ✦ Selected Work
             </span>
             <h2 style={{ fontSize:'clamp(28px, 4vw, 46px)', fontWeight:'300', margin:0, fontFamily:'"Times New Roman", Times, Georgia, serif', color: T.text, letterSpacing:'-0.5px', lineHeight:1.2 }}>
-              The thinking behind the pretty.
+              Creative thinking. Campaigns with purpose.
             </h2>
           </div>
           <p style={{ fontSize:'13px', color: T.textSub, fontWeight:'300', margin:0, maxWidth:'240px', lineHeight:1.6, textAlign:'right' }}>
