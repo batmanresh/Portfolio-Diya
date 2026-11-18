@@ -29,6 +29,8 @@ function buildAssets(items, prefix) {
     caption:     item.caption,
     href:        item.href,
     preview:     cdnOpt(item.preview, 'q_auto,f_auto,vc_auto'),
+    thumbnail:   item.thumbnail || '',
+    type:        item.type || (item.preview && /\\.(png|jpe?g|gif|webp|avif)(\\?|$)/i.test(item.preview) ? 'image' : 'video'),
     orientation: item.orientation || 'landscape',
     tags:        item.tags || [],
     subcat:      item.tags ? item.tags[0] : 'Content',
@@ -162,6 +164,7 @@ function VideoCard({ asset, color }) {
   const wRef  = React.useRef(null);
   const cid   = React.useRef(asset.id).current;
   const isP   = asset.orientation === 'portrait';
+  const isVideo = asset.type !== 'image';
   const extra = asset.tags ? asset.tags.slice(1) : [];
   //const cl    = color + '18';
 
@@ -189,9 +192,9 @@ function VideoCard({ asset, color }) {
   React.useEffect(() => subscribeActive(id => setActive(id === cid)), [cid]);
 
   React.useEffect(() => {
-    const v = vRef.current; if (!v) return;
+    const v = vRef.current; if (!v || !isVideo) return;
     (hovered || active) ? v.play().catch(() => {}) : v.pause();
-  }, [hovered, active]);
+  }, [hovered, active, isVideo]);
 
   // Shimmer placeholder — shown before card is near viewport (lazy load)
   if (!appeared) {
@@ -227,12 +230,14 @@ function VideoCard({ asset, color }) {
           {/* Shimmer — shown ONLY while video is loading from Cloudinary.
               Once the first frame is available (onLoadedData), shimmer fades out
               and the video frame acts as a static poster when not playing. */}
-          {!failed && !videoLoaded && (
+          {isVideo && !failed && !videoLoaded && (
             <div className="sk" style={{ position:'absolute', inset:0, zIndex:1 }} />
           )}
 
-          {!failed ? (
-            <video ref={vRef}
+          {!failed && !isVideo ? (
+            <img src={asset.preview} alt={asset.caption || ''} loading="lazy" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', zIndex:2 }} />
+          ) : !failed ? (
+            <video ref={vRef} poster={asset.thumbnail || undefined}
               src={asset.preview}
               muted loop playsInline
               preload="metadata"
