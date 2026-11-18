@@ -3,11 +3,11 @@ import { getContent } from '../content/content';
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const T = {
-  bg:        '#FAF9F6',
-  bgAlt:     '#F4F3F0',
+  bg:        '#FFF9FB',
+  bgAlt:     '#FBEFF4',
   bgCard:    '#FFFFFF',
-  border:    '#E8E8E3',
-  pink:      '#F472B6',
+  border:    '#EEDCE5',
+  pink:      '#C66B94',
   text:      '#1c1d21',
   textSub:   '#555752',
   textMuted: '#9CA3AF',
@@ -30,7 +30,7 @@ function buildAssets(items, prefix) {
     href:        item.href,
     preview:     cdnOpt(item.preview, 'q_auto,f_auto,vc_auto'),
     thumbnail:   item.thumbnail || '',
-    type:        item.type || (item.preview && /\\.(png|jpe?g|gif|webp|avif)(\\?|$)/i.test(item.preview) ? 'image' : 'video'),
+    type:        item.type || (item.preview && /\.(png|jpe?g|gif|webp|avif)(\\?|$)/i.test(item.preview) ? 'image' : 'video'),
     orientation: item.orientation || 'landscape',
     tags:        item.tags || [],
     subcat:      item.tags ? item.tags[0] : 'Content',
