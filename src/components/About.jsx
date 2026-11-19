@@ -4,7 +4,7 @@ import { getContent } from '../content/content';
 export default function About() {
   const { note, intro, body, skills } = getContent('about');
   return (
-    <section id="about" style={{ padding: 'clamp(80px, 10vw, 140px) 8%', backgroundColor: 'rgba(244, 114, 182, 0.04)', color: '#1c1d21' }}>
+    <section id="about" style={{ padding: 'clamp(80px, 10vw, 140px) 8%', backgroundColor: '#fff3f7', color: '#352733' }}>
       <style>{`
         .about-grid {
           display: grid;
@@ -21,12 +21,12 @@ export default function About() {
         .skills-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          border-top: 1px solid rgba(244, 114, 182, 0.15);
+          border-top: 1px solid #efd5e1;
           margin-top: 8px;
         }
         .skill-cell {
           padding: 24px 20px 24px 0;
-          border-bottom: 1px solid rgba(244, 114, 182, 0.1);
+          border-bottom: 1px solid #f3e2e9;
         }
         @media (max-width: 768px) {
           .about-grid {
@@ -54,7 +54,7 @@ export default function About() {
         <div className="about-left">
           <span style={{
             fontSize: '11px', textTransform: 'uppercase', letterSpacing: '2px',
-            color: '#F472B6', display: 'block', marginBottom: '20px',
+            color: '#d978a3', display: 'block', marginBottom: '20px',
             fontFamily: 'monospace', fontWeight: '600'
           }}>
             ✦ About
@@ -64,16 +64,16 @@ export default function About() {
             fontWeight: '300',
             margin: '0 0 24px 0',
             fontFamily: '"Times New Roman", Times, Georgia, serif',
-            color: '#1c1d21',
+            color: '#352733',
             letterSpacing: '-0.5px',
             lineHeight: 1.2
           }}>
             I make brands<br />
             matter to the<br />
-            <span style={{ fontStyle: 'italic', color: '#F472B6' }}>right people.</span>
+            <span style={{ fontStyle: 'italic', color: '#d978a3' }}>right people.</span>
           </h2>
           <p style={{
-            fontSize: '15px', color: '#777772', lineHeight: 1.7,
+            fontSize: '15px', color: '#806f7b', lineHeight: 1.7,
             fontWeight: '300', margin: 0
           }}>
             {note}
@@ -84,7 +84,7 @@ export default function About() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           <p style={{
             fontSize: 'clamp(17px, 2vw, 22px)',
-            fontWeight: '300', lineHeight: 1.65, color: '#1c1d21', margin: 0,
+            fontWeight: '300', lineHeight: 1.65, color: '#352733', margin: 0,
             fontFamily: '"Times New Roman", Times, Georgia, serif'
           }}>
             {intro}
@@ -100,7 +100,7 @@ export default function About() {
                 <h4 style={{
                   margin: '0 0 12px 0',
                   fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-                  fontSize: '10px', color: '#F472B6', fontWeight: '600',
+                  fontSize: '10px', color: '#d978a3', fontWeight: '600',
                   letterSpacing: '1px', textTransform: 'uppercase'
                 }}>
                   {skill.label}
@@ -111,7 +111,7 @@ export default function About() {
                       fontSize: '13px', color: '#555752', lineHeight: 1.9,
                       fontWeight: '300', display: 'flex', alignItems: 'center', gap: '8px'
                     }}>
-                      <span style={{ color: '#F472B6', fontSize: '7px', flexShrink: 0 }}>●</span>
+                      <span style={{ color: '#d978a3', fontSize: '7px', flexShrink: 0 }}>●</span>
                       {item}
                     </li>
                   ))}
