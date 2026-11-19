@@ -9,7 +9,19 @@ const mediaFields=[
  {key:'href',label:'Published link (optional)',type:'text'},
 ];
 const sections=[
- {key:'showcase',title:'Featured showcase',description:'This is your visual journal. Upload a mix of photographs and films, add a short caption, and arrange the pieces in the order you want them seen.',fields:[
+ {key:'showcase',title:'Featured showcase',description:'Control the lookbook’s copy, colours and every image or film. Upload, reorder and edit frames here.',fields:[
+  {key:'topLeft',label:'Top left eyebrow',type:'text'},
+  {key:'topRight',label:'Top right descriptor',type:'text'},
+  {key:'kicker',label:'Small heading above title',type:'text'},
+  {key:'titleLineOne',label:'Main title — first line',type:'text'},
+  {key:'titleLineTwo',label:'Main title — italic line',type:'text'},
+  {key:'intro',label:'Intro paragraph',type:'textarea'},
+  {key:'bgColor',label:'Section background',type:'color'},
+  {key:'textColor',label:'Main text colour',type:'color'},
+  {key:'accentColor',label:'Accent colour',type:'color'},
+  {key:'cardColor',label:'Media placeholder colour',type:'color'},
+  {key:'footerLeft',label:'Footer left text',type:'text'},
+  {key:'footerRight',label:'Footer right text',type:'text'},
   {key:'items',label:'Editorial frames',type:'list',itemName:'frame',titleKey:'title',fields:[
    {key:'title',label:'Editorial caption',type:'text'},
    {key:'category',label:'Credit / category line',type:'text'},
@@ -57,8 +69,7 @@ const sections=[
   ]},
   {key:'experience',label:'Experience',type:'list',itemName:'role',titleKey:'role',fields:[
    {key:'role',label:'Role',type:'text'},{key:'company',label:'Company',type:'text'},{key:'year',label:'Dates',type:'text'},{key:'desc',label:'Description',type:'textarea'}
-  ]},
-  {key:'resumeUrl',label:'Resume PDF',type:'file',accept:'application/pdf'}
+  ]}
  ]},
  {key:'contact',title:'Contact',description:'Where people can reach you.',fields:[
   {key:'email',label:'Email address',type:'text'},{key:'linkedin',label:'LinkedIn URL',type:'text'}
