@@ -3,7 +3,8 @@
 // (or if the database can't be reached). Once you save a section in /admin,
 // the saved version is used instead.
 
-const defaults = {\n  showcase: {
+const defaults = {
+  showcase: {
     items: [
       { id:'show-01', title:'Ai-cha · Campaign film', category:'Brand world / F&B', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type:'video', shape:'wide' },
       { id:'show-02', title:'Product story / Chocolate', category:'Product storytelling', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4', type:'video', shape:'portrait' },
