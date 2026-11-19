@@ -22,8 +22,9 @@ export function Field({field,value,onChange}){
  return <div className={`field field-${field.type}`}><label>{field.label}</label>{input}{field.help&&<small className="field-help">{field.help}</small>}</div>;
 }
 function LinesInput({value,onChange}){
- const [text,setText]=useState(value.join('\n'));
- useEffect(()=>setText(value.join('\n')),[value.join('\u0000')]);
+ const valueText=value.join('\n');
+ const [text,setText]=useState(valueText);
+ useEffect(()=>setText(valueText),[valueText]);
  return <textarea rows={Math.max(3,Math.min(8,value.length+1))} value={text} placeholder="Add one item per line" onChange={e=>{setText(e.target.value);onChange(e.target.value.split('\n').map(s=>s.trim()).filter(Boolean))}}/>;
 }
 function MediaInput({field,value,onChange}){
