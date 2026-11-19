@@ -5,6 +5,18 @@
 
 const defaults = {
   showcase: {
+    topLeft: 'THE CREATIVE JOURNAL',
+    topRight: 'A rotating edit of selected work',
+    kicker: 'A closer look at the work',
+    titleLineOne: 'Ideas in',
+    titleLineTwo: 'good company.',
+    intro: 'Campaigns, films and visual stories made with curiosity, intention and a little bit of play.',
+    bgColor: '#f2eef8',
+    textColor: '#30283d',
+    accentColor: '#c86f83',
+    cardColor: '#e4ddeb',
+    footerLeft: 'A mix of strategy, storytelling & making',
+    footerRight: 'Keep scrolling to explore',
     items: [
       { id:'show-01', title:'Ai-cha · Campaign film', category:'Brand world / F&B', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type:'video', shape:'wide' },
       { id:'show-02', title:'Product story / Chocolate', category:'Product storytelling', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4', type:'video', shape:'portrait' },
