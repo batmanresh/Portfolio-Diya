@@ -7,7 +7,7 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  const [filter,setFilter]=useState('All'),media=project.assets||[],tags=[...new Set(media.flatMap(x=>x.tags||[]).filter(Boolean))],shown=filter==='All'?media:media.filter(x=>(x.tags||[]).includes(filter)),number=String(index+1).padStart(2,'0');
  useEffect(()=>{const old=document.body.style.overflow;document.body.style.overflow='hidden';const key=e=>{if(e.key==='Escape')onClose();if(e.key==='ArrowRight')onNext();if(e.key==='ArrowLeft')onPrevious()};window.addEventListener('keydown',key);return()=>{document.body.style.overflow=old;window.removeEventListener('keydown',key)}},[onClose,onNext,onPrevious]);
  return <div className="case-page" role="dialog" aria-modal="true" aria-label={project.label+' case study'}>
- <style>{\`
+ <style>{`
  .case-page{--hot:#ff2993;--ink:#291522;position:fixed;z-index:1600;inset:0;overflow-y:auto;background:#fff8fc;color:var(--ink);font-family:var(--sans)}
  .case-masthead{height:68px;position:sticky;top:0;z-index:8;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,76px);background:#fff8fceF;backdrop-filter:blur(18px);border-bottom:1px solid #f1c8df}
  .case-masthead button,.case-bottom-nav button{border:0;background:#ff2993;color:white;border-radius:999px;padding:11px 17px;font:800 10px var(--sans);cursor:pointer;transition:transform .2s,background .2s}
@@ -39,7 +39,7 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  @media(max-width:760px){.case-intro{grid-template-columns:1fr;gap:24px}.case-facts{grid-template-columns:repeat(2,1fr)}.case-brief{grid-template-columns:1fr;gap:20px}.case-process-grid{grid-template-columns:repeat(2,1fr)}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:span 6}.case-impact{grid-template-columns:1fr}}
  @media(max-width:480px){.case-masthead{height:58px}.case-masthead button{padding:9px 12px;font-size:8px}.case-topline span:last-child{display:none}.case-facts{grid-template-columns:1fr 1fr}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:1/-1}.case-gallery-heading{align-items:start;flex-direction:column}.case-bottom-nav{align-items:flex-start;flex-direction:column}}
  @media(prefers-reduced-motion:reduce){.case-gallery-item{animation:none}}
- \`}</style>
+ `}</style>
  <header className="case-masthead"><button onClick={onClose}>← All projects</button><div className="case-masthead-brand">diya<span>✳</span>studio</div><button onClick={onClose}>Close ×</button></header>
  <div className="case-page-inner"><div className="case-topline"><span>THE CREATIVE FILES / {number}</span><span>Strategy · Storytelling · Execution</span></div>
  <section className="case-intro"><div><div className="case-eyebrow">PROJECT {number} / {project.client||'Independent work'}</div><h1>{project.label}</h1><p className="case-intro-deck">{project.headline}</p></div><div className="case-facts"><div className="case-fact"><small>Brand</small><strong>{project.client||'Independent project'}</strong></div><div className="case-fact"><small>My role</small><strong>{project.role||'Strategy & creative'}</strong></div><div className="case-fact"><small>Focus</small><strong>{(project.subcats||[]).slice(0,2).join(' · ')||'Brand storytelling'}</strong></div></div></section>
@@ -59,7 +59,7 @@ export default function Work(){
  const categories=['All',...new Set(projects.flatMap(p=>p.subcats||[]).filter(Boolean))],visible=filter==='All'?projects:projects.filter(p=>(p.subcats||[]).includes(filter));
  const open=project=>{setActive(project);setFilter('All')},activeIndex=active?projects.findIndex(p=>p.id===active.id):-1;
  const move=direction=>{if(projects.length)setActive(projects[(activeIndex+direction+projects.length)%projects.length])};
- return <section id="work" className="work-playground"><style>{\`
+ return <section id="work" className="work-playground"><style>{`
  .work-playground{--hot:#ff2993;--ink:#291522;background:#fff8fc;color:var(--ink);padding:clamp(76px,9vw,130px) clamp(18px,6vw,88px) clamp(90px,10vw,145px);position:relative;overflow:hidden}
  .work-playground:before{content:'WORK!';position:absolute;right:-.04em;top:55px;font:900 clamp(130px,25vw,360px)/.8 var(--display);letter-spacing:-.1em;color:#ffedf5;pointer-events:none;transform:rotate(-8deg)}
  .work-playground-inner{max-width:1440px;margin:auto;position:relative;z-index:1}.work-topline{display:flex;justify-content:space-between;gap:15px;border-bottom:2px solid #f4c4dc;padding-bottom:14px;font:800 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#a66b8a}
@@ -87,7 +87,7 @@ export default function Work(){
  @media(max-width:760px){.work-heading{display:block}.work-heading p{margin-top:18px}.project-card,.project-card:nth-child(3n+3){grid-column:span 6}.project-card:nth-child(3n+2){margin-top:35px}.project-card:nth-child(3n+3){margin-top:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(220px,55vw,390px)}}
  @media(max-width:500px){.work-topline span:last-child{display:none}.work-grid{grid-template-columns:1fr;gap:36px}.project-card,.project-card:nth-child(3n+3){grid-column:1;margin:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(270px,90vw,420px)}.project-card-info h3{font-size:30px}}
  @media(prefers-reduced-motion:reduce){.project-card{animation:none}}
- \`}</style>
+ `}</style>
  <div className="work-playground-inner"><div className="work-topline"><span>02 / THE PORTFOLIO PLAYGROUND</span><span>{String(visible.length).padStart(2,'0')} STORIES · CLICK TO EXPLORE ↘</span></div>
  <div className="work-heading"><div><div className="work-kicker">A little strategy. A lot of imagination.</div><h2>Made to <span>move.</span></h2></div><p>Campaigns, content worlds and brand moments — each one with a thought behind the pretty.</p></div>
  {categories.length>1&&<div className="work-filters"><span className="work-filters-label">Find your flavour</span>{categories.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c==='All'?'Everything ✳':c}</button>)}</div>}
