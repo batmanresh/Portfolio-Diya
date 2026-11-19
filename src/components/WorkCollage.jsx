@@ -1,7 +1,7 @@
 import React from 'react';
 import {getContent} from '../content/content';
 
-const isVideo=src=>/\\.(mp4|webm|mov|ogg)(\\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/');
+const isVideo=src=>/\.(mp4|webm|mov|ogg)(\\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/');
 function ShowcaseMedia({item}) {
  const src=item.src||item.preview||item.url;
  const video=item.type==='video'||(item.type!=='image'&&isVideo(src));
