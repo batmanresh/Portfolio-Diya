@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root{--ink:#28202a;--muted:#806f7b;--pink:#e77ca9;--hot:#cf4f87;--blush:#fff0f5;--cream:#fffaf5;--lilac:#eee7fb;--line:#f0dce5;--serif:'DM Serif Display',Georgia,serif;--sans:'Manrope','DM Sans',sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{--ink:#241d20;--muted:#766a62;--pink:#a45e77;--hot:#8e4e68;--blush:#eee8e0;--cream:#f8f5f0;--lilac:#e9dfd8;--line:#cfc4bb;--serif:'Bodoni Moda',Didot,'Times New Roman',serif;--sans:'DM Sans',Arial,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:90px;background:var(--cream)}
 body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:inherit}
-::selection{background:#f7c8da;color:#402333}
+::selection{background:#d7b6b5;color:#241d20}
 img,video{max-width:100%}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
