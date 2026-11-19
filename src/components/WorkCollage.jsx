@@ -4,7 +4,7 @@ const isVideo=src=>/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?
 function ShowcaseMedia({item}){const src=item.src||item.preview||item.url,video=item.type==='video'||(item.type!=='image'&&isVideo(src));return video?<video src={src} poster={item.thumbnail||undefined} muted loop autoPlay playsInline preload="metadata" aria-label={item.title||'Featured campaign film'}/>:<img src={item.thumbnail||src} alt={item.title||'Featured creative work'} loading="lazy"/>}
 export default function WorkCollage(){
  const {items=[]}=getContent('showcase'),pieces=items.filter(x=>x&&(x.src||x.preview||x.url)).slice(0,8);
- return <section id="visual-lookbook" className="showcase-play"><style>{\`
+ return <section id="visual-lookbook" className="showcase-play"><style>{`
  .showcase-play{--hot:#ff2993;position:relative;overflow:hidden;background:#ff2993;color:#fff;padding:clamp(70px,9vw,125px) clamp(18px,6vw,88px);isolation:isolate}
  .showcase-play:before{content:'✳';position:absolute;z-index:-1;right:-.05em;top:-.2em;font:900 clamp(220px,43vw,620px)/1 var(--display);color:#ff75b9;opacity:.48;animation:showcaseSpin 35s linear infinite}
  .showcase-inner{max-width:1440px;margin:auto}.showcase-top{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #ffffff70;padding-bottom:14px;font:800 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase}
@@ -25,7 +25,7 @@ export default function WorkCollage(){
  @media(max-width:760px){.showcase-title-row{display:block}.showcase-intro{margin-top:20px}.showcase-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(95px,18vw,145px)}.showcase-tile:nth-child(n){grid-column:span 3;grid-row:span 2;transform:none}.showcase-tile:nth-child(3n+1){grid-column:span 6;grid-row:span 3}.showcase-tile-meta{left:12px;right:12px;bottom:12px}.showcase-bottom{font-size:8px}}
  @media(max-width:460px){.showcase-grid{grid-auto-rows:100px}.showcase-tile:nth-child(n){grid-column:span 3;grid-row:span 2}.showcase-tile:nth-child(3n+1){grid-column:span 6;grid-row:span 3}.showcase-tile-meta strong{font-size:15px}.showcase-bottom span:last-child{display:none}}
  @media(prefers-reduced-motion:reduce){.showcase-play:before{animation:none}.showcase-tile{transition:none}}
- \`}</style><div className="showcase-inner">
+ `}</style><div className="showcase-inner">
  <div className="showcase-top"><span>01 / THE VISUAL PLAYGROUND</span><span>Things I made · things I love</span></div>
  <div className="showcase-title-row"><div><div className="showcase-kicker">A little peek into my creative brain ✳</div><h2 className="showcase-title">Good ideas<br/>look <em>good.</em></h2></div><p className="showcase-intro">A living moodboard of campaigns, films, visuals and little moments. All the colour, craft and chaos that make a brand feel alive.</p></div>
  <div className="showcase-grid">{pieces.length?pieces.map((item,i)=><article className="showcase-tile" key={item.id||i}><ShowcaseMedia item={item}/><span className="showcase-tile-index">FRAME {String(i+1).padStart(2,'0')}</span><div className="showcase-tile-meta"><small>{item.category||'Creative direction'}</small><strong>{item.title||'A moment in the making'}</strong></div></article>):<div className="showcase-empty">The next visual story is loading ✳</div>}</div>
