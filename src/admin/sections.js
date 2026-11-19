@@ -1,124 +1,63 @@
-// What the admin panel lets you edit, section by section.
-// To make something new editable: add a field here, add a default value in
-// content/defaults.js, and read it in the component with getContent().
-//
-// Field types:
-//   text      single line
-//   textarea  paragraph
-//   lines     a list of short items, one per line
-//   color     color picker
-//   select    dropdown (needs `options`)
-//   image     image URL + upload button
-//   video     video URL + upload button
-//   file      any file URL + upload button (e.g. PDF)
-//   list      repeatable group of fields (add / remove / reorder)
-
-const sections = [
-  {
-    key: 'hero',
-    title: 'Hero',
-    description: 'The top of the page: intro text and the scrolling brand logos.',
-    fields: [
-      { key: 'eyebrow', label: 'Small line above the headline', type: 'text' },
-      { key: 'intro', label: 'Intro paragraph', type: 'textarea' },
-      {
-        key: 'logos', label: "Brands I've worked with", type: 'list', itemName: 'logo',
-        fields: [{ key: 'image', label: 'Logo', type: 'image' }],
-      },
-    ],
-  },
-  {
-    key: 'about',
-    title: 'About',
-    description: 'Your story and skills.',
-    fields: [
-      { key: 'note', label: 'Short note under the heading (location, availability)', type: 'textarea' },
-      { key: 'intro', label: 'Main paragraph (large text)', type: 'textarea' },
-      { key: 'body', label: 'Second paragraph', type: 'textarea' },
-      {
-        key: 'skills', label: 'Skill groups', type: 'list', itemName: 'skill group', titleKey: 'label',
-        fields: [
-          { key: 'label', label: 'Group name', type: 'text' },
-          { key: 'items', label: 'Skills (one per line)', type: 'lines' },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'work',
-    title: 'Work',
-    description: 'Industries shown in "Selected Work", each with its own videos.',
-    fields: [
-      {
-        key: 'industries', label: 'Industries', type: 'list', itemName: 'industry', titleKey: 'label',
-        fields: [
-          { key: 'label', label: 'Industry name', type: 'text' },
-          { key: 'headline', label: 'Headline', type: 'text' },
-          { key: 'client', label: 'Client', type: 'text' },
-          { key: 'role', label: 'Your role (leave empty to hide)', type: 'text' },
-          { key: 'color', label: 'Accent color', type: 'color' },
-          { key: 'cover', label: 'Cover image', type: 'image' },
-          { key: 'summary', label: 'Summary', type: 'textarea' },
-          { key: 'result', label: 'Result (leave empty to hide)', type: 'textarea' },
-          { key: 'subcats', label: 'Filter tags shown in the gallery (one per line)', type: 'lines' },
-          {
-            key: 'videos', label: 'Videos', type: 'list', itemName: 'video', titleKey: 'caption',
-            fields: [
-              { key: 'caption', label: 'Caption', type: 'text' },
-              { key: 'href', label: 'Instagram link', type: 'text' },
-              { key: 'preview', label: 'Preview video', type: 'video' },
-              { key: 'orientation', label: 'Shape', type: 'select', options: ['landscape', 'portrait'] },
-              { key: 'tags', label: 'Tags (one per line; should match the filter tags above)', type: 'lines' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'results',
-    title: 'Results & Experience',
-    description: 'Numbers, testimonials, work history and your resume.',
-    fields: [
-      {
-        key: 'metrics', label: 'Key numbers', type: 'list', itemName: 'number', titleKey: 'value',
-        fields: [
-          { key: 'value', label: 'Number (e.g. 650%)', type: 'text' },
-          { key: 'label', label: 'What it means', type: 'textarea' },
-          { key: 'context', label: 'Where (brand / area)', type: 'text' },
-        ],
-      },
-      {
-        key: 'testimonials', label: 'Testimonials', type: 'list', itemName: 'testimonial', titleKey: 'name',
-        fields: [
-          { key: 'name', label: 'Name', type: 'text' },
-          { key: 'title', label: 'Their job title', type: 'text' },
-          { key: 'relation', label: 'How you worked together', type: 'text' },
-          { key: 'image', label: 'Photo', type: 'image' },
-          { key: 'quote', label: 'Quote', type: 'textarea' },
-        ],
-      },
-      {
-        key: 'experience', label: 'Experience', type: 'list', itemName: 'job', titleKey: 'role',
-        fields: [
-          { key: 'role', label: 'Role', type: 'text' },
-          { key: 'company', label: 'Company', type: 'text' },
-          { key: 'year', label: 'Years (e.g. 2024 — Present)', type: 'text' },
-          { key: 'desc', label: 'Description', type: 'textarea' },
-        ],
-      },
-      { key: 'resumeUrl', label: 'Resume (PDF)', type: 'file', accept: 'application/pdf' },
-    ],
-  },
-  {
-    key: 'contact',
-    title: 'Contact',
-    description: 'How people reach you.',
-    fields: [
-      { key: 'email', label: 'Email', type: 'text' },
-      { key: 'linkedin', label: 'LinkedIn URL', type: 'text' },
-    ],
-  },
+// Simple content studio schema. Each section maps directly to one site_content row.
+const mediaFields=[
+ {key:'caption',label:'Title / caption',type:'text'},
+ {key:'preview',label:'Photo or video',type:'media'},
+ {key:'thumbnail',label:'Custom thumbnail / video poster (optional)',type:'image'},
+ {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
+ {key:'orientation',label:'Layout',type:'select',options:['landscape','portrait','square']},
+ {key:'tags',label:'Categories (one per line)',type:'lines'},
+ {key:'href',label:'Original post / project link (optional)',type:'text'},
 ];
-
+const sections=[
+ {key:'showcase',title:'Featured showcase',description:'Add the photos and films that appear in the visual diary. Upload files, add a title, and drag items into the order you want.',fields:[
+  {key:'items',label:'Showcase pieces',type:'list',itemName:'piece',titleKey:'title',fields:[
+   {key:'title',label:'Title',type:'text'},
+   {key:'category',label:'Small category label',type:'text'},
+   {key:'src',label:'Photo or video',type:'media'},
+   {key:'thumbnail',label:'Custom thumbnail / video poster',type:'image'},
+   {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
+  ]}
+ ]},
+ {key:'hero',title:'Homepage intro',description:'Your opening statement and brand marks.',fields:[
+  {key:'eyebrow',label:'Small intro line',type:'text'},
+  {key:'intro',label:'Intro paragraph',type:'textarea'},
+  {key:'logos',label:'Brand logos',type:'list',itemName:'logo',fields:[{key:'image',label:'Logo image',type:'image'}]}
+ ]},
+ {key:'about',title:'About & skills',description:'Your story, positioning and skill groups.',fields:[
+  {key:'note',label:'Short availability / location note',type:'textarea'},
+  {key:'intro',label:'Main introduction',type:'textarea'},
+  {key:'body',label:'Supporting paragraph',type:'textarea'},
+  {key:'skills',label:'Skill groups',type:'list',itemName:'skill group',titleKey:'label',fields:[
+   {key:'label',label:'Group title',type:'text'},{key:'items',label:'Skills (one per line)',type:'lines'}
+  ]}
+ ]},
+ {key:'work',title:'Selected work',description:'Each project becomes a card. Open a project to edit its story and its photo / video gallery. Keep categories consistent with the media tags.',fields:[
+  {key:'industries',label:'Projects',type:'list',itemName:'project',titleKey:'label',fields:[
+   {key:'label',label:'Project / client name',type:'text'},
+   {key:'headline',label:'Short creative headline',type:'text'},
+   {key:'client',label:'Client / brand',type:'text'},
+   {key:'role',label:'Your role',type:'text'},
+   {key:'cover',label:'Project cover image',type:'image'},
+   {key:'summary',label:'The brief / story',type:'textarea'},
+   {key:'result',label:'Results / impact',type:'textarea'},
+   {key:'subcats',label:'Project categories (one per line)',type:'lines'},
+   {key:'videos',label:'Project gallery · photos & videos',type:'list',itemName:'gallery item',titleKey:'caption',fields:mediaFields}
+  ]}
+ ]},
+ {key:'results',title:'Results & experience',description:'Proof, testimonials, work history and CV.',fields:[
+  {key:'metrics',label:'Key numbers',type:'list',itemName:'metric',titleKey:'value',fields:[
+   {key:'value',label:'Number',type:'text'},{key:'label',label:'What it means',type:'textarea'},{key:'context',label:'Brand / context',type:'text'}
+  ]},
+  {key:'testimonials',label:'Testimonials',type:'list',itemName:'testimonial',titleKey:'name',fields:[
+   {key:'name',label:'Name',type:'text'},{key:'title',label:'Job title',type:'text'},{key:'relation',label:'Working relationship',type:'text'},{key:'image',label:'Photo',type:'image'},{key:'quote',label:'Quote',type:'textarea'}
+  ]},
+  {key:'experience',label:'Experience',type:'list',itemName:'role',titleKey:'role',fields:[
+   {key:'role',label:'Role',type:'text'},{key:'company',label:'Company',type:'text'},{key:'year',label:'Dates',type:'text'},{key:'desc',label:'Description',type:'textarea'}
+  ]},
+  {key:'resumeUrl',label:'Resume PDF',type:'file',accept:'application/pdf'}
+ ]},
+ {key:'contact',title:'Contact',description:'Where people can reach you.',fields:[
+  {key:'email',label:'Email address',type:'text'},{key:'linkedin',label:'LinkedIn URL',type:'text'}
+ ]}
+];
 export default sections;
