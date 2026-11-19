@@ -40,7 +40,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" style={{ padding: '140px 8%', backgroundColor: '#FAFAFA', borderTop: '1px solid #EEEEEE' }}>
+    <section id="contact" style={{ padding: '140px 8%', backgroundColor: '#fff8f5', borderTop: '1px solid #efdce5' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
         <div style={{
@@ -55,7 +55,7 @@ export default function Contact() {
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '2px',
-              color: '#F472B6',
+              color: '#d978a3',
               display: 'block',
               marginBottom: '20px',
               fontFamily: 'monospace',
@@ -73,12 +73,12 @@ export default function Contact() {
             }}>
               I'm looking for<br />
               my next full-time<br />
-              <span style={{ fontStyle: 'italic', color: '#F472B6' }}>role.</span>
+              <span style={{ fontStyle: 'italic', color: '#d978a3' }}>role.</span>
             </h2>
-            <p style={{ color: '#6B7280', fontSize: '16px', fontWeight: '300', margin: '0 0 16px 0', lineHeight: 1.7, maxWidth: '420px' }}>
+            <p style={{ color: '#806f7b', fontSize: '16px', fontWeight: '300', margin: '0 0 16px 0', lineHeight: 1.7, maxWidth: '420px' }}>
               Social media strategy, brand marketing, or content — if you're building something that needs a marketer who owns the full picture, let's talk.
             </p>
-            <p style={{ color: '#ADADAD', fontSize: '13px', fontWeight: '300', margin: 0, lineHeight: 1.6, maxWidth: '380px' }}>
+            <p style={{ color: '#a98c9b', fontSize: '13px', fontWeight: '300', margin: 0, lineHeight: 1.6, maxWidth: '380px' }}>
               Open to corporate & agency roles, in-house brand teams, and remote positions. Now based in Dubai, UAE.
             </p>
           </div>
@@ -96,7 +96,7 @@ export default function Contact() {
                 alignItems: 'center',
                 padding: '24px',
                 backgroundColor: '#FFFFFF',
-                border: hoveredIdx === 0 ? (copied ? '1px solid #10B981' : '1px solid #F472B6') : '1px solid #E5E7EB',
+                border: hoveredIdx === 0 ? (copied ? '1px solid #10B981' : '1px solid #d978a3') : '1px solid #efdce5',
                 transform: hoveredIdx === 0 ? 'translateY(-2px)' : 'none',
                 boxShadow: hoveredIdx === 0 ? '0 12px 24px rgba(0, 0, 0, 0.05)' : 'none',
                 transition: 'all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1)',
@@ -109,7 +109,7 @@ export default function Contact() {
             >
               <div style={{
                 fontSize: '22px',
-                color: copied ? '#10B981' : '#F472B6',
+                color: copied ? '#10B981' : '#d978a3',
                 width: '32px',
                 transition: 'color 0.2s ease',
                 marginRight: '20px'
@@ -129,7 +129,7 @@ export default function Contact() {
                   {copied ? 'Copied' : 'Email'}
                 </div>
                 <div style={{ 
-                  color: copied ? '#10B981' : '#1A1A1A', 
+                  color: copied ? '#10B981' : '#352733', 
                   fontWeight: '500', 
                   fontSize: '15px',
                   transition: 'color 0.2s ease'
@@ -152,7 +152,7 @@ export default function Contact() {
                 gap: '20px',
                 padding: '24px',
                 backgroundColor: '#FFFFFF',
-                border: hoveredIdx === 1 ? '1px solid #F472B6' : '1px solid #E5E7EB',
+                border: hoveredIdx === 1 ? '1px solid #d978a3' : '1px solid #efdce5',
                 textDecoration: 'none',
                 transform: hoveredIdx === 1 ? 'translateY(-2px)' : 'none',
                 boxShadow: hoveredIdx === 1 ? '0 12px 24px rgba(0, 0, 0, 0.05)' : 'none',
@@ -174,7 +174,7 @@ export default function Contact() {
                 <div style={{ fontSize: '10px', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', fontFamily: 'monospace', marginBottom: '3px' }}>
                   LinkedIn
                 </div>
-                <div style={{ color: '#1A1A1A', fontWeight: '500', fontSize: '15px' }}>
+                <div style={{ color: '#352733', fontWeight: '500', fontSize: '15px' }}>
                   {linkedinLabel}
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function Contact() {
         {/* Footer Area */}
         <div style={{
           paddingTop: '32px',
-          borderTop: '1px solid #E5E7EB',
+          borderTop: '1px solid #efdce5',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -197,7 +197,7 @@ export default function Contact() {
         }}>
           <div>© 2026 Diya Shrestha. All Rights Reserved.</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#F472B6', display: 'inline-block' }} />
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#d978a3', display: 'inline-block' }} />
             <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '1px' }}>DUBAI, UAE</span>
           </div>
         </div>
