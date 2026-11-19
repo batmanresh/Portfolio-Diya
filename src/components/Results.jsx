@@ -257,7 +257,6 @@ export default function Results() {
                 Full-stack marketing — strategy, creative, and execution in one person.
               </p>
 
-          </a>
             </div>
 
             {/* Right timeline column */}
