@@ -106,8 +106,7 @@ const styles = `
 export default function Results() {
   const [hoveredExp, setHoveredExp] = useState(null);
   const [hoveredTestimonial, setHoveredTestimonial] = useState(null);
-  const [btnHover, setBtnHover] = useState(false);
-  const { metrics: METRICS, testimonials: TESTIMONIALS, experience: EXPERIENCE, resumeUrl } = getContent('results');
+  const { metrics: METRICS, testimonials: TESTIMONIALS, experience: EXPERIENCE } = getContent('results');
   const { linkedin } = getContent('contact');
 
   return (
@@ -258,31 +257,7 @@ export default function Results() {
                 Full-stack marketing — strategy, creative, and execution in one person.
               </p>
 
-              <a
-                href={resumeUrl}
-                download="Diya_Shrestha_Resume.pdf"
-                onMouseEnter={() => setBtnHover(true)}
-                onMouseLeave={() => setBtnHover(false)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  padding: '13px 26px',
-                  borderRadius: '30px',
-                  fontSize: '12.5px',
-                  fontWeight: '500',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  backgroundColor: btnHover ? '#a45e77' : 'transparent',
-                  color: btnHover ? '#FFFFFF' : '#241d20',
-                  border: btnHover ? '1px solid #a45e77' : '1px solid #241d20',
-                  transform: btnHover ? 'translateY(-2px)' : 'none',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                Download résumé ↓
-              </a>
+          </a>
             </div>
 
             {/* Right timeline column */}
