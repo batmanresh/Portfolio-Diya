@@ -12,13 +12,14 @@ export default function App(){
  const links=[['About','#about'],['Selected work','#work'],['Experience','#resume'],['Contact','#contact']];
  return <div className="portfolio-shell">
   <style>{`
-   .site-progress{position:fixed;z-index:1200;top:0;left:0;height:3px;background:linear-gradient(90deg,#f4a7c5,#c88be7);transition:width .12s}
-   .site-nav{height:78px;position:fixed;z-index:1100;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,6vw,92px);background:rgba(248,245,240,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(207,196,187,.7)}
-   .site-logo{font:italic 27px var(--serif);text-decoration:none;letter-spacing:-1.2px}.site-logo span{color:#a45e77}
-   .site-links{display:flex;align-items:center;gap:clamp(18px,3vw,42px)}.site-links a{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;text-decoration:none;color:#6f5b68;transition:color .2s}.site-links a:hover{color:#8e4e68}
-   .site-hire{padding:12px 21px;border-radius:999px;background:#30242d;color:white!important}.site-hire:hover{background:#dc78a4!important;color:white!important}
-   .site-menu{display:none;border:0;background:none;font-size:25px;color:#30242d}
-   @media(max-width:720px){.site-links{display:none}.site-menu{display:block}.site-mobile{position:fixed;z-index:1090;top:78px;left:0;right:0;padding:22px 26px 28px;background:#f8f5f0;border-bottom:1px solid #d9d0c8;display:grid;gap:18px}.site-mobile a{text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase}}
+   .site-progress{position:fixed;z-index:1200;top:0;left:0;height:4px;background:linear-gradient(90deg,#ff2993,#ff9acb,#c9a5ff);transition:width .12s;box-shadow:0 1px 8px #ff299366}
+   .site-nav{height:78px;position:fixed;z-index:1100;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,6vw,88px);background:rgba(255,248,252,.92);backdrop-filter:blur(18px);border-bottom:1px solid #f1c8df}
+   .site-logo{font:900 25px var(--display);text-decoration:none;letter-spacing:-1.5px}.site-logo span{color:#ff2993}
+   .site-links{display:flex;align-items:center;gap:clamp(16px,2.5vw,34px)}.site-links a{font:800 10px var(--sans);text-transform:uppercase;letter-spacing:1px;text-decoration:none;color:#72566a;transition:color .2s,transform .2s}.site-links a:hover{color:#ff2993;transform:translateY(-2px)}
+   .site-hire{padding:12px 20px;border-radius:999px;background:#ff2993;color:white!important;box-shadow:0 4px 0 #e7197c}.site-hire:hover{background:#291522!important;color:white!important}
+   .site-menu{display:none;border:0;background:#ff2993;color:white;border-radius:50%;width:42px;height:42px;font-size:23px}
+   .site-mobile{position:fixed;z-index:1090;top:78px;left:0;right:0;padding:22px 26px 28px;background:#fff8fc;border-bottom:1px solid #f1c8df;display:grid;gap:18px}.site-mobile a{text-decoration:none;font:800 13px var(--sans);letter-spacing:1px;text-transform:uppercase}
+   @media(max-width:720px){.site-links{display:none}.site-menu{display:block}}
   `}</style>
   <div className="site-progress" style={{width:progress+'%'}}/>
   <header className="site-nav"><a className="site-logo" href="#hero">diya<span>shr.</span> <small style={{font:'9px var(--sans)',letterSpacing:2,color:'#a88c9b'}}>PORTFOLIO</small></a>
