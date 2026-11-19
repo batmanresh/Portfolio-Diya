@@ -40,6 +40,44 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  @media(max-width:480px){.case-masthead{height:58px}.case-masthead button{padding:9px 12px;font-size:8px}.case-topline span:last-child{display:none}.case-facts{grid-template-columns:1fr 1fr}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:1/-1}.case-gallery-heading{align-items:start;flex-direction:column}.case-bottom-nav{align-items:flex-start;flex-direction:column}}
  @media(prefers-reduced-motion:reduce){.case-gallery-item{animation:none}}
 
+ .case-page{--hot:#ec4f9b;--ink:#35152d;background:#fff3f8;color:var(--ink)}
+ .case-masthead{background:rgba(255,243,248,.94);border-color:#f4c8dc}
+ .case-masthead button,.case-bottom-nav button{border-color:#e8b8d0;color:#35152d;border-radius:7px}
+ .case-masthead button:hover,.case-bottom-nav button:hover{background:#35152d;color:white}
+ .case-masthead-brand span{color:#ec4f9b}
+ .case-topline{border-color:#f1c5da;color:#a65a82}
+ .case-intro{grid-template-columns:minmax(0,1fr) 240px;gap:clamp(28px,5vw,70px);padding:clamp(60px,9vw,118px) 0 44px;align-items:end}
+ .case-eyebrow,.case-section-label{color:#d83e8a;letter-spacing:1.8px}
+ .case-intro h1{font:500 clamp(44px,6.8vw,92px)/1.04 var(--display);letter-spacing:-.025em;margin:20px 0 24px}
+ .case-intro-deck{font-size:clamp(16px,1.5vw,19px);line-height:1.7;color:#79536c}
+ .case-facts{gap:18px}.case-fact{border-color:#edc6d8;padding-top:11px}.case-fact small{color:#a65a82}.case-fact strong{color:#35152d;font-size:13px}
+ .case-hero-image{height:clamp(280px,54vw,720px);border-radius:10px;background:#f8dce9}
+ .case-hero-image img{object-fit:cover}
+ .case-hero-folio{background:#fff;color:#35152d;border-radius:6px}
+ .case-gallery{padding:clamp(76px,10vw,130px) 0 35px}
+ .case-gallery-heading{margin:0 0 36px;align-items:end}
+ .case-gallery-heading h2{font:500 clamp(36px,5vw,64px)/1.08 var(--display);letter-spacing:-.02em;color:#35152d}
+ .case-gallery-heading h2 i{color:#ec4f9b}
+ .case-gallery-count{color:#a65a82}
+ .case-filters{margin:0 0 30px;gap:10px}
+ .case-filters button{border-color:#edc1d7;color:#8d4e70;border-radius:30px;padding:10px 16px}
+ .case-filters button.active,.case-filters button:hover{background:#ec4f9b;color:white;border-color:#ec4f9b}
+ .case-gallery-grid{gap:clamp(18px,2.4vw,34px);align-items:start}
+ .case-gallery-item{animation:none}
+ .case-gallery-item.portrait{grid-column:span 4}.case-gallery-item.landscape{grid-column:span 8}.case-gallery-item.square{grid-column:span 6}
+ .case-media{border-radius:9px;background:#f7e3ed}
+ .case-media.portrait{aspect-ratio:4/5}.case-media.landscape{aspect-ratio:16/10}.case-media.square{aspect-ratio:1}
+ .case-media img,.case-media video{background:#f7e3ed}
+ .case-play-tag{background:#fff;color:#35152d;border-radius:30px}
+ .case-caption{border-color:#edc6d8;padding:13px 3px 0}.case-caption strong{color:#35152d}.case-caption span{color:#a65a82}
+ .case-empty{background:#fce1ee;color:#8d4e70;border-radius:10px}
+ .case-impact{background:#f7d9e8;border-radius:12px;color:#35152d}
+ .case-impact h2{color:#35152d}
+ .case-impact p{color:#79536c}
+ .case-bottom-nav{border-color:#edc6d8}
+ @media(max-width:760px){.case-intro{grid-template-columns:1fr;gap:28px}.case-facts{grid-template-columns:repeat(3,1fr)}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:span 6}}
+ @media(max-width:480px){.case-facts{grid-template-columns:1fr 1fr}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:1/-1}}
+
  .work-heading h2{font:400 clamp(52px,8vw,108px)/1.08 var(--display);letter-spacing:-.012em}
  .work-heading h2 span{transform:none;color:#b85f82}
  .work-heading p{font-weight:400}
@@ -108,6 +146,39 @@ export default function Work(){
  @media(max-width:760px){.work-heading{display:block}.work-heading p{margin-top:18px}.project-card,.project-card:nth-child(3n+3){grid-column:span 6}.project-card:nth-child(3n+2){margin-top:35px}.project-card:nth-child(3n+3){margin-top:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(220px,55vw,390px)}}
  @media(max-width:500px){.work-topline span:last-child{display:none}.work-grid{grid-template-columns:1fr;gap:36px}.project-card,.project-card:nth-child(3n+3){grid-column:1;margin:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(270px,90vw,420px)}.project-card-info h3{font-size:30px}}
  @media(prefers-reduced-motion:reduce){.project-card{animation:none}}
+
+ .work-playground{background:#fff2f8;color:#35152d;padding:clamp(100px,12vw,170px) clamp(22px,7vw,100px) clamp(110px,13vw,175px)}
+ .work-playground:before{content:'';right:-5vw;top:70px;color:#fbe0ec;transform:none;letter-spacing:-.06em}
+ .work-topline{border-color:#edc1d7;color:#a65a82;padding-bottom:18px;letter-spacing:1.7px}
+ .work-heading{padding:clamp(60px,8vw,110px) 0 clamp(50px,6vw,80px);gap:clamp(35px,7vw,100px)}
+ .work-kicker{color:#d83e8a;letter-spacing:2.2px}
+ .work-heading h2{font:500 clamp(56px,8.5vw,116px)/1.1 var(--display);letter-spacing:-.025em;margin:22px 0 0;max-width:950px}
+ .work-heading h2 span{color:#ec4f9b;transform:none}
+ .work-heading p{font:400 15px/1.85 var(--sans);color:#80566f;max-width:300px;margin:0 0 8px}
+ .work-filters{padding:22px 0 38px;border-color:#edc1d7;gap:10px}
+ .work-filters-label{color:#a65a82;letter-spacing:1.7px}
+ .work-filters button{border:1px solid #edc1d7;background:#fffafd;border-radius:30px;padding:11px 17px;color:#8d4e70;font:600 11px var(--sans)}
+ .work-filters button:hover{transform:translateY(-2px);background:#fce0ed}
+ .work-filters button.active{background:#ec4f9b;border-color:#ec4f9b;color:#fff;box-shadow:none}
+ .work-grid{column-gap:clamp(24px,4vw,58px);row-gap:clamp(55px,7vw,100px)}
+ .project-card{animation:projectIn .55s both;animation-delay:calc(var(--i)*60ms)}
+ .project-card:nth-child(3n+2){margin-top:clamp(45px,7vw,90px)}
+ .project-card-visual{border-radius:10px;background:#f8dce9;box-shadow:none}
+ .project-card-visual:after{inset:60% 0 0;background:linear-gradient(transparent,#28132980)}
+ .project-card-visual img{filter:saturate(1.04)}
+ .project-card:hover .project-card-visual img{transform:scale(1.035);filter:saturate(1.12)}
+ .project-card-index{background:#fff8fb;color:#35152d;border-radius:30px;font-weight:600}
+ .project-card-sticker{background:#fff8fb;color:#35152d;border-radius:30px;font-weight:600;padding:11px 16px}
+ .project-card:hover .project-card-sticker{background:#ec4f9b;color:#fff}
+ .project-card-info{border-color:#edc1d7;padding:20px 3px 0;margin-top:17px}
+ .project-card-info small{color:#a65a82;letter-spacing:1.35px}
+ .project-card-info h3{font:500 clamp(27px,3.3vw,43px)/1.12 var(--display);letter-spacing:-.015em;color:#35152d;margin:12px 0 9px}
+ .project-card-info p{font:400 13px/1.7 var(--sans);color:#80566f}
+ .project-card-count{font:600 18px var(--display);color:#ec4f9b}
+ .work-empty{background:#fce1ee;border-radius:10px;color:#8d4e70}
+ @media(max-width:760px){.work-heading{padding:54px 0 45px}.work-heading p{margin-top:25px}.work-grid{row-gap:48px}}
+ @media(max-width:500px){.work-playground{padding-top:85px}.work-grid{gap:42px}.project-card-info{padding-top:15px}}
+
  `}</style>
  <div className="work-playground-inner"><div className="work-topline"><span>02 / THE PORTFOLIO PLAYGROUND</span><span>{String(visible.length).padStart(2,'0')} STORIES · CLICK TO EXPLORE ↘</span></div>
  <div className="work-heading"><div><div className="work-kicker">A little strategy. A lot of imagination.</div><h2>Made to <span>move.</span></h2></div><p>Campaigns, content worlds and brand moments — each one with a thought behind the pretty.</p></div>
