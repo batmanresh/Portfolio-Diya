@@ -1,261 +1,30 @@
-import React, { useState } from 'react';
-import { getContent } from '../content/content';
-
-export default function Hero() {
-  const [primaryHover, setPrimaryHover] = useState(false);
-  const [secondaryHover, setSecondaryHover] = useState(false);
-
-  const { eyebrow, intro, logos } = getContent('hero');
-  const clients = logos.map(l => l.image).filter(Boolean);
-
-  return (
-    <section
-      id="hero"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#FAF9F6',
-        position: 'relative',
-        overflow: 'hidden',
-        padding: '50px 8% 60px 8%',
-        boxSizing: 'border-box'
-      }}
-    >
-      {/* Ambient glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '15%',
-          right: '-8%',
-          width: '480px',
-          height: '480px',
-          backgroundColor: '#F472B6',
-          borderRadius: '50%',
-          filter: 'blur(160px)',
-          opacity: 0.18,
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          maxWidth: '1000px',
-          margin: '0 auto',
-          width: '100%',
-        }}
-      >
-        {/* Eyebrow */}
-        <p
-          style={{
-            fontSize: '11px',
-            letterSpacing: '4px',
-            color: '#8A8A82',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            marginBottom: '32px',
-            fontFamily: 'monospace',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          <span style={{ color: '#F472B6' }}>✦</span> {eyebrow}
-        </p>
-
-        {/* Headline */}
-        <h1
-          style={{
-            fontSize: 'clamp(38px, 6.5vw, 78px)',
-            fontWeight: '300',
-            lineHeight: '1.1',
-            color: '#111111',
-            margin: '0 0 28px 0',
-            letterSpacing: '-2px',
-            fontFamily: '"Times New Roman", Times, Georgia, serif',
-          }}
-        >
-          I grow brands<br />
-          on social, <span style={{ fontStyle: 'italic', color: '#F472B6' }}>with strategy,</span><br />
-          not just content.
-        </h1>
-
-        {/* Subheadline */}
-        <p
-          style={{
-            fontSize: 'clamp(16px, 1.8vw, 20px)',
-            color: '#555752',
-            fontWeight: '300',
-            lineHeight: 1.6,
-            margin: '0 0 48px 0',
-            maxWidth: '580px',
-            fontFamily: '"Times New Roman", Times, Georgia, serif',
-          }}
-        >
-          {intro}
-        </p>
-
-        {/* CTAs */}
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '72px' }}>
-          <a
-            href="#work"
-            onMouseEnter={() => setPrimaryHover(true)}
-            onMouseLeave={() => setPrimaryHover(false)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              textDecoration: 'none',
-              padding: '16px 32px',
-              borderRadius: '30px',
-              fontSize: '13px',
-              fontWeight: '500',
-              letterSpacing: '0.3px',
-              transition: 'all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1)',
-              backgroundColor: primaryHover ? '#F472B6' : '#111111',
-              color: primaryHover ? '#111111' : '#FFFFFF',
-              border: primaryHover ? '1px solid #F472B6' : '1px solid #111111',
-              transform: primaryHover ? 'translateY(-1px)' : 'none',
-            }}
-          >
-            See My Work
-          </a>
-
-          <a
-            href="#contact"
-            onMouseEnter={() => setSecondaryHover(true)}
-            onMouseLeave={() => setSecondaryHover(false)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              textDecoration: 'none',
-              padding: '16px 32px',
-              borderRadius: '30px',
-              fontSize: '13px',
-              fontWeight: '400',
-              letterSpacing: '0.2px',
-              transition: 'all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1)',
-              backgroundColor: 'transparent',
-              color: secondaryHover ? '#F472B6' : '#111111',
-              border: secondaryHover ? '1px solid #F472B6' : '1px solid #E2E2DA',
-              transform: secondaryHover ? 'translateY(-1px)' : 'none',
-            }}
-          >
-            Get In Touch
-          </a>
-        </div>
-
-        {/* CLIENT BELT TRACK */}
-        <div style={{ marginTop: '56px', position: 'relative' }}>
-          <p
-            style={{
-              fontSize: '10px',
-              letterSpacing: '3px',
-              color: '#ADADAD',
-              textTransform: 'uppercase',
-              fontFamily: 'monospace',
-              marginBottom: '32px',
-            }}
-          >
-            Brands I've worked with
-          </p>
-
-          <div 
-            style={{ 
-              position: 'relative', 
-              overflow: 'hidden',
-              width: '100vw',
-              marginLeft: 'calc(-50vw + 50%)',
-              left: 0,
-            }}
-          >
-            {/* Fade Edges Overlays */}
-            <div
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                width: '150px',
-                height: '100%',
-                background: 'linear-gradient(to right, #FAF9F6 60%, transparent)',
-                zIndex: 2,
-                pointerEvents: 'none',
-              }}
-            />
-
-            <div
-              style={{
-                position: 'absolute',
-                right: 0,
-                top: 0,
-                width: '150px',
-                height: '100%',
-                background: 'linear-gradient(to left, #FAF9F6 60%, transparent)',
-                zIndex: 2,
-                pointerEvents: 'none',
-              }}
-            />
-
-            {/* Marquee Track with Wide Spacing */}
-            <div
-              className="marquee"
-              style={{
-                display: 'flex',
-                gap: '112px',
-                minWidth: '100%', 
-                width: 'max-content',
-                animation: 'scroll 38s linear infinite', 
-                alignItems: 'center',
-                padding: '10px 0',
-              }}
-            >
-              {[...clients, ...clients].map((src, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: '60px',
-                    height: '60px', 
-                    flex: '0 0 auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                >
-                  <img
-                    src={src}
-                    alt={`client logo ${i % clients.length + 1}`}
-                    loading="lazy"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      mixBlendMode: 'multiply', 
-                      opacity: 0.75,
-                      clipPath: 'circle(50% at 50% 50%)',
-                      WebkitClipPath: 'circle(50% at 50% 50%)',
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-
-            <style>{`
-              .marquee:hover {
-                animation-play-state: paused;
-              }
-
-              @keyframes scroll {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(calc(-50% - 56px)); }
-              }
-            `}</style>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+import React from 'react';
+import {getContent} from '../content/content';
+export default function Hero(){
+ const {eyebrow,intro,logos=[]}=getContent('hero');
+ return <section id="hero" className="hero-editorial">
+ <style>{`
+ .hero-editorial{position:relative;overflow:hidden;min-height:690px;padding:clamp(88px,12vw,150px) clamp(24px,8vw,120px) 74px;background:radial-gradient(ellipse at 84% 22%,#f9dce8 0,transparent 32%),linear-gradient(130deg,#fffaf5 0%,#fff1f6 58%,#f3edfb 100%)}
+ .hero-editorial:before{content:'✳';position:absolute;right:9%;top:12%;font-size:clamp(90px,16vw,220px);color:#edb7ce;opacity:.42;transform:rotate(14deg)}
+ .hero-inner{position:relative;z-index:1;max-width:1280px;margin:auto}
+ .hero-kicker{display:flex;align-items:center;gap:12px;color:#9a7186;font-size:10px;letter-spacing:2.4px;text-transform:uppercase;font-weight:700}
+ .hero-kicker:before{content:'';width:34px;height:1px;background:#d987aa}
+ .hero-title{font:400 clamp(58px,10vw,140px)/.94 var(--serif);letter-spacing:-4px;max-width:1050px;margin:32px 0 26px;color:#30242e}
+ .hero-title em{color:#d66d9b;font-weight:400}
+ .hero-copy{font-size:clamp(14px,1.5vw,18px);line-height:1.85;color:#765f6c;max-width:560px}
+ .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin:34px 0 76px}.hero-cta a{padding:14px 22px;border-radius:999px;text-decoration:none;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+ .hero-cta .primary{background:#30242e;color:white;box-shadow:0 12px 28px #56334a22}.hero-cta .secondary{border:1px solid #dcb7c9;color:#76576a;background:#fff9}
+ .hero-foot{display:flex;align-items:center;justify-content:space-between;gap:25px;flex-wrap:wrap;border-top:1px solid #e8cfdb;padding-top:22px}
+ .hero-brands{display:flex;align-items:center;gap:clamp(14px,3vw,34px);flex-wrap:wrap}.hero-brands img{width:44px;height:44px;object-fit:contain;filter:grayscale(1);opacity:.72}
+ .hero-foot-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#a18392}
+ @media(max-width:600px){.hero-title{letter-spacing:-2px}.hero-editorial:before{right:-5%;top:9%}.hero-cta{margin-bottom:52px}}
+ `}</style>
+ <div className="hero-inner">
+  <div className="hero-kicker">{eyebrow||'Digital marketing strategist · Creative thinker · Dubai'}</div>
+  <h1 className="hero-title">Making brands<br/>feel <em>impossible</em><br/>to ignore<span style={{color:'#e5a0bd'}}>.</span></h1>
+  <p className="hero-copy">{intro||'Strategy-led storytelling, social-first campaigns and creative direction that turn ideas into momentum.'}</p>
+  <div className="hero-cta"><a className="primary" href="#work">Explore selected work ↗</a><a className="secondary" href="#contact">Let’s create something</a></div>
+  <div className="hero-foot"><span className="hero-foot-label">A few lovely brands along the way</span><div className="hero-brands">{logos.slice(0,7).map((l,i)=>l.image?<img key={i} src={l.image} alt="Brand mark" loading="lazy"/>:null)}</div><span className="hero-foot-label">Strategy / Story / Impact</span></div>
+ </div><span aria-hidden="true" style={{position:'absolute',right:'6%',bottom:'9%',fontSize:36,transform:'rotate(-12deg)'}}>🎀</span>
+ </section>
 }
