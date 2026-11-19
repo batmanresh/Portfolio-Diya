@@ -1,80 +1,33 @@
 import React from 'react';
 import {getContent} from '../content/content';
-
-const isVideo = src => /\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0]) || String(src||'').includes('/video/upload/');
-
-function ShowcaseMedia({item}) {
-  const src = item.src || item.preview || item.url;
-  const video = item.type === 'video' || (item.type !== 'image' && isVideo(src));
-  return video
-    ? <video src={src} poster={item.thumbnail || undefined} muted loop autoPlay playsInline preload="metadata" aria-label={item.title || 'Featured campaign film'} />
-    : <img src={item.thumbnail || src} alt={item.title || 'Featured creative work'} loading="lazy" />;
-}
-
-export default function WorkCollage() {
-  const {items=[]} = getContent('showcase');
-  const pieces = items.filter(item => item && (item.src || item.preview || item.url)).slice(0,5);
-
-  return (
-    <section id="visual-lookbook" className="lookbook">
-      <style>{`
-        .lookbook{position:relative;overflow:hidden;background:#fff5f8;color:#30232d;padding:clamp(72px,9vw,132px) clamp(20px,6.5vw,100px) clamp(82px,10vw,145px);border-top:1px solid #dfd5ce}
-        .lookbook:before{content:'✿';position:absolute;right:-.025em;top:8%;font:italic clamp(150px,28vw,420px)/.8 var(--serif);letter-spacing:-.09em;color:#e9dfd8;pointer-events:none}
-        .lookbook-inner{position:relative;z-index:1;max-width:1440px;margin:auto}
-        .lookbook-topline{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-bottom:15px;border-bottom:1px solid #bfb3aa;font:9px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#756a65}
-        .lookbook-heading{display:grid;grid-template-columns:1fr minmax(180px,300px);gap:30px;align-items:end;padding:38px 0 48px}
-        .lookbook-kicker{font:10px var(--sans);letter-spacing:2.5px;text-transform:uppercase;color:#a65e77}
-        .lookbook-heading h2{font:600 clamp(42px,7vw,92px)/1.02 var(--sans);letter-spacing:-.065em;margin:18px 0 0;max-width:900px}
-        .lookbook-heading h2 em{font-weight:600;color:#c45f91}
-        .lookbook-intro{font:500 15px/1.75 var(--sans);color:#71635f;margin:0 0 5px}
-        .lookbook-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:clamp(210px,29vw,410px) clamp(170px,21vw,300px);gap:clamp(10px,1.5vw,22px)}
-        .lookbook-piece{position:relative;min-width:0;overflow:hidden;background:#f0dce8;color:#fff}
-        .lookbook-piece:nth-child(1){grid-column:1/8;grid-row:1/3}
-        .lookbook-piece:nth-child(2){grid-column:8/13;grid-row:1}
-        .lookbook-piece:nth-child(3){grid-column:8/13;grid-row:2}
-        .lookbook-piece:nth-child(4){grid-column:1/7;grid-row:3}
-        .lookbook-piece:nth-child(5){grid-column:7/13;grid-row:3}
-        .lookbook-grid{grid-template-rows:clamp(210px,29vw,410px) clamp(170px,21vw,300px) clamp(170px,20vw,280px)}
-        .lookbook-piece img,.lookbook-piece video{width:100%;height:100%;display:block;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);filter:saturate(1.08)}
-        .lookbook-piece:hover img,.lookbook-piece:hover video{transform:scale(1.035)}
-        .lookbook-piece:after{content:'';position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(22,16,17,.7));pointer-events:none}
-        .lookbook-piece-meta{position:absolute;z-index:2;left:clamp(14px,2vw,28px);right:16px;bottom:clamp(14px,2vw,25px)}
-        .lookbook-piece-meta small{display:block;font:9px var(--sans);letter-spacing:1.8px;text-transform:uppercase;color:#f2d9dc;margin-bottom:7px}
-        .lookbook-piece-meta strong{font:400 clamp(18px,2.2vw,31px)/1.05 var(--serif);letter-spacing:-.02em}
-        .lookbook-piece:first-child .lookbook-piece-meta strong{font-size:clamp(28px,4vw,58px);max-width:520px;display:block}
-        .lookbook-piece-number{position:absolute;z-index:2;top:15px;left:17px;font:9px var(--sans);letter-spacing:1.8px;color:#fff}
-        .lookbook-empty{grid-column:1/-1;grid-row:1/4;min-height:400px;display:grid;place-items:center;border:1px dashed #b9aaa1;color:#766963;font:italic 22px var(--serif)}
-        .lookbook-bottom{display:flex;justify-content:space-between;gap:20px;padding-top:18px;margin-top:18px;border-top:1px solid #bfb3aa;color:#776a64;font:9px var(--sans);letter-spacing:1.7px;text-transform:uppercase}
-        @media(max-width:760px){
-          .lookbook-heading{grid-template-columns:1fr;gap:16px;padding:30px 0}
-          .lookbook-intro{max-width:330px}
-          .lookbook-grid{grid-template-columns:1fr 1fr;grid-template-rows:320px 190px 190px 190px}
-          .lookbook-piece:nth-child(1){grid-column:1/3;grid-row:1}
-          .lookbook-piece:nth-child(2){grid-column:1;grid-row:2}
-          .lookbook-piece:nth-child(3){grid-column:2;grid-row:2}
-          .lookbook-piece:nth-child(4){grid-column:1/3;grid-row:3}
-          .lookbook-piece:nth-child(5){grid-column:1/3;grid-row:4}
-          .lookbook-piece:first-child .lookbook-piece-meta strong{font-size:36px}
-        }
-        @media(max-width:460px){.lookbook-grid{grid-template-rows:280px 175px 175px 175px 175px}.lookbook-piece:nth-child(4),.lookbook-piece:nth-child(5){grid-column:1/3}.lookbook-bottom{font-size:8px}}
-      `}</style>
-      <div className="lookbook-inner">
-        <div className="lookbook-topline"><span>Diya Shrestha / Visual journal</span><span>Selected frames · 001—005</span></div>
-        <div className="lookbook-heading">
-          <div><div className="lookbook-kicker">The visual edit / A collection in motion</div><h2>In the <em>frame.</em></h2></div>
-          <p className="lookbook-intro">A visual diary of ideas taking shape — campaign worlds, moving images, little details and the feeling behind the work.</p>
-        </div>
-        <div className="lookbook-grid">
-          {pieces.length ? pieces.map((item,i) => (
-            <article className="lookbook-piece" key={item.id || i}>
-              <ShowcaseMedia item={item} />
-              <span className="lookbook-piece-number">FRAME / {String(i+1).padStart(2,'0')}</span>
-              <div className="lookbook-piece-meta"><small>{item.category || 'Creative direction'}</small><strong>{item.title || 'A moment in the making'}</strong></div>
-            </article>
-          )) : <div className="lookbook-empty">The next visual story is being prepared.</div>}
-        </div>
-        <div className="lookbook-bottom"><span>Image, movement &amp; meaning</span><span>Scroll to explore the work ↓</span></div>
-      </div>
-    </section>
-  );
+const isVideo=src=>/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/');
+function ShowcaseMedia({item}){const src=item.src||item.preview||item.url,video=item.type==='video'||(item.type!=='image'&&isVideo(src));return video?<video src={src} poster={item.thumbnail||undefined} muted loop autoPlay playsInline preload="metadata" aria-label={item.title||'Featured campaign film'}/>:<img src={item.thumbnail||src} alt={item.title||'Featured creative work'} loading="lazy"/>}
+export default function WorkCollage(){
+ const {items=[]}=getContent('showcase'),pieces=items.filter(x=>x&&(x.src||x.preview||x.url)).slice(0,8);
+ return <section id="visual-lookbook" className="showcase-play"><style>{\`
+ .showcase-play{--hot:#ff2993;position:relative;overflow:hidden;background:#ff2993;color:#fff;padding:clamp(70px,9vw,125px) clamp(18px,6vw,88px);isolation:isolate}
+ .showcase-play:before{content:'✳';position:absolute;z-index:-1;right:-.05em;top:-.2em;font:900 clamp(220px,43vw,620px)/1 var(--display);color:#ff75b9;opacity:.48;animation:showcaseSpin 35s linear infinite}
+ .showcase-inner{max-width:1440px;margin:auto}.showcase-top{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #ffffff70;padding-bottom:14px;font:800 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase}
+ .showcase-title-row{display:flex;align-items:end;justify-content:space-between;gap:30px;padding:38px 0 42px}.showcase-kicker{font:800 10px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#ffe1ef}
+ .showcase-title{font:900 clamp(58px,10vw,140px)/.82 var(--display);letter-spacing:-.09em;margin:14px 0 0;max-width:900px}.showcase-title em{font-style:normal;color:#291522;text-shadow:3px 3px 0 #ffb5d7}
+ .showcase-intro{font:600 14px/1.7 var(--sans);color:#fff0f7;max-width:270px;margin:0 0 5px}
+ .showcase-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:clamp(100px,12vw,170px);gap:clamp(10px,1.5vw,20px);align-items:stretch}
+ .showcase-tile{position:relative;min-width:0;overflow:hidden;border-radius:20px;background:#ffd1e7;color:#291522;box-shadow:7px 7px 0 #a91662;isolation:isolate;transform:rotate(var(--tilt,0deg));transition:transform .35s,box-shadow .35s}
+ .showcase-tile:nth-child(6n+1){grid-column:span 7;grid-row:span 3;--tilt:-1deg}.showcase-tile:nth-child(6n+2){grid-column:span 5;grid-row:span 2;--tilt:1deg}.showcase-tile:nth-child(6n+3){grid-column:span 5;grid-row:span 2;--tilt:-.5deg}.showcase-tile:nth-child(6n+4){grid-column:span 4;grid-row:span 2;--tilt:1deg}.showcase-tile:nth-child(6n+5){grid-column:span 4;grid-row:span 2;--tilt:-1deg}.showcase-tile:nth-child(6n){grid-column:span 4;grid-row:span 2;--tilt:.5deg}
+ .showcase-tile:hover{transform:translateY(-7px) rotate(0) scale(1.01);box-shadow:11px 13px 0 #a91662;z-index:2}
+ .showcase-tile img,.showcase-tile video{width:100%;height:100%;display:block;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1);filter:saturate(1.12)}.showcase-tile:hover img,.showcase-tile:hover video{transform:scale(1.06)}
+ .showcase-tile:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#291522a8);pointer-events:none}
+ .showcase-tile-meta{position:absolute;z-index:2;left:18px;right:18px;bottom:17px}.showcase-tile-meta small{display:inline-block;background:#ff2993;color:white;border-radius:20px;padding:6px 9px;font:800 8px var(--sans);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}.showcase-tile-meta strong{display:block;font:800 clamp(16px,2.2vw,27px)/1.05 var(--display);letter-spacing:-.03em;color:white}
+ .showcase-tile-index{position:absolute;z-index:2;top:14px;left:14px;background:#fff8fc;color:#291522;border-radius:30px;padding:8px 11px;font:900 8px var(--sans);letter-spacing:1px}
+ .showcase-empty{grid-column:1/-1;min-height:320px;display:grid;place-items:center;border:2px dashed #ffffff90;border-radius:22px;font:800 20px var(--sans);color:white}
+ .showcase-bottom{display:flex;justify-content:space-between;gap:16px;margin-top:25px;padding-top:16px;border-top:1px solid #ffffff70;font:800 9px var(--sans);letter-spacing:1.3px;text-transform:uppercase;color:#ffe1ef}
+ @keyframes showcaseSpin{to{transform:rotate(360deg)}}
+ @media(max-width:760px){.showcase-title-row{display:block}.showcase-intro{margin-top:20px}.showcase-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(95px,18vw,145px)}.showcase-tile:nth-child(n){grid-column:span 3;grid-row:span 2;transform:none}.showcase-tile:nth-child(3n+1){grid-column:span 6;grid-row:span 3}.showcase-tile-meta{left:12px;right:12px;bottom:12px}.showcase-bottom{font-size:8px}}
+ @media(max-width:460px){.showcase-grid{grid-auto-rows:100px}.showcase-tile:nth-child(n){grid-column:span 3;grid-row:span 2}.showcase-tile:nth-child(3n+1){grid-column:span 6;grid-row:span 3}.showcase-tile-meta strong{font-size:15px}.showcase-bottom span:last-child{display:none}}
+ @media(prefers-reduced-motion:reduce){.showcase-play:before{animation:none}.showcase-tile{transition:none}}
+ \`}</style><div className="showcase-inner">
+ <div className="showcase-top"><span>01 / THE VISUAL PLAYGROUND</span><span>Things I made · things I love</span></div>
+ <div className="showcase-title-row"><div><div className="showcase-kicker">A little peek into my creative brain ✳</div><h2 className="showcase-title">Good ideas<br/>look <em>good.</em></h2></div><p className="showcase-intro">A living moodboard of campaigns, films, visuals and little moments. All the colour, craft and chaos that make a brand feel alive.</p></div>
+ <div className="showcase-grid">{pieces.length?pieces.map((item,i)=><article className="showcase-tile" key={item.id||i}><ShowcaseMedia item={item}/><span className="showcase-tile-index">FRAME {String(i+1).padStart(2,'0')}</span><div className="showcase-tile-meta"><small>{item.category||'Creative direction'}</small><strong>{item.title||'A moment in the making'}</strong></div></article>):<div className="showcase-empty">The next visual story is loading ✳</div>}</div>
+ <div className="showcase-bottom"><span>Made with curiosity &amp; a little extra pink</span><span>Scroll for the project files ↓</span></div></div></section>;
 }
