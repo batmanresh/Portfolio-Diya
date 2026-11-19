@@ -1,24 +1,25 @@
-// Simple content studio schema. Each section maps directly to one site_content row.
+// Content studio fields for the editorial portfolio.
 const mediaFields=[
- {key:'caption',label:'Title / caption',type:'text'},
+ {key:'caption',label:'Caption',type:'text'},
  {key:'preview',label:'Photo or video',type:'media'},
  {key:'thumbnail',label:'Custom thumbnail / video poster (optional)',type:'image'},
  {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
- {key:'orientation',label:'Layout',type:'select',options:['landscape','portrait','square']},
+ {key:'orientation',label:'Image shape',type:'select',options:['landscape','portrait','square']},
  {key:'tags',label:'Categories (one per line)',type:'lines'},
- {key:'href',label:'Original post / project link (optional)',type:'text'},
+ {key:'href',label:'Published link (optional)',type:'text'},
 ];
 const sections=[
- {key:'showcase',title:'Featured showcase',description:'Add the photos and films that appear in the visual diary. Upload files, add a title, and drag items into the order you want.',fields:[
-  {key:'items',label:'Showcase pieces',type:'list',itemName:'piece',titleKey:'title',fields:[
-   {key:'title',label:'Title',type:'text'},
-   {key:'category',label:'Small category label',type:'text'},
+ {key:'showcase',title:'Featured showcase',description:'This is your visual journal. Upload a mix of photographs and films, add a short caption, and arrange the pieces in the order you want them seen.',fields:[
+  {key:'items',label:'Editorial frames',type:'list',itemName:'frame',titleKey:'title',fields:[
+   {key:'title',label:'Editorial caption',type:'text'},
+   {key:'category',label:'Credit / category line',type:'text'},
    {key:'src',label:'Photo or video',type:'media'},
    {key:'thumbnail',label:'Custom thumbnail / video poster',type:'image'},
    {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
+   {key:'shape',label:'Preferred crop',type:'select',options:['wide','portrait','square']},
   ]}
  ]},
- {key:'hero',title:'Homepage intro',description:'Your opening statement and brand marks.',fields:[
+ {key:'hero',title:'Cover / homepage',description:'The opening statement and brand marks.',fields:[
   {key:'eyebrow',label:'Small intro line',type:'text'},
   {key:'intro',label:'Intro paragraph',type:'textarea'},
   {key:'logos',label:'Brand logos',type:'list',itemName:'logo',fields:[{key:'image',label:'Logo image',type:'image'}]}
@@ -31,17 +32,20 @@ const sections=[
    {key:'label',label:'Group title',type:'text'},{key:'items',label:'Skills (one per line)',type:'lines'}
   ]}
  ]},
- {key:'work',title:'Selected work',description:'Each project becomes a card. Open a project to edit its story and its photo / video gallery. Keep categories consistent with the media tags.',fields:[
+ {key:'work',title:'Selected work',description:'Each project is an editorial case study. Add the cover, the story, your creative process and the photos or films that bring the work to life.',fields:[
   {key:'industries',label:'Projects',type:'list',itemName:'project',titleKey:'label',fields:[
-   {key:'label',label:'Project / client name',type:'text'},
-   {key:'headline',label:'Short creative headline',type:'text'},
+   {key:'label',label:'Project title',type:'text'},
+   {key:'headline',label:'Editorial headline',type:'text'},
    {key:'client',label:'Client / brand',type:'text'},
    {key:'role',label:'Your role',type:'text'},
-   {key:'cover',label:'Project cover image',type:'image'},
-   {key:'summary',label:'The brief / story',type:'textarea'},
+   {key:'cover',label:'Main project cover image',type:'image'},
+   {key:'summary',label:'The brief / project story',type:'textarea'},
+   {key:'objective',label:'The objective (optional)',type:'textarea'},
+   {key:'storyboard',label:'Creative direction / storyboard notes',type:'textarea'},
+   {key:'pullQuote',label:'A short pull quote (optional)',type:'text'},
    {key:'result',label:'Results / impact',type:'textarea'},
    {key:'subcats',label:'Project categories (one per line)',type:'lines'},
-   {key:'videos',label:'Project gallery · photos & videos',type:'list',itemName:'gallery item',titleKey:'caption',fields:mediaFields}
+   {key:'videos',label:'Photo & video gallery',type:'list',itemName:'creative asset',titleKey:'caption',fields:mediaFields}
   ]}
  ]},
  {key:'results',title:'Results & experience',description:'Proof, testimonials, work history and CV.',fields:[
