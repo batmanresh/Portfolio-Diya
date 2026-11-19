@@ -111,7 +111,7 @@ export default function Results() {
   const { linkedin } = getContent('contact');
 
   return (
-    <section id="resume" style={{ backgroundColor: '#fff2f6', color: '#352733', margin: 0, padding: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+    <section id="resume" style={{ backgroundColor: '#f8f5f0', color: '#241d20', margin: 0, padding: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
       <style>{styles}</style>
 
       {/* METRICS SECTION */}
@@ -123,7 +123,7 @@ export default function Results() {
             </span>
             <h2 style={{ fontSize: 'clamp(34px, 4vw, 48px)', fontWeight: '300', lineHeight: '1.15', fontFamily: '"Times New Roman", Times, Georgia, serif', letterSpacing: '-1px', color: '#FFFFFF', margin: 0 }}>
               Work that moved<br />
-              <span style={{ color: '#a98c9b', fontStyle: 'italic' }}>the needle.</span>
+              <span style={{ color: '#c3a3a6', fontStyle: 'italic' }}>the needle.</span>
             </h2>
           </div>
 
@@ -133,7 +133,7 @@ export default function Results() {
                 <div style={{ fontSize: 'clamp(40px, 5vw, 58px)', color: '#FFFFFF', fontWeight: '300', letterSpacing: '-1.5px', fontFamily: '"Times New Roman", Times, Georgia, serif', lineHeight: 1 }}>
                   <AnimatedCounter targetValue={m.value} />
                 </div>
-                <p style={{ fontSize: '13.5px', color: '#a98c9b', marginTop: '12px', marginBottom: '6px', fontWeight: '400', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '13.5px', color: '#c3a3a6', marginTop: '12px', marginBottom: '6px', fontWeight: '400', lineHeight: 1.5 }}>
                   {m.label}
                 </p>
                 <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#806f7b', letterSpacing: '1px', textTransform: 'uppercase' }}>
@@ -146,12 +146,12 @@ export default function Results() {
       </div>
 
       {/* TESTIMONIALS SECTION */}
-      <div className="section-padding" style={{ backgroundColor: '#fffaf5', padding: '120px 8%', borderTop: '1px solid #efdce5' }}>
+      <div className="section-padding" style={{ backgroundColor: '#fffaf5', padding: '120px 8%', borderTop: '1px solid #d9d0c8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: '#d978a3', marginBottom: '20px', display: 'block', fontWeight: '600', fontFamily: 'monospace' }}>
+          <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: '#a45e77', marginBottom: '20px', display: 'block', fontWeight: '600', fontFamily: 'monospace' }}>
             ✦ Professional Endorsements
           </span>
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: '300', fontFamily: '"Times New Roman", Times, Georgia, serif', letterSpacing: '-0.5px', color: '#352733', margin: '0 0 56px 0' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: '300', fontFamily: '"Times New Roman", Times, Georgia, serif', letterSpacing: '-0.5px', color: '#241d20', margin: '0 0 56px 0' }}>
             From the strategists and leaders who worked with me.
           </h2>
 
@@ -228,7 +228,7 @@ export default function Results() {
                       }}
                     />
                     <div>
-                      <div style={{ fontSize: '13.5px', fontWeight: '600', color: '#352733' }}>{t.name}</div>
+                      <div style={{ fontSize: '13.5px', fontWeight: '600', color: '#241d20' }}>{t.name}</div>
                       <div style={{ fontSize: '12px', color: '#806f7b', lineHeight: 1.4, marginTop: '2px' }}>{t.title}</div>
                       <div style={{ fontSize: '9px', color: '#0077B5', marginTop: '4px', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '500' }}>{t.relation}</div>
                     </div>
@@ -247,12 +247,12 @@ export default function Results() {
 
             {/* Left sticky column */}
             <div className="experience-left" style={{ position: 'sticky', top: '140px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: 'fit-content' }}>
-              <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: '#d978a3', marginBottom: '24px', fontWeight: '600', fontFamily: 'monospace' }}>
+              <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: '#a45e77', marginBottom: '24px', fontWeight: '600', fontFamily: 'monospace' }}>
                 ✦ Experience
               </span>
-              <h2 style={{ fontSize: 'clamp(28px, 3.2vw, 38px)', fontWeight: '300', lineHeight: '1.25', fontFamily: '"Times New Roman", Times, Georgia, serif', letterSpacing: '-0.5px', color: '#352733', margin: '0 0 20px 0' }}>
+              <h2 style={{ fontSize: 'clamp(28px, 3.2vw, 38px)', fontWeight: '300', lineHeight: '1.25', fontFamily: '"Times New Roman", Times, Georgia, serif', letterSpacing: '-0.5px', color: '#241d20', margin: '0 0 20px 0' }}>
                 Where I've<br />
-                <span style={{ color: '#d978a3', fontStyle: 'italic' }}>built things.</span>
+                <span style={{ color: '#a45e77', fontStyle: 'italic' }}>built things.</span>
               </h2>
               <p style={{ fontSize: '14px', color: '#555552', lineHeight: 1.6, margin: '0 0 40px 0', fontWeight: '400', maxWidth: '280px' }}>
                 Full-stack marketing — strategy, creative, and execution in one person.
@@ -274,9 +274,9 @@ export default function Results() {
                   fontSize: '12.5px',
                   fontWeight: '500',
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  backgroundColor: btnHover ? '#d978a3' : 'transparent',
-                  color: btnHover ? '#FFFFFF' : '#352733',
-                  border: btnHover ? '1px solid #d978a3' : '1px solid #352733',
+                  backgroundColor: btnHover ? '#a45e77' : 'transparent',
+                  color: btnHover ? '#FFFFFF' : '#241d20',
+                  border: btnHover ? '1px solid #a45e77' : '1px solid #241d20',
                   transform: btnHover ? 'translateY(-2px)' : 'none',
                   whiteSpace: 'nowrap'
                 }}
@@ -337,7 +337,7 @@ export default function Results() {
 
                       {/* Content */}
                       <div style={{ paddingLeft: '6px' }}>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: 'clamp(15px, 2vw, 18px)', fontWeight: '400', lineHeight: '1.25', fontFamily: '"Times New Roman", Times, Georgia, serif', color: '#352733', letterSpacing: '-0.1px' }}>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: 'clamp(15px, 2vw, 18px)', fontWeight: '400', lineHeight: '1.25', fontFamily: '"Times New Roman", Times, Georgia, serif', color: '#241d20', letterSpacing: '-0.1px' }}>
                           {exp.role}
                         </h4>
                         <div style={{ fontFamily: 'monospace', fontSize: '10.5px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#6A6A62', marginBottom: '14px', fontWeight: '500' }}>
