@@ -3,7 +3,16 @@
 // (or if the database can't be reached). Once you save a section in /admin,
 // the saved version is used instead.
 
-const defaults = {
+const defaults = {\n  showcase: {
+    items: [
+      { id:'show-01', title:'Ai-cha · Campaign film', category:'Brand world / F&B', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type:'video', shape:'wide' },
+      { id:'show-02', title:'Product story / Chocolate', category:'Product storytelling', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4', type:'video', shape:'portrait' },
+      { id:'show-03', title:'Mango campaign cut', category:'Social-first creative', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4', type:'video', shape:'square' },
+      { id:'show-04', title:'Campus stories', category:'Education / Community', src:'/assets/asset_04.mp4', type:'video', shape:'wide' },
+      { id:'show-05', title:'Visual storytelling', category:'Creative direction', src:'/assets/asset_08.mp4', type:'video', shape:'portrait' },
+    ],
+  },
+
   hero: {
     eyebrow: 'Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE',
     intro: "From brand positioning to TikTok growth to full GTM execution, I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.",
