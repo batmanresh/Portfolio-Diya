@@ -3,14 +3,14 @@ import {getContent} from '../content/content';
 
 const isVideo = (src,type) => type === 'video' || (type !== 'image' && (/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0]) || String(src||'').includes('/video/upload/')));
 
-function Media({item,variant='tile'}) {
+function Media({item,variant='gallery'}) {
   const src = item.src || item.preview || item.url;
   const video = isVideo(src,item.type);
   return <div className={`case-media case-media-${variant}`}>
     {video
-      ? <video src={src} poster={item.thumbnail || undefined} controls={variant==='feature'} muted={variant!=='feature'} loop={variant!=='feature'} autoPlay={variant!=='feature'} playsInline preload="metadata" />
-      : <img src={item.thumbnail || src} alt={item.caption || item.title || 'Project creative'} loading="lazy" />}
-    {video && variant!=='feature' && <span className="case-film-label">FILM ↗</span>}
+      ? <video src={src} poster={item.thumbnail || undefined} controls muted playsInline preload="metadata" />
+      : <img src={src} alt={item.caption || item.title || 'Project creative'} loading="lazy" />}
+    {video && <span className="case-film-label">PLAY FILM ↗</span>}
   </div>;
 }
 
@@ -43,8 +43,8 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
       .case-topline{display:flex;justify-content:space-between;gap:15px;padding:17px 0;border-bottom:1px solid #cfc4bb;font:9px var(--sans);letter-spacing:1.6px;text-transform:uppercase;color:#766b64}
       .case-intro{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:30px;align-items:end;padding:clamp(48px,8vw,105px) 0 35px}
       .case-eyebrow{font:9px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#a45e77}
-      .case-intro h1{font:400 clamp(58px,11vw,150px)/.82 var(--serif);letter-spacing:-.07em;margin:17px 0 22px;max-width:1000px}
-      .case-intro-deck{font:italic clamp(18px,2.1vw,27px)/1.35 var(--serif);color:#8c5c6d;max-width:780px;margin:0}
+      .case-intro h1{font:600 clamp(42px,7vw,92px)/.98 var(--sans);letter-spacing:-.055em;margin:17px 0 22px;max-width:1000px;color:#30232d}
+      .case-intro-deck{font:500 clamp(17px,1.8vw,22px)/1.5 var(--sans);color:#87536e;max-width:780px;margin:0}
       .case-facts{display:grid;gap:18px;padding-bottom:6px}
       .case-fact{border-top:1px solid #cfc4bb;padding-top:9px}
       .case-fact small{display:block;font:8px var(--sans);letter-spacing:1.7px;text-transform:uppercase;color:#a58f85;margin-bottom:5px}
@@ -54,17 +54,17 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
       .case-hero-folio{position:absolute;right:20px;bottom:18px;background:#f4f0ea;padding:10px 13px;font:9px var(--sans);letter-spacing:1.5px}
       .case-brief{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;padding:clamp(55px,8vw,105px) 4%;border-bottom:1px solid #cfc4bb}
       .case-section-label{font:9px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#a45e77}
-      .case-brief h2,.case-process h2,.case-gallery-heading h2{font:400 clamp(34px,5vw,65px)/.98 var(--serif);letter-spacing:-.045em;margin:13px 0}
+      .case-brief h2,.case-process h2,.case-gallery-heading h2{font:600 clamp(30px,4.2vw,54px)/1.08 var(--sans);letter-spacing:-.045em;margin:13px 0;color:#30232d}
       .case-brief-copy{font:16px/1.8 var(--sans);color:#655a54;max-width:650px;margin:0}
-      .case-brief-pull{font:italic clamp(23px,3.2vw,40px)/1.25 var(--serif);color:#9c6276;margin:28px 0 0;max-width:680px}
+      .case-brief-pull{font:italic clamp(21px,2.8vw,34px)/1.3 var(--serif);color:#a34f7a;margin:28px 0 0;max-width:680px}
       .case-process{padding:clamp(55px,8vw,100px) 4%;border-bottom:1px solid #cfc4bb}
       .case-process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:34px;border-top:1px solid #cfc4bb}
       .case-process-step{padding:17px 18px 10px 0;border-right:1px solid #cfc4bb;min-height:125px}
       .case-process-step:not(:first-child){padding-left:18px}
       .case-process-step:last-child{border:0}
       .case-process-step small{font:9px var(--sans);letter-spacing:1.5px;color:#a45e77}
-      .case-process-step strong{display:block;font:italic 22px var(--serif);font-weight:400;margin-top:14px}
-      .case-process-note{font:12px/1.7 var(--sans);color:#74675f;max-width:780px;margin:22px 0 0}
+      .case-process-step strong{display:block;font:600 17px var(--sans);margin-top:14px;color:#493440}
+      .case-process-note{font:14px/1.8 var(--sans);color:#74675f;max-width:780px;margin:22px 0 0}
       .case-gallery{padding:clamp(55px,8vw,100px) 0 30px}
       .case-gallery-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 4% 26px}
       .case-gallery-heading h2{margin-bottom:0}
@@ -72,22 +72,24 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
       .case-filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 4% 26px}
       .case-filters button{border:1px solid #cfc4bb;background:transparent;border-radius:30px;padding:9px 14px;color:#6f625a;font:9px var(--sans);letter-spacing:.7px;cursor:pointer}
       .case-filters button.active{background:#282022;border-color:#282022;color:#fff}
-      .case-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(12px,2vw,26px);align-items:start}
-      .case-gallery-item{grid-column:span 6;min-width:0}
-      .case-gallery-item:nth-child(3n+2){grid-column:span 5;margin-top:55px}
-      .case-gallery-item:nth-child(3n+3){grid-column:span 7}
+      .case-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(18px,2.4vw,34px);align-items:start}
+      .case-gallery-item{min-width:0;align-self:start}
+      .case-gallery-item.is-portrait{grid-column:span 4}
+      .case-gallery-item.is-landscape{grid-column:span 8}
+      .case-gallery-item.is-square{grid-column:span 6}
+      .case-media{position:relative;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#f7eaf0,#eee6f4);aspect-ratio:4/3;border:1px solid rgba(164,94,119,.12)}
       .case-gallery-item.is-portrait .case-media{aspect-ratio:3/4}
       .case-gallery-item.is-landscape .case-media{aspect-ratio:16/10}
       .case-gallery-item.is-square .case-media{aspect-ratio:1}
-      .case-media{position:relative;overflow:hidden;background:#e5dbd4;aspect-ratio:4/3}
-      .case-media img,.case-media video{display:block;width:100%;height:100%;object-fit:cover}
-      .case-film-label{position:absolute;right:12px;top:12px;background:#f4f0ea;padding:8px 10px;font:8px var(--sans);letter-spacing:1px}
-      .case-caption{display:flex;justify-content:space-between;gap:14px;padding:12px 1px 0;border-top:1px solid #cfc4bb;margin-top:9px}
-      .case-caption strong{font:italic 17px var(--serif);font-weight:400}
-      .case-caption span{font:8px var(--sans);letter-spacing:1px;text-transform:uppercase;color:#8d7e74;text-align:right}
+      .case-media img,.case-media video{display:block;width:100%;height:100%;object-fit:contain;background:#f7f2f4}
+      .case-media video{object-fit:contain}
+      .case-film-label{position:absolute;right:12px;top:12px;background:#fff8fc;color:#874765;border:1px solid #e6c8d8;border-radius:30px;padding:8px 12px;font:700 8px var(--sans);letter-spacing:1px}
+      .case-caption{display:flex;justify-content:space-between;gap:14px;padding:12px 1px 0;border-top:1px solid #e2cbd8;margin-top:10px}
+      .case-caption strong{font:600 14px/1.4 var(--sans);color:#382a34}
+      .case-caption span{font:9px var(--sans);letter-spacing:.8px;text-transform:uppercase;color:#98788a;text-align:right}
       .case-empty{grid-column:1/-1;padding:70px 20px;text-align:center;font:italic 22px var(--serif);color:#87766e}
-      .case-impact{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;background:#e9dfd8;padding:clamp(35px,6vw,75px);margin-top:70px}
-      .case-impact h2{font:400 clamp(35px,5vw,60px)/.95 var(--serif);margin:12px 0}
+      .case-impact{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;background:linear-gradient(120deg,#f3dce8,#e9e0f4 58%,#f7e9d9);padding:clamp(35px,6vw,75px);margin-top:70px;border-radius:4px}
+      .case-impact h2{font:600 clamp(30px,4vw,50px)/1.05 var(--sans);margin:12px 0;color:#30232d}
       .case-impact p{font:14px/1.8 var(--sans);color:#655a54;margin:0}
       .case-bottom-nav{display:flex;justify-content:space-between;align-items:center;gap:15px;border-top:1px solid #cfc4bb;margin-top:80px;padding-top:22px}
       .case-bottom-nav button{border:0;background:none;padding:10px 0;font:10px var(--sans);letter-spacing:1px;text-transform:uppercase;color:#6d5e57;cursor:pointer}
@@ -98,7 +100,7 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
         .case-process-grid{grid-template-columns:repeat(2,1fr)}
         .case-process-step:nth-child(2){border-right:0}
         .case-process-step:nth-child(3){padding-left:0}
-        .case-gallery-item,.case-gallery-item:nth-child(3n+2),.case-gallery-item:nth-child(3n+3){grid-column:span 6;margin-top:0}
+        .case-gallery-item.is-portrait,.case-gallery-item.is-landscape,.case-gallery-item.is-square{grid-column:span 6}
         .case-impact{grid-template-columns:1fr}
       }
       @media(max-width:480px){
@@ -106,7 +108,7 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
         .case-masthead button{font-size:8px}
         .case-facts{grid-template-columns:1fr 1fr}
         .case-process-grid{grid-template-columns:1fr 1fr}
-        .case-gallery-item,.case-gallery-item:nth-child(3n+2),.case-gallery-item:nth-child(3n+3){grid-column:1/-1}
+        .case-gallery-item.is-portrait,.case-gallery-item.is-landscape,.case-gallery-item.is-square{grid-column:1/-1}
         .case-gallery-heading{align-items:start;flex-direction:column}
         .case-bottom-nav{align-items:flex-start;flex-direction:column}
       }
