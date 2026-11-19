@@ -10,3 +10,26 @@ a{color:inherit}
 img,video{max-width:100%}
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Supporting sections share the new expressive pink studio identity */
+#about{background:#f1e6ff!important;color:#291522!important}
+#about h1,#about h2,#about h3,#about h4,#about strong,#resume h1,#resume h2,#resume h3,#resume h4,#contact h1,#contact h2,#contact h3{font-family:var(--display)!important;font-weight:800!important;letter-spacing:-.045em!important}
+#about p,#resume p,#contact p{font-family:var(--sans)!important}
+#about .skills-grid{border-color:#d4b9ec!important}
+#about .skill-cell{border-color:#d4b9ec!important}
+#resume{background:#fff8fc!important;color:#291522!important}
+#resume .metrics-padding{background:#291522!important;border-color:#ff2993!important}
+#resume .metrics-padding h2{color:#fff!important}
+#resume .metrics-padding [style*="color: rgb(128, 111, 123)"]{color:#ff9acb!important}
+#resume .section-padding{background:#fff0f7!important;border-color:#f3bfda!important}
+#resume .testimonials-grid a{background:#fff8fc!important;border:2px solid #ffb5d7!important;border-radius:20px!important;box-shadow:7px 7px 0 #f8d2e5!important}
+#resume .testimonials-grid a:hover{border-color:#ff2993!important;transform:translateY(-6px) rotate(-.5deg)!important}
+#resume .timeline-line{background:#f0a8cc!important}
+#resume .experience-item{border-color:#efc6dc!important}
+#contact{background:#ffe2f0!important;border-color:#f1b5d3!important;color:#291522!important}
+#contact button,#contact a{border-radius:18px!important}
+#contact button{background:#fff8fc!important;border:2px solid #f2b4d2!important}
+#contact a{background:#fff8fc!important;border:2px solid #f2b4d2!important}
+#contact button:hover,#contact a:hover{border-color:#ff2993!important;box-shadow:7px 7px 0 #ffb5d7!important;transform:translateY(-4px)!important}
+#contact h2 span,#contact h2 em{color:#ff2993!important}
+@media(max-width:600px){#resume .testimonials-grid{grid-template-columns:1fr!important}#resume .experience-grid{grid-template-columns:1fr!important}}
