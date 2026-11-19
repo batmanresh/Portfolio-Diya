@@ -1,25 +1,236 @@
-import React,{useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useState} from 'react';
 import {getContent} from '../content/content';
-const pinks=['#df79a5','#9d83c8','#d89b79','#86a99d','#d58b9b'];
-const looksVideo=(src,type)=>type==='video'||(type!=='image'&&(/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test((src||'').split('?')[0])||String(src||'').includes('/video/upload/')));
-function ProjectMedia({item,large=false}){const src=item.src||item.preview||item.url;const video=looksVideo(src,item.type);return <div className={large?'project-media-large':'project-media'}>{video?<video src={src} poster={item.thumbnail||undefined} controls={large} muted={!large} loop={!large} autoPlay={!large} playsInline preload="metadata"/>:<img src={item.thumbnail||src} alt={item.caption||item.title||'Project visual'} loading="lazy"/>}{video&&!large&&<span className="play-chip">▶ FILM</span>}</div>}
-function ProjectDetail({project,onClose}){const media=project.assets||[];const tags=[...new Set(media.flatMap(m=>m.tags||[]).filter(Boolean))];const [filter,setFilter]=useState('All');const shown=filter==='All'?media:media.filter(m=>(m.tags||[]).includes(filter));return <div className="project-overlay" role="dialog" aria-modal="true" aria-label={project.label+' project'}><div className="project-sheet"><button className="project-back" onClick={onClose}>← Back to selected work</button><div className="project-detail-hero"><div><span className="project-eyebrow">PROJECT STORY / {project.index}</span><h2>{project.label}</h2><p>{project.headline}</p></div><div className="project-meta"><span>CLIENT / {project.client||'Independent project'}</span>{project.role&&<span>ROLE / {project.role}</span>}</div></div><div className="project-process"><span>01 / Strategy</span><b>✳</b><span>02 / Storyboard</span><b>✳</b><span>03 / Production</span><b>✳</b><span>04 / Social rollout</span></div><div className="project-story-grid"><div><span className="project-eyebrow">THE BRIEF</span><p>{project.summary}</p></div>{project.result&&<div className="project-result"><span className="project-eyebrow">THE IMPACT</span><p>{project.result}</p></div>}</div><div className="project-gallery-head"><div><span className="project-eyebrow">THE CREATIVE FILES</span><h3>From concept to <i>scroll-stopping</i>.</h3></div><span className="project-count">{shown.length} PIECES</span></div>{tags.length>0&&<div className="project-filters"><button className={filter==='All'?'active':''} onClick={()=>setFilter('All')}>All work</button>{tags.map(t=><button key={t} className={filter===t?'active':''} onClick={()=>setFilter(t)}>{t}</button>)}</div>}{shown.length?<div className="project-gallery">{shown.map((item,i)=><article className="project-tile" key={item.id||i}><ProjectMedia item={item}/><div className="project-tile-caption"><strong>{item.caption||item.title||'Creative asset'}</strong><span>{(item.tags||[]).join(' · ')}</span>{item.href&&<a href={item.href} target="_blank" rel="noreferrer">View original ↗</a>}</div></article>)}</div>:<div className="project-no-media">No creative files in this category yet.</div>}</div></div>}
-function ProjectCard({project,onOpen}){return <button className="project-card-new" onClick={onOpen}><div className="project-cover">{project.cover?<img src={project.cover} alt="" loading="lazy"/>:<div className="project-cover-fallback">✳</div>}<span className="project-card-index">{project.index}</span><span className="project-open">OPEN PROJECT ↗</span></div><div className="project-card-info"><div><small>{project.client||'Selected project'}</small><h3>{project.label}</h3><p>{project.headline}</p></div><span className="project-arrow">↗</span></div></button>}
-export default function Work(){const [filter,setFilter]=useState('All');const [active,setActive]=useState(null);const industries=useMemo(()=>((getContent('work').industries)||[]).map((p,i)=>{const assets=(p.media&&p.media.length?p.media:p.videos||[]).map((m,j)=>({...m,id:m.id||p.id+'-'+j,src:m.src||m.preview||m.url,type:m.type||'auto',thumbnail:m.thumbnail||''}));return {...p,index:String(i+1).padStart(2,'0'),assets}}),[]);const categories=['All',...industries.map(p=>p.label)];const visible=filter==='All'?industries:industries.filter(p=>p.label===filter);return <section id="work" className="selected-work"><style>{`
- .selected-work{padding:clamp(76px,9vw,126px) clamp(20px,6vw,88px);background:#fffaf5;color:#332632}
- .work-wrap{max-width:1280px;margin:auto}.work-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:34px}
- .work-kicker,.project-eyebrow{font-size:9px;letter-spacing:2.1px;text-transform:uppercase;color:#d46e9b;font-weight:800}
- .work-heading h2{font:400 clamp(43px,7vw,86px)/.98 var(--serif);letter-spacing:-2px;margin:12px 0 0}.work-heading h2 i{color:#d978a3}
- .work-heading p{max-width:270px;font-size:12px;line-height:1.8;color:#927c89}
- .work-filters,.project-filters{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0 32px}.work-filters button,.project-filters button{border:1px solid #ead5df;background:#fff;border-radius:99px;padding:9px 15px;color:#866b7b;font-size:10px;letter-spacing:.5px}.work-filters button.active,.project-filters button.active{background:#352733;color:white;border-color:#352733}
- .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.project-card-new{padding:0;text-align:left;border:0;background:white;border-radius:8px;overflow:hidden;box-shadow:0 10px 32px #5b30430b;transition:transform .35s,box-shadow .35s}.project-card-new:hover{transform:translateY(-7px);box-shadow:0 22px 44px #5b30431c}
- .project-cover{height:clamp(230px,33vw,430px);position:relative;overflow:hidden;background:linear-gradient(135deg,#f7dce7,#e9e1f5)}.project-cover img{width:100%;height:100%;object-fit:cover;transition:transform .8s}.project-card-new:hover .project-cover img{transform:scale(1.04)}.project-cover-fallback{display:grid;place-items:center;height:100%;font-size:80px;color:#d88bad}
- .project-card-index{position:absolute;top:17px;left:18px;color:#fff;font-size:10px;letter-spacing:2px;text-shadow:0 1px 8px #0008}.project-open{position:absolute;right:16px;bottom:16px;background:#fff;color:#3c2d38;border-radius:99px;padding:10px 14px;font-size:9px;letter-spacing:1px;font-weight:800}
- .project-card-info{padding:20px 22px;display:flex;justify-content:space-between;align-items:center}.project-card-info small{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:#c17a98}.project-card-info h3{font:26px var(--serif);margin:5px 0}.project-card-info p{font-size:11px;color:#927c89;margin:0}.project-arrow{font-size:23px;color:#d878a1}
- .project-overlay{position:fixed;z-index:1500;inset:0;background:#261c25eF;overflow:auto;padding:24px}.project-sheet{max-width:1120px;margin:0 auto;background:#fffaf7;min-height:calc(100vh - 48px);padding:clamp(22px,5vw,64px);border-radius:9px;position:relative}
- .project-back{border:0;background:none;color:#9c6d84;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:0;margin-bottom:42px}.project-detail-hero{display:flex;justify-content:space-between;gap:25px;align-items:end;border-bottom:1px solid #efdce5;padding-bottom:30px}.project-detail-hero h2{font:400 clamp(46px,8vw,90px)/1 var(--serif);margin:13px 0;letter-spacing:-2px}.project-detail-hero p{font:italic 18px var(--serif);color:#b66e90;margin:0}.project-meta{display:grid;gap:10px;font-size:9px;letter-spacing:1px;color:#947c89;min-width:180px}
- .project-process{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:18px 0;border-bottom:1px solid #efdce5;color:#9b7588;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}.project-process b{color:#df8fb0;font-size:13px}.project-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:30px 0}.project-story-grid p{font-size:13px;line-height:1.9;color:#6d5965}.project-result{background:#fbedf3;padding:18px 22px;border-radius:7px}.project-result p{margin-bottom:0}
- .project-gallery-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:30px 0 15px}.project-gallery-head h3{font:32px var(--serif);margin:8px 0}.project-gallery-head h3 i{color:#d978a3}.project-count{font-size:9px;letter-spacing:1.5px;color:#9e8291}
- .project-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.project-tile{background:#fff;border:1px solid #f0dce5;border-radius:6px;overflow:hidden}.project-media,.project-media-large{position:relative;aspect-ratio:4/3;background:#f0e7ed}.project-media img,.project-media video,.project-media-large img,.project-media-large video{width:100%;height:100%;object-fit:cover;display:block}.play-chip{position:absolute;top:12px;right:12px;background:#fff;border-radius:30px;padding:7px 10px;font-size:8px;letter-spacing:1px}.project-tile-caption{padding:13px 15px;display:grid;gap:6px}.project-tile-caption strong{font:18px var(--serif)}.project-tile-caption span{font-size:9px;color:#a08291}.project-tile-caption a{font-size:10px;color:#c15d8b;text-decoration:none}.project-no-media{padding:50px;text-align:center;color:#9b8390;background:#fff0f5}
- @media(max-width:700px){.work-grid{grid-template-columns:1fr}.project-detail-hero{display:block}.project-meta{margin-top:22px}.project-story-grid{grid-template-columns:1fr}.project-gallery{grid-template-columns:1fr}.project-overlay{padding:8px}.project-sheet{padding:24px 18px}.project-back{margin-bottom:28px}}
- `}</style><div className="work-wrap"><div className="work-heading"><div><div className="work-kicker">✳ The good stuff / 01—∞</div><h2>Selected <i>work.</i></h2></div><p>A collection of brand worlds, campaign thinking and content made to move people.</p></div><div className="work-filters">{categories.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c==='All'?'All projects':c}</button>)}</div><div className="work-grid">{visible.map(p=><ProjectCard key={p.id} project={p} onOpen={()=>setActive(p)}/>)}</div></div>{active&&<ProjectDetail project={active} onClose={()=>setActive(null)}/>}</section>}
+
+const isVideo = (src,type) => type === 'video' || (type !== 'image' && (/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0]) || String(src||'').includes('/video/upload/')));
+
+function Media({item,variant='tile'}) {
+  const src = item.src || item.preview || item.url;
+  const video = isVideo(src,item.type);
+  return <div className={`case-media case-media-${variant}`}>
+    {video
+      ? <video src={src} poster={item.thumbnail || undefined} controls={variant==='feature'} muted={variant!=='feature'} loop={variant!=='feature'} autoPlay={variant!=='feature'} playsInline preload="metadata" />
+      : <img src={item.thumbnail || src} alt={item.caption || item.title || 'Project creative'} loading="lazy" />}
+    {video && variant!=='feature' && <span className="case-film-label">FILM ↗</span>}
+  </div>;
+}
+
+function ProjectPage({project,index,total,onClose,onNext,onPrevious}) {
+  const [filter,setFilter] = useState('All');
+  const media = project.assets || [];
+  const tagList = [...new Set(media.flatMap(item => item.tags || []).filter(Boolean))];
+  const shown = filter==='All' ? media : media.filter(item => (item.tags || []).includes(filter));
+  const nextNumber = String(index+1).padStart(2,'0');
+
+  useEffect(() => {
+    const old = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = event => {
+      if(event.key==='Escape') onClose();
+      if(event.key==='ArrowRight') onNext();
+      if(event.key==='ArrowLeft') onPrevious();
+    };
+    window.addEventListener('keydown',onKey);
+    return () => { document.body.style.overflow=old; window.removeEventListener('keydown',onKey); };
+  },[onClose,onNext,onPrevious]);
+
+  return <div className="case-page" role="dialog" aria-modal="true" aria-label={project.label + ' case study'}>
+    <style>{`
+      .case-page{position:fixed;z-index:1600;inset:0;overflow-y:auto;background:#f4f0ea;color:#241d20}
+      .case-masthead{height:64px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,72px);background:rgba(244,240,234,.94);backdrop-filter:blur(14px);border-bottom:1px solid #d9d0c8}
+      .case-masthead button{border:0;background:none;color:#554a46;font:9px var(--sans);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer}
+      .case-masthead-brand{font:italic 21px var(--serif);letter-spacing:-1px}.case-masthead-brand span{color:#ad637d}
+      .case-page-inner{max-width:1500px;margin:auto;padding:0 clamp(18px,6vw,92px) 90px}
+      .case-topline{display:flex;justify-content:space-between;gap:15px;padding:17px 0;border-bottom:1px solid #cfc4bb;font:9px var(--sans);letter-spacing:1.6px;text-transform:uppercase;color:#766b64}
+      .case-intro{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:30px;align-items:end;padding:clamp(48px,8vw,105px) 0 35px}
+      .case-eyebrow{font:9px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#a45e77}
+      .case-intro h1{font:400 clamp(58px,11vw,150px)/.82 var(--serif);letter-spacing:-.07em;margin:17px 0 22px;max-width:1000px}
+      .case-intro-deck{font:italic clamp(18px,2.1vw,27px)/1.35 var(--serif);color:#8c5c6d;max-width:780px;margin:0}
+      .case-facts{display:grid;gap:18px;padding-bottom:6px}
+      .case-fact{border-top:1px solid #cfc4bb;padding-top:9px}
+      .case-fact small{display:block;font:8px var(--sans);letter-spacing:1.7px;text-transform:uppercase;color:#a58f85;margin-bottom:5px}
+      .case-fact strong{font:12px var(--sans);font-weight:600;color:#423733}
+      .case-hero-image{position:relative;min-height:320px;height:clamp(340px,58vw,760px);background:#ded4cc;overflow:hidden}
+      .case-hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+      .case-hero-folio{position:absolute;right:20px;bottom:18px;background:#f4f0ea;padding:10px 13px;font:9px var(--sans);letter-spacing:1.5px}
+      .case-brief{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;padding:clamp(55px,8vw,105px) 4%;border-bottom:1px solid #cfc4bb}
+      .case-section-label{font:9px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#a45e77}
+      .case-brief h2,.case-process h2,.case-gallery-heading h2{font:400 clamp(34px,5vw,65px)/.98 var(--serif);letter-spacing:-.045em;margin:13px 0}
+      .case-brief-copy{font:16px/1.8 var(--sans);color:#655a54;max-width:650px;margin:0}
+      .case-brief-pull{font:italic clamp(23px,3.2vw,40px)/1.25 var(--serif);color:#9c6276;margin:28px 0 0;max-width:680px}
+      .case-process{padding:clamp(55px,8vw,100px) 4%;border-bottom:1px solid #cfc4bb}
+      .case-process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:34px;border-top:1px solid #cfc4bb}
+      .case-process-step{padding:17px 18px 10px 0;border-right:1px solid #cfc4bb;min-height:125px}
+      .case-process-step:not(:first-child){padding-left:18px}
+      .case-process-step:last-child{border:0}
+      .case-process-step small{font:9px var(--sans);letter-spacing:1.5px;color:#a45e77}
+      .case-process-step strong{display:block;font:italic 22px var(--serif);font-weight:400;margin-top:14px}
+      .case-process-note{font:12px/1.7 var(--sans);color:#74675f;max-width:780px;margin:22px 0 0}
+      .case-gallery{padding:clamp(55px,8vw,100px) 0 30px}
+      .case-gallery-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 4% 26px}
+      .case-gallery-heading h2{margin-bottom:0}
+      .case-gallery-count{font:9px var(--sans);letter-spacing:1.5px;color:#8c7e75;white-space:nowrap}
+      .case-filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 4% 26px}
+      .case-filters button{border:1px solid #cfc4bb;background:transparent;border-radius:30px;padding:9px 14px;color:#6f625a;font:9px var(--sans);letter-spacing:.7px;cursor:pointer}
+      .case-filters button.active{background:#282022;border-color:#282022;color:#fff}
+      .case-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(12px,2vw,26px);align-items:start}
+      .case-gallery-item{grid-column:span 6;min-width:0}
+      .case-gallery-item:nth-child(3n+2){grid-column:span 5;margin-top:55px}
+      .case-gallery-item:nth-child(3n+3){grid-column:span 7}
+      .case-gallery-item.is-portrait .case-media{aspect-ratio:3/4}
+      .case-gallery-item.is-landscape .case-media{aspect-ratio:16/10}
+      .case-gallery-item.is-square .case-media{aspect-ratio:1}
+      .case-media{position:relative;overflow:hidden;background:#e5dbd4;aspect-ratio:4/3}
+      .case-media img,.case-media video{display:block;width:100%;height:100%;object-fit:cover}
+      .case-film-label{position:absolute;right:12px;top:12px;background:#f4f0ea;padding:8px 10px;font:8px var(--sans);letter-spacing:1px}
+      .case-caption{display:flex;justify-content:space-between;gap:14px;padding:12px 1px 0;border-top:1px solid #cfc4bb;margin-top:9px}
+      .case-caption strong{font:italic 17px var(--serif);font-weight:400}
+      .case-caption span{font:8px var(--sans);letter-spacing:1px;text-transform:uppercase;color:#8d7e74;text-align:right}
+      .case-empty{grid-column:1/-1;padding:70px 20px;text-align:center;font:italic 22px var(--serif);color:#87766e}
+      .case-impact{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;background:#e9dfd8;padding:clamp(35px,6vw,75px);margin-top:70px}
+      .case-impact h2{font:400 clamp(35px,5vw,60px)/.95 var(--serif);margin:12px 0}
+      .case-impact p{font:14px/1.8 var(--sans);color:#655a54;margin:0}
+      .case-bottom-nav{display:flex;justify-content:space-between;align-items:center;gap:15px;border-top:1px solid #cfc4bb;margin-top:80px;padding-top:22px}
+      .case-bottom-nav button{border:0;background:none;padding:10px 0;font:10px var(--sans);letter-spacing:1px;text-transform:uppercase;color:#6d5e57;cursor:pointer}
+      @media(max-width:760px){
+        .case-intro{grid-template-columns:1fr;gap:25px}
+        .case-facts{grid-template-columns:repeat(2,1fr)}
+        .case-brief{grid-template-columns:1fr;gap:20px}
+        .case-process-grid{grid-template-columns:repeat(2,1fr)}
+        .case-process-step:nth-child(2){border-right:0}
+        .case-process-step:nth-child(3){padding-left:0}
+        .case-gallery-item,.case-gallery-item:nth-child(3n+2),.case-gallery-item:nth-child(3n+3){grid-column:span 6;margin-top:0}
+        .case-impact{grid-template-columns:1fr}
+      }
+      @media(max-width:480px){
+        .case-masthead{height:56px}
+        .case-masthead button{font-size:8px}
+        .case-facts{grid-template-columns:1fr 1fr}
+        .case-process-grid{grid-template-columns:1fr 1fr}
+        .case-gallery-item,.case-gallery-item:nth-child(3n+2),.case-gallery-item:nth-child(3n+3){grid-column:1/-1}
+        .case-gallery-heading{align-items:start;flex-direction:column}
+        .case-bottom-nav{align-items:flex-start;flex-direction:column}
+      }
+    `}</style>
+    <header className="case-masthead"><button onClick={onClose}>← Back to index</button><div className="case-masthead-brand">diya<span>shr.</span></div><button onClick={onClose}>Close ×</button></header>
+    <div className="case-page-inner">
+      <div className="case-topline"><span>Portfolio / Selected work / Case study {nextNumber}</span><span>Independent creative practice · Dubai</span></div>
+      <section className="case-intro">
+        <div><div className="case-eyebrow">Case study / {nextNumber} — {project.client || 'Selected project'}</div><h1>{project.label}</h1><p className="case-intro-deck">{project.headline}</p></div>
+        <div className="case-facts">
+          <div className="case-fact"><small>Client / Brand</small><strong>{project.client || 'Independent project'}</strong></div>
+          <div className="case-fact"><small>My role</small><strong>{project.role || 'Strategy & creative'}</strong></div>
+          <div className="case-fact"><small>Discipline</small><strong>{(project.subcats || []).slice(0,2).join(' · ') || 'Brand storytelling'}</strong></div>
+        </div>
+      </section>
+      <div className="case-hero-image">{project.cover && <img src={project.cover} alt={project.label + ' campaign cover'} /> }<span className="case-hero-folio">FIG. {nextNumber} / THE CAMPAIGN</span></div>
+      <section className="case-brief">
+        <div><div className="case-section-label">01 / The brief</div><h2>The thinking<br/><i>behind the feeling.</i></h2></div>
+        <div><p className="case-brief-copy">{project.summary || 'A brand story shaped through strategy, visual direction and content.'}</p>{project.objective && <p className="case-brief-copy" style={{marginTop:18}}>{project.objective}</p>}<p className="case-brief-pull">“{project.pullQuote || project.headline}”</p></div>
+      </section>
+      <section className="case-process">
+        <div className="case-section-label">02 / The creative direction</div><h2>From first thought<br/>to final frame.</h2>
+        <div className="case-process-grid">
+          {[
+            ['01','Strategy'],['02','Storyboarding'],['03','Production'],['04','Distribution']
+          ].map(([n,label])=><div className="case-process-step" key={n}><small>{n} / PROCESS</small><strong>{label}</strong></div>)}
+        </div>
+        <p className="case-process-note">{project.storyboard || project.process || 'Every execution begins with a clear audience insight and a visual idea. The story is mapped, shaped for its platform, then carried through production and rollout.'}</p>
+      </section>
+      <section className="case-gallery">
+        <div className="case-gallery-heading"><div><div className="case-section-label">03 / The visual archive</div><h2>Inside the <i>campaign.</i></h2></div><span className="case-gallery-count">{String(shown.length).padStart(2,'0')} CREATIVE FILES</span></div>
+        {tagList.length>0 && <div className="case-filters"><button className={filter==='All'?'active':''} onClick={()=>setFilter('All')}>All frames</button>{tagList.map(tag=><button key={tag} className={filter===tag?'active':''} onClick={()=>setFilter(tag)}>{tag}</button>)}</div>}
+        <div className="case-gallery-grid">{shown.length ? shown.map((item,i)=><article key={item.id || i} className={`case-gallery-item ${item.orientation==='portrait'?'is-portrait':item.orientation==='square'?'is-square':'is-landscape'}`}><Media item={item}/><div className="case-caption"><strong>{item.caption || item.title || 'Campaign frame'}</strong><span>{(item.tags || []).slice(0,2).join(' / ') || item.orientation || 'Creative asset'}</span></div>{item.href && <a href={item.href} target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:8,font:'9px var(--sans)',letterSpacing:1,textTransform:'uppercase',color:'#a45e77',textDecoration:'none'}}>View published work ↗</a>}</article>) : <div className="case-empty">More frames from this story are coming soon.</div>}</div>
+      </section>
+      {project.result && <section className="case-impact"><div><div className="case-section-label">04 / The outcome</div><h2>What the work<br/><i>set in motion.</i></h2></div><p>{project.result}</p></section>}
+      <nav className="case-bottom-nav"><button onClick={onPrevious}>← Previous project</button><span className="case-gallery-count">{nextNumber} / {String(total).padStart(2,'0')}</span><button onClick={onNext}>Next project →</button></nav>
+    </div>
+  </div>;
+}
+
+function ProjectCard({project,index,onOpen}) {
+  const count = project.assets.length;
+  return <button className={`work-editorial-card work-editorial-card-${index%4}`} onClick={onOpen} aria-label={`Open ${project.label} case study`}>
+    <div className="work-card-image">
+      {project.cover ? <img src={project.cover} alt={project.label + ' project'} loading="lazy"/> : <div className="work-card-placeholder">D.S.</div>}
+      <span className="work-card-number">PROJECT / {String(index+1).padStart(2,'0')}</span><span className="work-card-open">View story ↗</span>
+    </div>
+    <div className="work-card-caption"><div><small>{project.client || 'Selected project'} · {project.subcats?.[0] || 'Creative direction'}</small><h3>{project.label}</h3><p>{project.headline}</p></div><span className="work-card-count">{String(count).padStart(2,'0')}<small>FILES</small></span></div>
+  </button>;
+}
+
+export default function Work() {
+  const [filter,setFilter] = useState('All');
+  const [active,setActive] = useState(null);
+  const projects = useMemo(() => (getContent('work').industries || []).map((project,i) => {
+    const raw = project.media && project.media.length ? project.media : project.videos || [];
+    const assets = raw.map((item,j) => ({...item,id:item.id || project.id+'-'+j,src:item.src || item.preview || item.url,type:item.type || 'auto',thumbnail:item.thumbnail || ''}));
+    return {...project,index:i,assets};
+  }),[]);
+  const categories = ['All',...new Set(projects.flatMap(project => project.subcats || []).filter(Boolean))];
+  const visible = filter==='All' ? projects : projects.filter(project => (project.subcats || []).includes(filter));
+  const openProject = project => {setActive(project);setFilter('All')};
+  const activeIndex = active ? projects.findIndex(project => project.id===active.id) : -1;
+  const goTo = direction => {
+    if(!projects.length) return;
+    const next=(activeIndex+direction+projects.length)%projects.length;
+    setActive(projects[next]);
+  };
+
+  return <section id="work" className="work-editorial">
+    <style>{`
+      .work-editorial{background:#f8f5f0;color:#241d20;padding:clamp(78px,10vw,145px) clamp(20px,6.5vw,100px) clamp(90px,11vw,150px);border-top:1px solid #dfd5ce}
+      .work-editorial-inner{max-width:1440px;margin:auto}
+      .work-index-top{display:flex;justify-content:space-between;gap:20px;padding-bottom:15px;border-bottom:1px solid #cfc4bb;font:9px var(--sans);letter-spacing:1.8px;text-transform:uppercase;color:#82756e}
+      .work-editorial-heading{display:grid;grid-template-columns:1fr 250px;gap:30px;align-items:end;padding:45px 0 35px}
+      .work-editorial-kicker{font:9px var(--sans);letter-spacing:2.2px;text-transform:uppercase;color:#a45e77}
+      .work-editorial-heading h2{font:400 clamp(62px,11vw,152px)/.8 var(--serif);letter-spacing:-.07em;margin:18px 0 0}
+      .work-editorial-heading h2 em{color:#a45e77;font-weight:400}
+      .work-editorial-heading p{font:italic 17px/1.55 var(--serif);color:#786a63;margin:0 0 6px}
+      .work-editorial-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:19px 0 30px;border-top:1px solid #d9d0c8}
+      .work-editorial-filters span{font:8px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#9a8b81;margin-right:8px}
+      .work-editorial-filters button{border:0;background:transparent;padding:7px 9px;color:#83746d;font:9px var(--sans);letter-spacing:.5px;cursor:pointer}
+      .work-editorial-filters button.active{color:#a45e77;border-bottom:1px solid #a45e77}
+      .work-editorial-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(14px,2.4vw,34px);row-gap:clamp(45px,7vw,100px);align-items:start}
+      .work-editorial-card{display:block;grid-column:span 6;text-align:left;border:0;padding:0;background:transparent;color:inherit;cursor:pointer;min-width:0}
+      .work-editorial-card:nth-child(4n+1){grid-column:span 7}
+      .work-editorial-card:nth-child(4n+2){grid-column:span 5;margin-top:clamp(55px,9vw,130px)}
+      .work-editorial-card:nth-child(4n+3){grid-column:span 5;margin-left:12%;margin-top:-10px}
+      .work-editorial-card:nth-child(4n+4){grid-column:span 6;margin-left:8%;margin-top:clamp(35px,6vw,85px)}
+      .work-card-image{height:clamp(260px,40vw,570px);position:relative;overflow:hidden;background:#e7ddd5}
+      .work-editorial-card:nth-child(4n+2) .work-card-image,.work-editorial-card:nth-child(4n+3) .work-card-image{height:clamp(260px,34vw,470px)}
+      .work-card-image img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);filter:saturate(.82)}
+      .work-editorial-card:hover .work-card-image img{transform:scale(1.045)}
+      .work-card-placeholder{height:100%;display:grid;place-items:center;background:#e9dfe0;color:#ad7486;font:italic 90px var(--serif)}
+      .work-card-number{position:absolute;top:15px;left:16px;color:white;text-shadow:0 1px 8px #0008;font:8px var(--sans);letter-spacing:1.7px}
+      .work-card-open{position:absolute;right:15px;bottom:15px;background:#f8f5f0;color:#312629;padding:10px 13px;font:8px var(--sans);letter-spacing:1px;text-transform:uppercase;transform:translateY(5px);opacity:0;transition:.3s}
+      .work-editorial-card:hover .work-card-open,.work-editorial-card:focus-visible .work-card-open{opacity:1;transform:translateY(0)}
+      .work-card-caption{display:flex;justify-content:space-between;gap:18px;padding:14px 0 0;border-top:1px solid #cfc4bb;margin-top:11px}
+      .work-card-caption small{font:8px var(--sans);letter-spacing:1.4px;text-transform:uppercase;color:#967e74}
+      .work-card-caption h3{font:400 clamp(24px,3vw,38px)/1.05 var(--serif);letter-spacing:-.03em;margin:8px 0 5px}
+      .work-card-caption p{font:italic 14px/1.45 var(--serif);color:#8b7770;margin:0}
+      .work-card-count{font:10px var(--sans);color:#a45e77;text-align:right;white-space:nowrap;padding-top:5px}
+      .work-card-count small{display:block;margin-top:4px;font-size:7px;letter-spacing:1px}
+      .work-no-projects{grid-column:1/-1;padding:60px;text-align:center;color:#86766e;font:italic 20px var(--serif)}
+      @media(max-width:760px){
+        .work-editorial-heading{grid-template-columns:1fr;gap:15px}
+        .work-editorial-heading p{max-width:330px}
+        .work-editorial-card,.work-editorial-card:nth-child(4n+1),.work-editorial-card:nth-child(4n+2),.work-editorial-card:nth-child(4n+3),.work-editorial-card:nth-child(4n+4){grid-column:span 6;margin:0}
+        .work-editorial-card:nth-child(odd){grid-column:1/8}
+        .work-editorial-card:nth-child(even){grid-column:6/13;margin-top:55px}
+        .work-card-image,.work-editorial-card:nth-child(4n+2) .work-card-image,.work-editorial-card:nth-child(4n+3) .work-card-image{height:clamp(220px,55vw,390px)}
+      }
+      @media(max-width:480px){
+        .work-editorial-card,.work-editorial-card:nth-child(odd),.work-editorial-card:nth-child(even){grid-column:1/-1;margin:0}
+        .work-editorial-card:nth-child(even){width:88%;margin-left:auto}
+        .work-card-image,.work-editorial-card:nth-child(4n+2) .work-card-image,.work-editorial-card:nth-child(4n+3) .work-card-image{height:340px}
+      }
+    `}</style>
+    <div className="work-editorial-inner">
+      <div className="work-index-top"><span>Index / The work</span><span>Creative direction · Strategy · Campaigns</span></div>
+      <div className="work-editorial-heading"><div><div className="work-editorial-kicker">An archive of ideas, made visible</div><h2>Selected <em>work.</em></h2></div><p>Brand worlds, campaign stories and content systems — considered from the first thought to the final frame.</p></div>
+      <div className="work-editorial-filters"><span>Explore by discipline</span>{categories.map(category=><button key={category} className={filter===category?'active':''} onClick={()=>setFilter(category)}>{category==='All'?'All projects':category}</button>)}</div>
+      <div className="work-editorial-grid">{visible.length ? visible.map(project=><ProjectCard key={project.id} project={project} index={projects.indexOf(project)} onOpen={()=>openProject(project)}/>) : <div className="work-no-projects">No projects in this category yet.</div>}</div>
+    </div>
+    {active && <ProjectPage project={active} index={activeIndex} total={projects.length} onClose={()=>setActive(null)} onNext={()=>goTo(1)} onPrevious={()=>goTo(-1)}/>}
+  </section>;
+}
