@@ -1,30 +1,45 @@
 import React from 'react';
 import {getContent} from '../content/content';
+
 export default function Hero(){
- const {eyebrow,intro,logos=[]}=getContent('hero');
- return <section id="hero" className="hero-editorial">
- <style>{`
- .hero-editorial{position:relative;overflow:hidden;min-height:690px;padding:clamp(88px,12vw,150px) clamp(24px,8vw,120px) 74px;background:radial-gradient(ellipse at 84% 22%,#f9dce8 0,transparent 32%),linear-gradient(130deg,#fffaf5 0%,#fff1f6 58%,#f3edfb 100%)}
- .hero-editorial:before{content:'✳';position:absolute;right:9%;top:12%;font-size:clamp(90px,16vw,220px);color:#edb7ce;opacity:.42;transform:rotate(14deg)}
- .hero-inner{position:relative;z-index:1;max-width:1280px;margin:auto}
- .hero-kicker{display:flex;align-items:center;gap:12px;color:#9a7186;font-size:10px;letter-spacing:2.4px;text-transform:uppercase;font-weight:700}
- .hero-kicker:before{content:'';width:34px;height:1px;background:#d987aa}
- .hero-title{font:400 clamp(58px,10vw,140px)/.94 var(--serif);letter-spacing:-4px;max-width:1050px;margin:32px 0 26px;color:#30242e}
- .hero-title em{color:#d66d9b;font-weight:400}
- .hero-copy{font-size:clamp(14px,1.5vw,18px);line-height:1.85;color:#765f6c;max-width:560px}
- .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin:34px 0 76px}.hero-cta a{padding:14px 22px;border-radius:999px;text-decoration:none;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
- .hero-cta .primary{background:#30242e;color:white;box-shadow:0 12px 28px #56334a22}.hero-cta .secondary{border:1px solid #dcb7c9;color:#76576a;background:#fff9}
- .hero-foot{display:flex;align-items:center;justify-content:space-between;gap:25px;flex-wrap:wrap;border-top:1px solid #e8cfdb;padding-top:22px}
- .hero-brands{display:flex;align-items:center;gap:clamp(14px,3vw,34px);flex-wrap:wrap}.hero-brands img{width:44px;height:44px;object-fit:contain;filter:grayscale(1);opacity:.72}
- .hero-foot-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#a18392}
- @media(max-width:600px){.hero-title{letter-spacing:-2px}.hero-editorial:before{right:-5%;top:9%}.hero-cta{margin-bottom:52px}}
- `}</style>
- <div className="hero-inner">
-  <div className="hero-kicker">{eyebrow||'Digital marketing strategist · Creative thinker · Dubai'}</div>
-  <h1 className="hero-title">Making brands<br/>feel <em>impossible</em><br/>to ignore<span style={{color:'#e5a0bd'}}>.</span></h1>
-  <p className="hero-copy">{intro||'Strategy-led storytelling, social-first campaigns and creative direction that turn ideas into momentum.'}</p>
-  <div className="hero-cta"><a className="primary" href="#work">Explore selected work ↗</a><a className="secondary" href="#contact">Let’s create something</a></div>
-  <div className="hero-foot"><span className="hero-foot-label">A few lovely brands along the way</span><div className="hero-brands">{logos.slice(0,7).map((l,i)=>l.image?<img key={i} src={l.image} alt="Brand mark" loading="lazy"/>:null)}</div><span className="hero-foot-label">Strategy / Story / Impact</span></div>
- </div><span aria-hidden="true" style={{position:'absolute',right:'6%',bottom:'9%',fontSize:36,transform:'rotate(-12deg)'}}>🎀</span>
- </section>
+  const {eyebrow,intro,logos=[]}=getContent('hero');
+  return <section id="hero" className="hero-cover">
+    <style>{`
+      .hero-cover{position:relative;overflow:hidden;min-height:calc(100vh - 78px);background:#eee8e0;color:#241d20;padding:clamp(50px,7vw,100px) clamp(20px,6.5vw,100px) 34px}
+      .hero-cover:after{content:'୨୧';position:absolute;right:7%;top:17%;font:clamp(100px,17vw,245px)/1 var(--serif);color:#d7b6b5;opacity:.5;transform:rotate(-12deg);pointer-events:none}
+      .hero-cover-inner{max-width:1440px;margin:auto;position:relative;z-index:1}
+      .hero-cover-top{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid #c8bdb3;padding-bottom:14px;font:9px var(--sans);letter-spacing:1.8px;text-transform:uppercase;color:#766a62}
+      .hero-cover-grid{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:30px;align-items:end;padding:clamp(65px,10vw,140px) 0 clamp(65px,9vw,120px)}
+      .hero-cover-kicker{font:9px var(--sans);letter-spacing:2.2px;text-transform:uppercase;color:#9d5d73}
+      .hero-cover-title{font:400 clamp(66px,12.3vw,174px)/.77 var(--serif);letter-spacing:-.085em;margin:22px 0 28px;max-width:1100px}
+      .hero-cover-title em{font-weight:400;color:#a45e77}
+      .hero-cover-copy{max-width:560px;font:italic clamp(17px,1.8vw,22px)/1.55 var(--serif);color:#75645e;margin:0}
+      .hero-cover-side{padding:0 0 7px 22px;border-left:1px solid #c8bdb3}
+      .hero-cover-side strong{display:block;font:italic 28px/1.05 var(--serif);font-weight:400;color:#9d5d73;margin-bottom:12px}
+      .hero-cover-side p{font:10px/1.8 var(--sans);letter-spacing:.3px;color:#756a62;margin:0}
+      .hero-cover-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:34px}
+      .hero-cover-actions a{font:9px var(--sans);letter-spacing:1.4px;text-transform:uppercase;text-decoration:none}
+      .hero-cover-actions .hero-primary{background:#241d20;color:#f8f5f0;padding:15px 20px}
+      .hero-cover-actions .hero-secondary{color:#725e59;border-bottom:1px solid #a98f85;padding:8px 0}
+      .hero-cover-footer{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;border-top:1px solid #c8bdb3;padding-top:18px}
+      .hero-cover-footer-label{font:8px var(--sans);letter-spacing:1.8px;text-transform:uppercase;color:#85776e}
+      .hero-cover-brands{display:flex;align-items:center;gap:clamp(12px,2.4vw,28px);flex-wrap:wrap}
+      .hero-cover-brands img{width:42px;height:38px;object-fit:contain;filter:grayscale(1);opacity:.65}
+      @media(max-width:760px){.hero-cover-grid{grid-template-columns:1fr;gap:32px;padding:80px 0}.hero-cover-side{max-width:300px}.hero-cover:after{right:-4%;top:12%}}
+      @media(max-width:480px){.hero-cover-title{font-size:clamp(60px,17vw,90px)}.hero-cover-top span:last-child{display:none}.hero-cover-footer-label:last-child{display:none}}
+    `}</style>
+    <div className="hero-cover-inner">
+      <div className="hero-cover-top"><span>Diya Shrestha / Portfolio</span><span>Creative direction · Brand strategy · Digital storytelling</span><span>Dubai, UAE / 2026</span></div>
+      <div className="hero-cover-grid">
+        <div>
+          <div className="hero-cover-kicker">{eyebrow || 'A creative marketer with a strategic point of view'}</div>
+          <h1 className="hero-cover-title">A point of<br/><em>view</em> for<br/>brands in motion.</h1>
+          <p className="hero-cover-copy">{intro || 'I build brand stories through strategy, visual thinking and content that makes people feel something.'}</p>
+          <div className="hero-cover-actions"><a className="hero-primary" href="#work">Explore the work ↗</a><a className="hero-secondary" href="#about">A little about me</a></div>
+        </div>
+        <aside className="hero-cover-side"><strong>Strategy is the idea.<br/>Story is the feeling.</strong><p>From the first audience insight to the final frame — connecting creative instinct with commercial thinking.</p></aside>
+      </div>
+      <div className="hero-cover-footer"><span className="hero-cover-footer-label">A few brands along the way</span><div className="hero-cover-brands">{logos.slice(0,7).map((logo,i)=>logo.image?<img key={i} src={logo.image} alt="Brand mark" loading="lazy"/>:null)}</div><span className="hero-cover-footer-label">Issue Nº 01 / Selected practice</span></div>
+    </div>
+  </section>;
 }
