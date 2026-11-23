@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {getContent} from '../content/content';
 const isVideo=(src,type)=>type==='video'||(type!=='image'&&(/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/')));
 const srcOf=item=>item.src||item.preview||item.url||'';
+const EMPTY_CATEGORY_OPTIONS=[];
 function Media({item}){const src=srcOf(item),video=isVideo(src,item.type);return <div className={'case-media '+(item.orientation==='portrait'?'portrait':item.orientation==='square'?'square':'landscape')}>{video?<video src={src} poster={item.thumbnail||undefined} controls autoPlay muted loop playsInline preload="auto"/>:<img src={src} alt={item.caption||item.title||'Campaign creative'} loading="lazy"/>}{video&&<span className="case-play-tag">VIDEO ↗</span>}</div>}
 function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  const [filter,setFilter]=useState('All'),media=project.assets||[],tags=[...new Set(media.flatMap(x=>x.tags||[]).filter(Boolean))],shown=filter==='All'?media:media.filter(x=>(x.tags||[]).includes(filter)),number=String(index+1).padStart(2,'0');
@@ -129,8 +130,8 @@ function ProjectCard({project,index,onOpen,style}){const count=project.assets.le
 export default function Work(){
  const [filter,setFilter]=useState('All'),[active,setActive]=useState(null);
  const categorySettings=useMemo(()=>getContent('categories'),[]);
- const projectCategoryOptions=categorySettings.projectCategories||[];
- const assetCategoryOptions=categorySettings.assetCategories||[];
+ const projectCategoryOptions=categorySettings.projectCategories||EMPTY_CATEGORY_OPTIONS;
+ const assetCategoryOptions=categorySettings.assetCategories||EMPTY_CATEGORY_OPTIONS;
  const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{
   const raw=project.media&&project.media.length?project.media:project.videos||[];
   const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||'',tags:normalizeAssetTags(item.tags,assetCategoryOptions)}));
