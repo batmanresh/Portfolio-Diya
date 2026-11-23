@@ -9,12 +9,29 @@ export default function Admin() {
   const [session, setSession] = useState(undefined); // undefined = still checking
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
-    return () => data.subscription.unsubscribe();
+    let mounted = true;
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Session check timed out')), 8000)
+    );
+    Promise.race([supabase.auth.getSession(), timeout])
+      .then(({ data, error }) => {
+        if (error) throw error;
+        if (mounted) setSession(data.session);
+      })
+      .catch(error => {
+        console.error('Admin session check failed:', error);
+        if (mounted) setSession(null);
+      });
+    const { data } = supabase.auth.onAuthStateChange((_event, s) => {
+      if (mounted) setSession(s);
+    });
+    return () => {
+      mounted = false;
+      data.subscription.unsubscribe();
+    };
   }, []);
 
-  if (session === undefined) return null;
+  if (session === undefined) return <div className="admin"><p className="loading">Checking admin session…</p></div>;
   return <div className="admin">{session ? <Dashboard user={session.user} /> : <Login />}</div>;
 }
 
@@ -92,26 +109,56 @@ function Dashboard({ user }) {
 
   const section = sections.find(s => s.key === active);
 
-  const setField = (key, value) => {
-    setContent(c => ({ ...c, [active]: { ...c[active], [key]: value } }));
-    setUnsaved(u => ({ ...u, [active]: true }));
+  const setField = (key, value, categoryChange) => {
+    setContent(current => {
+      const next = { ...current, [active]: { ...current[active], [key]: value } };
+      // Keep existing assignments connected when a category is renamed or deleted.
+      if (active === 'categories' && categoryChange && current.work?.industries) {
+        const { type, oldName, newName } = categoryChange;
+        const updateList = list => (list || []).flatMap(item => {
+          if (item !== oldName) return [item];
+          return type === 'rename' && newName ? [newName] : [];
+        });
+        next.work = {
+          ...current.work,
+          industries: current.work.industries.map(project => {
+            if (type === 'project') return { ...project, subcats: updateList(project.subcats) };
+            if (type === 'asset') {
+              const updateAssets = assets => (assets || []).map(asset => ({ ...asset, tags: updateList(asset.tags) }));
+              return { ...project, videos: updateAssets(project.videos), media: updateAssets(project.media) };
+            }
+            return project;
+          })
+        };
+      }
+      return next;
+    });
+    setUnsaved(u => ({ ...u, [active]: true, ...(categoryChange ? { work: true } : {}) }));
     setStatus(null);
   };
 
   const save = async () => {
     setSaving(true);
-    const { data, error } = await supabase
-      .from('site_content')
-      .upsert({ section: active, data: content[active], updated_at: new Date().toISOString() })
-      .select();
+    const sectionsToSave = [...new Set([active, ...Object.keys(unsaved).filter(key => unsaved[key])])];
+    const results = await Promise.all(sectionsToSave.map(sectionKey =>
+      supabase.from('site_content')
+        .upsert({ section: sectionKey, data: content[sectionKey], updated_at: new Date().toISOString() })
+        .select()
+    ));
     setSaving(false);
-    if (error || !data?.length) {
-      // No error but no row back = blocked by permissions (not the admin email).
+    const failedIndex = results.findIndex(({ error, data }) => error || !data?.length);
+    if (failedIndex !== -1) {
+      const sectionKey = sectionsToSave[failedIndex];
+      const { error } = results[failedIndex];
       const reason = error ? error.message : 'this account is not allowed to edit. Check the admin email in supabase/setup.sql.';
-      setStatus({ type: 'error', text: `Not saved: ${reason}` });
+      setStatus({ type: 'error', text: `Not saved (${sectionKey}): ${reason}` });
     } else {
-      setUnsaved(u => ({ ...u, [active]: false }));
-      setStatus({ type: 'ok', text: 'Saved! Refresh the site to see it live.' });
+      setUnsaved(current => {
+        const next = { ...current };
+        sectionsToSave.forEach(sectionKey => { next[sectionKey] = false; });
+        return next;
+      });
+      setStatus({ type: 'ok', text: 'All changes saved! Refresh the site to see them.' });
     }
   };
 
@@ -142,7 +189,7 @@ function Dashboard({ user }) {
 
           <div key={active} className="fields">
             {section.fields.map(f => (
-              <Field key={f.key} field={f} value={content[active][f.key]} onChange={v => setField(f.key, v)} />
+              <Field key={f.key} field={f} value={content[active][f.key]} onChange={(v, change) => setField(f.key, v, change)} projectCategoryOptions={content.categories?.projectCategories || []} assetCategoryOptions={content.categories?.assetCategories || []} />
             ))}
           </div>
 
@@ -150,7 +197,7 @@ function Dashboard({ user }) {
             {status && <span className={status.type === 'error' ? 'error' : 'ok'}>{status.text}</span>}
             {!status && unsaved[active] && <span className="muted">You have unsaved changes</span>}
             <button className="btn" onClick={save} disabled={saving || !unsaved[active]}>
-              {saving ? 'Saving…' : `Save ${section.title}`}
+              {saving ? 'Saving…' : 'Save changes'}
             </button>
           </div>
         </main>

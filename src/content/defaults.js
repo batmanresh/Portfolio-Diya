@@ -4,6 +4,32 @@
 // the saved version is used instead.
 
 const defaults = {
+  categories: {
+    projectCategories: ['Education Marketing','F&B Marketing','Event Marketing','Real Estate Marketing','Hospitality Marketing','Lifestyle Marketing','Brand Strategy','Social Media Marketing','Content Marketing','Campaign Marketing','Digital Advertising','Influencer Marketing','Experiential Marketing','Product Marketing','Lead Generation','Creative Direction'],
+    assetCategories: ['Brand Storytelling','Campaign Creative','Social Content','Influencer Content','Event & Experiential','Product Storytelling','Community & Engagement','Promotional Content','Performance & Lead Generation'],
+  },
+  showcase: {
+    topLeft: 'THE CREATIVE JOURNAL',
+    topRight: 'A rotating edit of selected work',
+    kicker: 'A closer look at the work',
+    titleLineOne: 'Ideas in',
+    titleLineTwo: 'good company.',
+    intro: 'Campaigns, films and visual stories made with curiosity, intention and a little bit of play.',
+    bgColor: '#f2eef8',
+    textColor: '#30283d',
+    accentColor: '#c86f83',
+    cardColor: '#e4ddeb',
+    footerLeft: 'A mix of strategy, storytelling & making',
+    footerRight: 'Keep scrolling to explore',
+    items: [
+      { id:'show-01', title:'Ai-cha · Campaign film', category:'Brand world / F&B', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4', type:'video', shape:'wide' },
+      { id:'show-02', title:'Product story / Chocolate', category:'Product storytelling', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4', type:'video', shape:'portrait' },
+      { id:'show-03', title:'Mango campaign cut', category:'Social-first creative', src:'https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4', type:'video', shape:'square' },
+      { id:'show-04', title:'Campus stories', category:'Education / Community', src:'/assets/asset_04.mp4', type:'video', shape:'wide' },
+      { id:'show-05', title:'Visual storytelling', category:'Creative direction', src:'/assets/asset_08.mp4', type:'video', shape:'portrait' },
+    ],
+  },
+
   hero: {
     eyebrow: 'Diya Shrestha — Social Media & Brand Strategist · Dubai, UAE',
     intro: "From brand positioning to TikTok growth to full GTM execution, I've done it for global and local brands across Nepal. I'm looking to bring that to a team full-time.",
@@ -38,7 +64,7 @@ const defaults = {
         cover: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=90',
         summary: 'Full-funnel marketing for a global F&B brand entering Nepal — positioning, paid ads, in-store activation, and social content that actually converted.',
         result: '80–90 quality leads generated. Full numbers updating soon.',
-        subcats: ['Ad Campaigns', 'Content', 'Brand Strategy'],
+        subcats: ['F&B Marketing', 'Brand Strategy', 'Social Media Marketing', 'Campaign Marketing'],
         videos: [
           { href: 'https://www.instagram.com/p/C_x3o3HtBPi/', preview: '/assets/previews/fnb-1.mp4', orientation: 'landscape', caption: 'F&B Campaign — Cut 01', tags: ['Ad Campaigns', 'Content', 'Brand Strategy'] },
           { href: 'https://www.instagram.com/p/DAEAdrytoil/', preview: '/assets/previews/fnb-2.mp4', orientation: 'landscape', caption: 'F&B Campaign — Cut 02', tags: ['Content', 'Brand Strategy'] },
@@ -52,7 +78,7 @@ const defaults = {
         cover: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=90',
         summary: 'Built the complete social and content engine for Herald College, Islington College, and Kavya School simultaneously — TikTok growth, ad direction, storyboarding, and reels production.',
         result: 'Millions of organic TikTok views across all three institutions.',
-        subcats: ['Campaign Marketing', 'Brand Strategy', 'Experiential Marketing', 'Influencer Marketing', 'Ad Campaigns', 'Promotional Marketing', 'Lead Generation'],
+        subcats: ['Education Marketing', 'Social Media Marketing', 'Content Marketing', 'Campaign Marketing', 'Digital Advertising', 'Influencer Marketing', 'Lead Generation'],
         videos: [
           { href: 'https://www.instagram.com/tv/Ca1N3OwFzRA/', preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/v1782164687/education1_jxvtic.mp4', orientation: 'landscape', caption: 'Honoring the Women Who Built This Place', tags: ['Campaign Marketing', 'Brand Strategy', 'Experiential Marketing'] },
           { href: 'https://www.instagram.com/p/CxqHwsjN7Fg/', preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/v1782164681/education2_wtky2j.mp4', orientation: 'landscape', caption: 'The Unboxing That Sold the Story', tags: ['Influencer Marketing', 'Brand Strategy', 'Ad Campaigns'] },
@@ -71,7 +97,7 @@ const defaults = {
         cover: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=90',
         summary: 'From the first floral detail to the headline act — self-shot photography, on-site content, and the brand strategy holding it all together.',
         result: 'Consistent brand presence across every event format — intimate ceremonies to full-scale productions.',
-        subcats: ['Experiential Marketing', 'Brand Strategy', 'Campaign Marketing', 'Engagement Strategy', 'Promotional Marketing', 'Entertainment Marketing', 'Ad Campaigns'],
+        subcats: ['Event Marketing', 'Experiential Marketing', 'Brand Strategy', 'Campaign Marketing', 'Social Media Marketing', 'Content Marketing'],
         videos: [
           { href: 'https://www.instagram.com/p/DU25tpnk59x/', preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/v1782164695/events1_ihussq.mp4', orientation: 'landscape', caption: 'The Ritual Before the Vows', tags: ['Experiential Marketing', 'Brand Strategy', 'Campaign Marketing'] },
           { href: 'https://www.instagram.com/p/DWJPq32TC0C/', preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/v1782164693/events3_axq7zy.mp4', orientation: 'portrait', caption: 'A Quiet Moment, Captured Loud', tags: ['Experiential Marketing', 'Engagement Strategy', 'Campaign Marketing'] },
@@ -89,7 +115,7 @@ const defaults = {
         cover: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1200&q=90',
         summary: 'Brand identity and social content for a real estate brand — visual guidelines, content system, and social strategy across platforms.',
         result: 'Cohesive brand language across all digital and physical touchpoints.',
-        subcats: ['Brand Strategy', 'Content'],
+        subcats: ['Real Estate Marketing', 'Brand Strategy', 'Content Marketing', 'Social Media Marketing'],
         videos: [
           { href: 'https://www.instagram.com/p/DCzbZLqAlRa/', preview: 'https://res.cloudinary.com/dvhs1dbxh/video/upload/v1782164710/realstate1_simcef.mp4', orientation: 'landscape', caption: 'Where the Right Buyer Sees Themselves', tags: ['Brand Strategy', 'Content'] },
           { href: 'https://www.instagram.com/p/DC8MnOAN4ZI/', preview: '/assets/previews/re-2.mp4', orientation: 'landscape', caption: 'The Space Before the Sale', tags: ['Brand Strategy', 'Content'] },
@@ -102,7 +128,7 @@ const defaults = {
         cover: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&q=90',
         summary: 'Social media strategy and reels content engine for a design agency — brand voice, content calendar, and platform consistency.',
         result: 'Consistent reels output and measurable engagement lift.',
-        subcats: ['Content', 'Brand Strategy'],
+        subcats: ['Creative Direction', 'Brand Strategy', 'Content Marketing', 'Social Media Marketing'],
         videos: [],
       },
       {

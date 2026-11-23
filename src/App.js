@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React,{useEffect,useState} from 'react';
 import Hero from './components/Hero';
 import WorkCollage from './components/WorkCollage';
 import About from './components/About';
@@ -6,110 +6,27 @@ import Work from './components/Work';
 import Results from './components/Results';
 import Contact from './components/Contact';
 
-export default function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll > 0) setScrollProgress((window.scrollY / totalScroll) * 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // LEAN DATA ARRAY: No asset paths here anymore
-  const campaigns = [
-    {
-      id: "camp-01",
-      title: "Ai-cha Nepal",
-      category: "Brand Strategy & GTM",
-      timeline: "2024",
-      tagline: "National Marketing Manager · Global Brand Entry"
-    },
-    {
-      id: "camp-02",
-      title: "ING Group / Herald College",
-      category: "TikTok & Social Growth",
-      timeline: "2023",
-      tagline: "Social Strategy · Millions of Views"
-    },
-    {
-      id: "camp-03",
-      title: "Naamche & Utopia",
-      category: "Brand & Content",
-      timeline: "2023 — 2024",
-      tagline: "Social Media Strategy & Creative Direction"
-    }
-  ];
-
-  const menuItems = [
-    { label: 'About', href: '#about' },
-    { label: 'Work', href: '#work' },
-    { label: 'Experience', href: '#resume' },
-    { label: 'Contact', href: '#contact' }
-  ];
-
-  return (
-    <div style={{ boxSizing: 'border-box', margin: 0, padding: 0, backgroundColor: '#fbfbfa' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
-        html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; background-color: #fbfbfa; -webkit-font-smoothing: antialiased; overflow-x: hidden; color: #1c1d21; }
-        .nav-link-item { position: relative; padding: 6px 0; display: inline-block; }
-        .nav-link-item::after {
-          content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
-          background-color: #F472B6; transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .nav-link-item:hover::after { width: 100%; }
-        .nav-link-item:hover { color: #1c1d21 !important; }
-        @media (max-width: 768px) { .desktop-nav { display: none !important; } .mobile-menu-btn { display: flex !important; } }
-        @media (min-width: 769px) { .mobile-menu-btn { display: none !important; } }
-      `}</style>
-
-      <div style={{ position: 'fixed', top: 0, left: 0, width: `${scrollProgress}%`, height: '2px', backgroundColor: '#F472B6', zIndex: 1100, transition: 'width 0.1s ease-out' }} />
-
-      <header style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: 'rgba(251, 251, 250, 0.95)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', zIndex: 1000, borderBottom: '1px solid #e8e8e3', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 8%' }}>
-        <a href="#hero" style={{ textDecoration: 'none' }}>
-          <div style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '22px', fontWeight: '400', letterSpacing: '-0.5px', color: '#1c1d21' }}>
-            diya<span style={{ fontStyle: 'italic', fontWeight: '500', color: '#F472B6' }}>shr.</span>
-          </div>
-        </a>
-
-        <nav className="desktop-nav" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
-          {menuItems.map((item, idx) => (
-            <a key={idx} href={item.href} className="nav-link-item" style={{ fontSize: '13px', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', letterSpacing: '0.3px', color: '#555752', textDecoration: 'none', fontWeight: '400', transition: 'color 0.2s' }}>{item.label}</a>
-          ))}
-          <a href="#contact" style={{ fontSize: '12px', fontWeight: '500', color: '#111111', textDecoration: 'none', padding: '10px 22px', border: '1px solid #111111', borderRadius: '20px', letterSpacing: '0.3px', transition: 'all 0.25s ease', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }} onMouseEnter={e => { e.target.style.backgroundColor = '#F472B6'; e.target.style.borderColor = '#F472B6'; e.target.style.color = '#fff'; }} onMouseLeave={e => { e.target.style.backgroundColor = 'transparent'; e.target.style.borderColor = '#111111'; e.target.style.color = '#111111'; }}>Hire Me</a>
-        </nav>
-
-        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '5px', padding: '4px' }}>
-          <span style={{ width: '22px', height: '1px', backgroundColor: '#1c1d21', display: 'block', transition: 'all 0.3s ease', transform: mobileMenuOpen ? 'rotate(45deg) translate(4px, 4px)' : 'none' }} />
-          <span style={{ width: '22px', height: '1px', backgroundColor: '#1c1d21', display: 'block', opacity: mobileMenuOpen ? 0 : 1, transition: 'all 0.3s ease' }} />
-          <span style={{ width: '22px', height: '1px', backgroundColor: '#1c1d21', display: 'block', transition: 'all 0.3s ease', transform: mobileMenuOpen ? 'rotate(-45deg) translate(4px, -4px)' : 'none' }} />
-        </button>
-      </header>
-
-      {mobileMenuOpen && (
-        <div style={{ position: 'fixed', top: '64px', left: 0, right: 0, backgroundColor: 'rgba(251, 251, 250, 0.98)', backdropFilter: 'blur(20px)', zIndex: 999, borderBottom: '1px solid #E8E8E3', padding: '24px 8%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {menuItems.map((item, idx) => (
-            <a key={idx} href={item.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '18px', color: '#1c1d21', textDecoration: 'none', fontFamily: '"Times New Roman", serif', fontWeight: '300', letterSpacing: '-0.3px' }}>{item.label}</a>
-          ))}
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '500', color: '#F472B6', textDecoration: 'none', fontFamily: '-apple-system, sans-serif', marginTop: '8px' }}>Hire Me →</a>
-        </div>
-      )}
-
-      <main style={{ paddingTop: '62px' }}>
-        <Hero />
-        <WorkCollage campaigns={campaigns} />
-        <About />
-        <div id="production-deep-dive">
-          <Work />
-        </div>
-        <Results />
-        <Contact />
-      </main>
-    </div>
-  );
+export default function App(){
+ const [progress,setProgress]=useState(0),[menu,setMenu]=useState(false);
+ useEffect(()=>{const onScroll=()=>{const max=document.documentElement.scrollHeight-window.innerHeight;setProgress(max>0?window.scrollY/max*100:0)};window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll)},[]);
+ const links=[['About','#about'],['Selected work','#work'],['Experience','#resume'],['Contact','#contact']];
+ return <div className="portfolio-shell">
+  <style>{`
+   .site-progress{position:fixed;z-index:1200;top:0;left:0;height:4px;background:#ec4f9b;transition:width .12s;box-shadow:none}
+   .site-nav{height:78px;position:fixed;z-index:1100;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,6vw,88px);background:rgba(255,246,250,.94);backdrop-filter:blur(18px);border-bottom:1px solid #f0c9dc}
+   .site-logo{font:500 23px var(--display);text-decoration:none;letter-spacing:.01em}.site-logo span{color:#ec4f9b}
+   .site-links{display:flex;align-items:center;gap:clamp(16px,2.5vw,34px)}.site-links a{font:600 10px var(--sans);text-transform:uppercase;letter-spacing:1px;text-decoration:none;color:#725f68;transition:color .2s,transform .2s}.site-links a:hover{color:#ff2993;transform:translateY(-2px)}
+   .site-hire{padding:12px 20px;border-radius:999px;background:#35152d;color:white!important;box-shadow:none;border-radius:2px}.site-hire:hover{background:#b85f82!important;color:white!important}
+   .site-menu{display:none;border:0;background:#35152d;color:white;border-radius:2px;width:42px;height:42px;font-size:20px}
+   .site-mobile{position:fixed;z-index:1090;top:78px;left:0;right:0;padding:22px 26px 28px;background:#fff6fa;border-bottom:1px solid #f0c9dc;display:grid;gap:18px}.site-mobile a{text-decoration:none;font:800 13px var(--sans);letter-spacing:1px;text-transform:uppercase}
+   @media(max-width:720px){.site-links{display:none}.site-menu{display:block}}
+  `}</style>
+  <div className="site-progress" style={{width:progress+'%'}}/>
+  <header className="site-nav"><a className="site-logo" href="#hero">diya<span>shr.</span> <small style={{font:'9px var(--sans)',letterSpacing:2,color:'#a88c9b'}}>PORTFOLIO</small></a>
+   <nav className="site-links">{links.map(([label,href])=><a key={href} href={href}>{label}</a>)}<a className="site-hire" href="#contact">Let’s talk ↗</a></nav>
+   <button className="site-menu" aria-label="Toggle navigation" onClick={()=>setMenu(v=>!v)}>{menu?'×':'☰'}</button>
+  </header>
+  {menu&&<nav className="site-mobile">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setMenu(false)}>{label}</a>)}<a href="#contact" onClick={()=>setMenu(false)}>Let’s talk ↗</a></nav>}
+  <main style={{paddingTop:78}}><Hero/><WorkCollage/><About/><Work/><Results/><Contact/></main>
+ </div>
 }

@@ -1,301 +1,53 @@
 import React from 'react';
+import {getContent} from '../content/content';
 
-export default function WorkCollage({ campaigns }) {
+const isVideo=src=>/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/');
+function ShowcaseMedia({item}) {
+ const src=item.src||item.preview||item.url;
+ const video=item.type==='video'||(item.type!=='image'&&isVideo(src));
+ return video
+  ? <video src={src} poster={item.thumbnail||undefined} muted loop autoPlay playsInline preload="metadata" aria-label={item.title||'Featured campaign film'}/>
+  : <img src={item.thumbnail||src} alt={item.alt||item.title||'Featured creative work'} loading="lazy"/>;
+}
 
-  // EASY MANAGEMENT CENTRAL: All 9 slots live here
-  const assetGrid = {
-    // Index 0 (Ai-cha Nepal) - Grouped together
-    0: [
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/vanilla_gpieo7.mp4",          // Slot 1: Widescreen Hero Showpiece
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164677/chocolate_crunch_upa4kd.mp4", // Slot 2: Tall Floating Specimen
-      "https://res.cloudinary.com/dvhs1dbxh/video/upload/q_auto,f_auto/v1782164715/mango_i1j4t1.mp4"             // Slot 3: Square Floating Specimen
-    ],
-    // Index 1 (ING Group)
-    1: [
-      "/assets/asset_04.mp4",         // Slot 4: Widescreen Hero
-      "/assets/asset_05.mp4",         // Slot 5: Tall Floating
-      "/assets/asset_06.mp4"          // Slot 6: Square Floating
-    ],
-    // Index 2 (Naamche & Utopia)
-    2: [
-      "/assets/asset_07.mp4",         // Slot 7: Widescreen Hero
-      "/assets/asset_08.mp4",         // Slot 8: Tall Floating
-      "/assets/asset_09.mp4"          // Slot 9: Square Floating
-    ]
-  };
-
-  const handleNodeMouseMove = (e) => {
-    const currentTarget = e.currentTarget;
-    const rect = currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    currentTarget.style.setProperty('--mouse-x', x);
-    currentTarget.style.setProperty('--mouse-y', y);
-  };
-
-  const handleNodeMouseLeave = (e) => {
-    const currentTarget = e.currentTarget;
-    currentTarget.style.setProperty('--mouse-x', 0);
-    currentTarget.style.setProperty('--mouse-y', 0);
-  };
-
-  const renderMedia = (src, altString) => {
-    if (!src) return <div style={{ width: '100%', height: '100%', backgroundColor: '#1c1e22' }} />;
-
-    const isVideo =
-      src.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) ||
-      src.includes("video") ||
-      src.includes("chocolate_crunch") ||
-      src.includes("mango") ||
-      src.includes("vanilla") ||
-      src.includes("asset_");
-
-    // Custom positioning presets to make sure vertical videos don't lose their subject matter when filling the frames
-    let objectPosition = 'center center';
-    if (src.includes("mango")) {
-      objectPosition = 'center 30%'; // Adjusts the crop point so the main focus stays perfectly in frame
-    } else if (src.includes("vanilla")) {
-      objectPosition = 'center center';
-    }
-
-    const assetStyles = {
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-      objectPosition: objectPosition,
-      transition: 'transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)',
-      pointerEvents: 'none'
-    };
-
-    if (isVideo) {
-      return <video src={src} autoPlay loop muted playsInline preload="none" style={assetStyles} />;
-    }
-    return <img src={src} alt={altString} loading="lazy" style={assetStyles} />;
-  };
-
-  const renderList = campaigns || [];
-
-  return (
-    <section 
-      id="visual-lookbook" 
-      style={{ 
-        backgroundColor: '#131518', 
-        position: 'relative', 
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
-      }}
-    >
-      {/* ARCHITECTURAL CORNER CROP MARKS */}
-      <div style={{ position: 'absolute', top: '40px', left: '40px', width: '16px', height: '16px', borderTop: '1px solid #2c2e35', borderLeft: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', top: '40px', right: '40px', width: '16px', height: '16px', borderTop: '1px solid #2c2e35', borderRight: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', bottom: '40px', left: '40px', width: '16px', height: '16px', borderBottom: '1px solid #2c2e35', borderLeft: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-      <div style={{ position: 'absolute', bottom: '40px', right: '40px', width: '16px', height: '16px', borderBottom: '1px solid #2c2e35', borderRight: '1px solid #2c2e35', pointerEvents: 'none', zIndex: 10 }} />
-
-      {/* TOP CREATIVE NAVIGATION RAIL */}
-      <div style={{ width: '100%', padding: '0 60px', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'absolute', top: '44px', left: 0, zIndex: 10 }}>
-        <span style={{ fontSize: '10px', fontFamily: 'monospace', letterSpacing: '3px', color: '#eaeaea', fontWeight: '600' }}>
-          FEATURED SHOWCASE
-        </span>
-        <span style={{ fontSize: '10px', fontFamily: 'monospace', letterSpacing: '1px', color: '#6c6f7d', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          Swipe to explore <span className="pink-brand-pulse" />
-        </span>
-      </div>
-
-      {/* BOTTOM BRAND ROW */}
-      <div style={{ position: 'absolute', bottom: '40px', left: '80px', zIndex: 10, fontFamily: 'monospace', fontSize: '9px', color: '#6c6f7d', letterSpacing: '2px' }}>
-        SELECTED MARKETING CAMPAIGNS // SERIES 01
-      </div>
-
-      {/* MASTER HORIZONTAL LINE TRACK */}
-      <div 
-        className="master-horizontal-line"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          overscrollBehaviorX: 'contain', 
-          padding: '0 12vw', 
-          boxSizing: 'border-box',
-          gap: '180px', 
-          cursor: 'default',
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'smooth',
-          WebkitOverflowScrolling: 'touch',
-          zIndex: 2
-        }}
-      >
-        {renderList.map((campaign, index) => {
-          const currentAssets = assetGrid[index] || [];
-
-          return (
-            <div 
-              key={campaign.id}
-              onMouseMove={handleNodeMouseMove}
-              onMouseLeave={handleNodeMouseLeave}
-              className="filmstrip-project-node"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                position: 'relative',
-                height: '65vh',
-                width: '136vh', 
-                flexShrink: 0,
-                scrollSnapAlign: 'center',
-                '--mouse-x': 0,
-                '--mouse-y': 0
-              }}
-            >
-              
-              {/* ASSET 1: THE WIDESCREEN HERO SHOWPIECE */}
-              <div 
-                className="filmstrip-media-container asset-primary"
-                style={{
-                  width: '75vh', 
-                  height: '50vh', 
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  position: 'relative',
-                  boxShadow: '0 40px 90px -20px rgba(0, 0, 0, 0.6)', 
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  zIndex: 3
-                }}
-              >
-                {renderMedia(currentAssets[0], `${campaign.title} Main Look`)}
-                
-                <div style={{
-                  position: 'absolute',
-                  bottom: '32px',
-                  left: '32px',
-                  zIndex: 4,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '6px'
-                }}>
-                  <span style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '2px', color: 'rgba(255, 255, 255, 0.7)', textTransform: 'uppercase' }}>
-                    {campaign.category || 'Creative Direction'}
-                  </span>
-                  <h3 style={{ margin: 0, fontFamily: '"Playfair Display", "Didot", serif', fontWeight: '400', fontSize: '26px', letterSpacing: '0.5px', color: '#ffffff', textShadow: '0 4px 15px rgba(0,0,0,0.4)' }}>
-                    {campaign.title}
-                  </h3>
-                </div>
-              </div>
-
-              {/* ASSET 2: FLOATING TALL SPECIMEN */}
-              <div 
-                className="filmstrip-media-container asset-tall"
-                style={{
-                  width: '36vh',
-                  height: '48vh', 
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  boxShadow: '0 30px 70px -20px rgba(0, 0, 0, 0.5)',
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  position: 'absolute',
-                  left: '64vh', 
-                  bottom: '2vh',
-                  zIndex: 2
-                }}
-              >
-                {renderMedia(currentAssets[1], `${campaign.title} Alternate View`)}
-              </div>
-
-              {/* ASSET 3: FLOATING SQUARE SPECIMEN */}
-              <div 
-                className="filmstrip-media-container asset-square"
-                style={{
-                  width: '30vh',
-                  height: '30vh',
-                  overflow: 'hidden',
-                  backgroundColor: '#1c1e22',
-                  boxShadow: '0 30px 70px -20px rgba(0, 0, 0, 0.5)',
-                  border: '1px solid rgba(255, 255, 255, 0.02)',
-                  position: 'absolute',
-                  left: '94vh', 
-                  top: '2vh',
-                  zIndex: 4
-                }}
-              >
-                {renderMedia(currentAssets[2], `${campaign.title} Context`)}
-              </div>
-
-              {/* FIXED ALIGNMENT INDEX NUMBER END-CAP */}
-              <div 
-                style={{ 
-                  position: 'absolute', 
-                  right: 0, 
-                  height: '100%', 
-                  width: '6vh',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'flex-end',
-                  zIndex: 5
-                }}
-              >
-                <span 
-                  className="filmstrip-index-tag"
-                  style={{ 
-                    fontFamily: 'monospace', 
-                    fontSize: '11px', 
-                    color: '#2c2e35', 
-                    letterSpacing: '2px', 
-                    whiteSpace: 'nowrap', 
-                    fontWeight: '600',
-                    transform: 'rotate(-90deg) translateX(0px)',
-                    transformOrigin: 'center center',
-                    transition: 'color 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
-                  }}
-                >
-                  0{index + 1}
-                </span>
-              </div>
-
-            </div>
-          );
-        })}
-        
-        <div style={{ flex: '0 0 auto', width: '15vw', height: '1px' }} />
-      </div>
-
-      <style>{`
-        .master-horizontal-line::-webkit-scrollbar { display: none; }
-        .master-horizontal-line { -ms-overflow-style: none; scrollbar-width: none; }
-        .filmstrip-media-container { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease; }
-        
-        .filmstrip-project-node:hover .asset-primary {
-          transform: translateX(calc(var(--mouse-x) * 16px)) translateY(calc(var(--mouse-y) * 16px - 4px)) scale(1.005);
-          box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.75);
-        }
-        .filmstrip-project-node:hover .asset-tall {
-          transform: translateX(calc(var(--mouse-x) * 48px + 12px)) translateY(calc(var(--mouse-y) * 38px + 6px));
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.65);
-        }
-        .filmstrip-project-node:hover .asset-square {
-          transform: translateX(calc(var(--mouse-x) * 80px + 24px)) translateY(calc(var(--mouse-y) * 64px - 8px)) scale(1.01);
-          box-shadow: 0 45px 90px -15px rgba(0, 0, 0, 0.7);
-        }
-        .filmstrip-project-node:hover .filmstrip-index-tag { color: #ff8bb2 !important; transform: rotate(-90deg) translateY(-4px); }
-        .filmstrip-media-container img, .filmstrip-media-container video { transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .filmstrip-project-node:hover img, .filmstrip-project-node:hover video { transform: scale(1.04); }
-        .pink-brand-pulse { width: 5px; height: 5px; background-color: #ff8bb2; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px rgba(255, 139, 178, 0.6); animation: luxuryPulse 2.5s infinite ease-in-out; }
-        @keyframes luxuryPulse { 0% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.3; transform: scale(0.9); } }
-        
-        @media (max-width: 1024px) {
-          #visual-lookbook { height: auto !important; padding: 120px 24px 80px 24px !important; }
-          .master-horizontal-line { flex-direction: column !important; padding: 0 !important; gap: 100px !important; overflow-x: hidden !important; }
-          .filmstrip-project-node { flex-direction: column !important; width: 100% !important; height: auto !important; gap: 24px !important; scroll-snap-align: none !important; }
-          .filmstrip-media-container { position: relative !important; width: 100% !important; height: 340px !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; }
-          .filmstrip-project-node:hover .filmstrip-media-container { transform: none !important; }
-          .filmstrip-project-node > div:last-child { display: none !important; }
-        }
-      `}</style>
-    </section>
-  );
+export default function WorkCollage(){
+ const config=getContent('showcase');
+ const {items=[],topLeft='THE CREATIVE JOURNAL',topRight='A rotating edit of selected work',kicker='A closer look at the work',titleLineOne='Ideas in',titleLineTwo='good company.',intro='Campaigns, films and visual stories made with curiosity, intention and a little bit of play.',footerLeft='A mix of strategy, storytelling & making',footerRight='Keep scrolling to explore'}=config;
+ const pieces=items.filter(x=>x&&(x.src||x.preview||x.url));
+ const palette={background:config.bgColor||'#f2eef8',ink:config.textColor||'#30283d',accent:config.accentColor||'#c86f83',card:config.cardColor||'#e4ddeb'};
+ return <section id="visual-lookbook" className="showcase-journal" style={{'--journal-bg':palette.background,'--journal-ink':palette.ink,'--journal-accent':palette.accent,'--journal-card':palette.card}}>
+  <style>{`
+   .showcase-journal{position:relative;overflow:hidden;background:var(--journal-bg);color:var(--journal-ink);padding:clamp(64px,8vw,112px) 0 clamp(44px,6vw,76px);isolation:isolate}
+   .journal-inner{max-width:1600px;margin:auto;padding:0 clamp(20px,6vw,88px)}
+   .journal-top{display:flex;justify-content:space-between;gap:18px;padding-bottom:16px;border-bottom:1px solid color-mix(in srgb,var(--journal-ink) 20%,transparent);font:600 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
+   .journal-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,310px);align-items:end;gap:40px;padding:clamp(36px,5vw,64px) 0 clamp(34px,4vw,54px)}
+   .journal-kicker{font:600 10px var(--sans);letter-spacing:1.8px;text-transform:uppercase;color:var(--journal-accent)}
+   .journal-title{font:500 clamp(52px,8vw,108px)/.91 var(--display);letter-spacing:-.065em;margin:15px 0 0;max-width:900px}
+   .journal-title em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.07em;color:var(--journal-accent)}
+   .journal-intro{font:400 14px/1.85 var(--sans);max-width:300px;margin:0 0 5px;opacity:.78}
+   .journal-rail-wrap{position:relative}
+   .journal-rail{display:flex;gap:clamp(14px,2vw,26px);overflow-x:auto;overflow-y:hidden;padding:0 clamp(20px,6vw,88px) 28px;scroll-snap-type:x mandatory;scroll-padding-left:clamp(20px,6vw,88px);overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:var(--journal-accent) color-mix(in srgb,var(--journal-ink) 12%,transparent)}
+   .journal-rail::-webkit-scrollbar{height:5px}.journal-rail::-webkit-scrollbar-track{background:color-mix(in srgb,var(--journal-ink) 12%,transparent)}.journal-rail::-webkit-scrollbar-thumb{background:var(--journal-accent);border-radius:20px}
+   .journal-card{position:relative;flex:0 0 clamp(300px,55vw,760px);height:clamp(350px,52vw,620px);overflow:hidden;background:var(--journal-card);scroll-snap-align:start;isolation:isolate}
+   .journal-card:nth-child(3n+2){flex-basis:clamp(270px,39vw,540px);height:clamp(350px,45vw,540px);margin-top:clamp(18px,4vw,54px)}
+   .journal-card:nth-child(3n){flex-basis:clamp(300px,48vw,660px);height:clamp(350px,49vw,580px)}
+   .journal-card img,.journal-card video{width:100%;height:100%;display:block;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1);background:var(--journal-card)}
+   .journal-card:hover img,.journal-card:hover video{transform:scale(1.035)}
+   .journal-card:after{content:'';position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(24,18,34,.72));pointer-events:none}
+   .journal-card-index{position:absolute;z-index:2;top:18px;left:18px;padding:9px 11px;background:var(--journal-bg);color:var(--journal-ink);font:600 8px var(--sans);letter-spacing:1.2px}
+   .journal-card-copy{position:absolute;z-index:2;left:clamp(18px,3vw,34px);right:clamp(18px,3vw,34px);bottom:clamp(20px,3vw,34px);color:#fff}
+   .journal-card-copy small{display:block;font:600 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#f5dbe4;margin-bottom:10px}
+   .journal-card-copy strong{display:block;font:500 clamp(22px,3vw,38px)/1.06 var(--display);letter-spacing:-.035em;max-width:540px}
+   .journal-empty{min-height:360px;display:grid;place-items:center;flex:0 0 min(80vw,900px);border:1px dashed color-mix(in srgb,var(--journal-ink) 35%,transparent);font:400 15px var(--sans);opacity:.65}
+   .journal-bottom{display:flex;justify-content:space-between;gap:18px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--journal-ink) 20%,transparent);font:600 9px var(--sans);letter-spacing:1.2px;text-transform:uppercase;opacity:.7}
+   @media(max-width:720px){.journal-heading{grid-template-columns:1fr;gap:20px}.journal-intro{max-width:390px}.journal-card{flex-basis:82vw;height:112vw;max-height:520px}.journal-card:nth-child(3n+2){flex-basis:72vw;height:100vw;max-height:470px}.journal-card:nth-child(3n){flex-basis:78vw;height:108vw;max-height:500px}.journal-top,.journal-bottom{font-size:8px}.journal-top span:last-child,.journal-bottom span:last-child{max-width:44%;text-align:right}}
+   @media(prefers-reduced-motion:reduce){.journal-card img,.journal-card video{transition:none}}
+  `}</style>
+  <div className="journal-inner">
+   <div className="journal-top"><span>{topLeft}</span><span>{topRight}</span></div>
+   <div className="journal-heading"><div><div className="journal-kicker">{kicker}</div><h2 className="journal-title">{titleLineOne}<br/><em>{titleLineTwo}</em></h2></div><p className="journal-intro">{intro}</p></div>
+  </div>
+  <div className="journal-rail-wrap"><div className="journal-rail">{pieces.length?pieces.map((item,i)=><article className="journal-card" key={item.id||i}><ShowcaseMedia item={item}/><div className="journal-card-copy"><small>{item.category||'Creative direction'}</small><strong>{item.title||'A moment in the making'}</strong></div></article>):<div className="journal-empty">Your next favourite project will live here.</div>}</div></div>
+  <div className="journal-inner"><div className="journal-bottom"><span>{footerLeft}</span><span>{footerRight} &nbsp; ↗</span></div></div>
+ </section>;
 }

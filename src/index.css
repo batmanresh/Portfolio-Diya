@@ -1,150 +1,35 @@
-/* Custom Premium Design System Engine */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 90px;
-  background-color: #FAFAFA;
-}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{--ink:#35152d;--muted:#80566f;--pink:#ec4f9b;--pink-soft:#fbddeb;--cream:#fff6fa;--lilac:#eee2ff;--butter:#fff0c9;--display:'Outfit',Arial,sans-serif;--sans:'DM Sans',Arial,sans-serif;--serif:'Outfit',Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px;background:var(--cream)}body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}::selection{background:#e7c5d1;color:#30232b}img,video{max-width:100%}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* Quiet, consistent art direction for the supporting portfolio sections */
+#about{background:#f1e9ed!important;color:#30232b!important}
+#about h1,#about h2,#about h3,#about h4,#about strong,#resume h1,#resume h2,#resume h3,#resume h4,#contact h1,#contact h2,#contact h3{font-family:var(--display)!important;font-weight:400!important;letter-spacing:-.025em!important}
+#about p,#resume p,#contact p{font-family:var(--sans)!important}
+#about .skills-grid,#about .skill-cell{border-color:#dfcfd6!important}
+#resume{background:#fbf8f6!important;color:#30232b!important}
+#resume .metrics-padding{background:#35152d!important;border-color:#35152d!important}
+#resume .metrics-padding h2{color:#fff!important}
+#resume .metrics-padding [style*="color: rgb(128, 111, 123)"]{color:#d9a9bb!important}
+#resume .section-padding{background:#f3e9ed!important;border-color:#e6d7dd!important}
+#resume .testimonials-grid a{background:#fbf8f6!important;border:1px solid #e3d5db!important;border-radius:2px!important;box-shadow:none!important}
+#resume .testimonials-grid a:hover{border-color:#b85f82!important;transform:translateY(-3px)!important}
+#resume .timeline-line{background:#d9a9bb!important}#resume .experience-item{border-color:#e3d5db!important}
+#contact{background:#f1e5ea!important;border-color:#e6d7dd!important;color:#30232b!important}
+#contact button,#contact a{border-radius:2px!important}
+#contact button,#contact a{background:#fbf8f6!important;border:1px solid #dfcfd6!important}
+#contact button:hover,#contact a:hover{border-color:#b85f82!important;box-shadow:none!important;transform:translateY(-2px)!important}
+#contact h2 span,#contact h2 em{color:#b85f82!important}
+@media(max-width:600px){#resume .testimonials-grid{grid-template-columns:1fr!important}#resume .experience-grid{grid-template-columns:1fr!important}}
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'DM Sans', sans-serif;
-  background-color: #FAFAFA;
-  color: #1A1A1A;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1, h2, h3, .serif-font {
-  font-family: 'Playfair Display', serif !important;
-}
-
-/* Structural Layout Definitions */
-.nav-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 40;
-  padding: 24px 6%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(250, 250, 250, 0.85);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #EEEEEE;
-  box-sizing: border-box;
-}
-
-.nav-links {
-  display: flex;
-  gap: 32px;
-}
-
-.nav-links a {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #4B5563;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: #1A1A1A;
-}
-
-.section-padding {
-  padding: 120px 6%;
-  box-sizing: border-box;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 48px;
-}
-
-@media (min-width: 768px) {
-  .grid-2 { grid-template-columns: 1fr 1fr; }
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-}
-
-@media (min-width: 768px) {
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Premium Component Details */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 32px;
-  background-color: #1A1A1A;
-  color: #FFFFFF;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: transform 0.3s;
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  padding: 16px 32px;
-  border: 1px solid #D1D5DB;
-  color: #1A1A1A;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.btn-secondary:hover {
-  background-color: #F9FAFB;
-}
-
-.project-card {
-  background-color: #FFFFFF;
-  border: 1px solid #F3F4F6;
-  border-radius: 24px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 360px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-}
-
-.contact-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background-color: #FFFFFF;
-  border: 1px solid #F3F4F6;
-  border-radius: 16px;
-  text-decoration: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.contact-card:hover {
-  border-color: #F472B6;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-}
+/* Unified pink-forward creative direction */
+html,body{background:#fff6fa;color:#35152d}
+#about{background:#f9e4ef!important;color:#35152d!important}
+#resume{background:#fff6fa!important;color:#35152d!important}
+#resume .metrics-padding{background:#35152d!important;border-color:#35152d!important}
+#resume .section-padding{background:#f9e4ef!important;border-color:#edc5d9!important}
+#resume .testimonials-grid a{background:#fffafd!important;border-color:#edc5d9!important}
+#resume .timeline-line{background:#ec9bc2!important}
+#contact{background:#f7dce9!important;color:#35152d!important}
+#contact button,#contact a{background:#fffafd!important;border-color:#e9bfd4!important;color:#35152d!important}
+#contact h2 span,#contact h2 em{color:#df438f!important}

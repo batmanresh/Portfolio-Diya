@@ -1,15 +1,10 @@
 import { supabase } from '../supabaseClient';
 import defaults from './defaults';
 
-// Everything saved from the admin panel lives in one Supabase table,
-// `site_content`, with one row per section:
-//   section: 'hero' | 'about' | 'work' | 'results' | 'contact'
-//   data:    the section's content as JSON (same shape as defaults.js)
-
+// Each admin section is stored as a JSON row in site_content.
+// Saved content overrides defaults, so existing project media remains compatible.
 let saved = {};
 
-// Called once before the site renders (see index.js).
-// If Supabase is slow or unreachable, the site falls back to defaults.
 export async function loadContent(timeoutMs = 3000) {
   const request = supabase.from('site_content').select('section, data');
   const timeout = new Promise(resolve => setTimeout(() => resolve({ data: null }), timeoutMs));
@@ -22,7 +17,6 @@ export async function loadContent(timeoutMs = 3000) {
   }
 }
 
-// Returns a section's content: saved values win, defaults fill any gaps.
 export function getContent(section) {
   return { ...defaults[section], ...saved[section] };
 }

@@ -1,680 +1,212 @@
-import React, { useState, useEffect } from 'react';
-import { getContent } from '../content/content';
+import React,{useEffect,useMemo,useState} from 'react';
+import {getContent} from '../content/content';
+const isVideo=(src,type)=>type==='video'||(type!=='image'&&(/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(String(src||'').split('?')[0])||String(src||'').includes('/video/upload/')));
+const srcOf=item=>item.src||item.preview||item.url||'';
+const EMPTY_CATEGORY_OPTIONS=[];
+function Media({item}){const src=srcOf(item),video=isVideo(src,item.type);return <div className={'case-media '+(item.orientation==='portrait'?'portrait':item.orientation==='square'?'square':'landscape')}>{video?<video src={src} poster={item.thumbnail||undefined} controls autoPlay muted loop playsInline preload="auto"/>:<img src={src} alt={item.caption||item.title||'Campaign creative'} loading="lazy"/>}{video&&<span className="case-play-tag">VIDEO ↗</span>}</div>}
+function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
+ const [filter,setFilter]=useState('All'),media=project.assets||[],tags=[...new Set(media.flatMap(x=>x.tags||[]).filter(Boolean))],shown=filter==='All'?media:media.filter(x=>(x.tags||[]).includes(filter)),number=String(index+1).padStart(2,'0');
+ useEffect(()=>{const old=document.body.style.overflow;document.body.style.overflow='hidden';const key=e=>{if(e.key==='Escape')onClose();if(e.key==='ArrowRight')onNext();if(e.key==='ArrowLeft')onPrevious()};window.addEventListener('keydown',key);return()=>{document.body.style.overflow=old;window.removeEventListener('keydown',key)}},[onClose,onNext,onPrevious]);
+ return <div className="case-page" role="dialog" aria-modal="true" aria-label={project.label+' case study'}>
+ <style>{`
+ .case-page{--hot:#b85f82;--ink:#30232b;position:fixed;z-index:1600;inset:0;overflow-y:auto;background:#fbf8f6;color:var(--ink);font-family:var(--sans)}
+ .case-masthead{height:68px;position:sticky;top:0;z-index:8;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,76px);background:#fbf8f6ed;backdrop-filter:blur(14px);border-bottom:1px solid #e8dce0}
+ .case-masthead button,.case-bottom-nav button{border:1px solid #d9cbd1;background:transparent;color:#30232b;border-radius:2px;padding:10px 15px;font:600 10px var(--sans);cursor:pointer;transition:background .2s,color .2s}
+ .case-masthead button:hover,.case-bottom-nav button:hover{background:#30232b;color:white}
+ .case-masthead-brand{font:500 20px var(--display);letter-spacing:-.5px}.case-masthead-brand span{color:#b85f82}
+ .case-page-inner{max-width:1500px;margin:auto;padding:0 clamp(18px,5vw,76px) 90px}
+ .case-topline{display:flex;justify-content:space-between;gap:14px;padding:17px 0;border-bottom:1px solid #e8dce0;font:600 9px var(--sans);letter-spacing:1.3px;text-transform:uppercase;color:#8b747f}
+ .case-intro{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:28px;align-items:end;padding:clamp(50px,8vw,105px) 0 36px}
+ .case-eyebrow,.case-section-label{font:600 10px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#a75a78}
+ .case-intro h1{font:500 clamp(46px,7vw,100px)/.98 var(--display);letter-spacing:-.045em;margin:18px 0 22px;max-width:1000px}
+ .case-intro-deck{font:400 clamp(16px,1.8vw,21px)/1.55 var(--sans);color:#796a72;max-width:760px;margin:0}
+ .case-facts{display:grid;gap:14px;padding-bottom:6px}.case-fact{border-top:1px solid #d9cbd1;padding-top:8px}.case-fact small{display:block;font:600 8px var(--sans);letter-spacing:1.3px;text-transform:uppercase;color:#8b747f;margin-bottom:5px}.case-fact strong{font:600 12px var(--sans);color:#432f3a}
+ .case-hero-image{position:relative;min-height:280px;height:clamp(300px,55vw,700px);overflow:hidden;background:#eee5e8;border-radius:2px}.case-hero-image img{width:100%;height:100%;object-fit:cover;display:block}.case-hero-folio{position:absolute;right:18px;bottom:18px;background:#fbf8f6;color:#30232b;padding:10px 13px;border-radius:2px;font:600 9px var(--sans);letter-spacing:1px}
+ .case-brief{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;padding:clamp(55px,8vw,100px) 4%;border-bottom:1px solid #e8dce0}
+ .case-brief h2,.case-process h2,.case-gallery-heading h2{font:500 clamp(34px,4.5vw,60px)/1.02 var(--display);letter-spacing:-.035em;margin:13px 0;color:#30232b}.case-brief h2 i,.case-process h2 i,.case-gallery-heading h2 i{color:#b85f82;font-style:italic}
+ .case-brief-copy{font:400 14px/1.9 var(--sans);color:#796a72;max-width:650px;margin:0}.case-brief-pull{font:italic 500 clamp(21px,2.5vw,32px)/1.3 var(--display);color:#a75a78;margin:25px 0 0;max-width:680px}
+ .case-process{padding:clamp(55px,8vw,100px) 4%;border-bottom:1px solid #e8dce0}.case-process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:32px;border-top:1px solid #d9cbd1;border-bottom:1px solid #d9cbd1}
+ .case-process-step{padding:20px 16px;background:transparent;border-right:1px solid #d9cbd1;min-height:100px;transition:background .2s}.case-process-step:last-child{border-right:0}.case-process-step:hover{background:#f3e9ed}.case-process-step small{font:600 9px var(--sans);letter-spacing:1px;color:#a75a78}.case-process-step strong{display:block;font:500 18px var(--display);margin-top:16px}.case-process-note{font:400 13px/1.9 var(--sans);color:#796a72;max-width:780px;margin:22px 0 0}
+ .case-gallery{padding:clamp(60px,8vw,105px) 0 25px}.case-gallery-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 2% 28px}.case-gallery-heading h2{margin-bottom:0}.case-gallery-count{font:600 9px var(--sans);letter-spacing:1.2px;color:#8b747f;white-space:nowrap}
+ .case-filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 2% 25px}.case-filters button{border:1px solid #d9cbd1;background:transparent;border-radius:2px;padding:8px 13px;color:#65545d;font:500 10px var(--sans);cursor:pointer;transition:.2s}.case-filters button.active,.case-filters button:hover{background:#30232b;color:white;border-color:#30232b}
+ .case-gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(14px,2vw,26px);align-items:start}.case-gallery-item{min-width:0;animation:casePop .4s both;animation-delay:calc(var(--i)*40ms)}.case-gallery-item.portrait{grid-column:span 4}.case-gallery-item.landscape{grid-column:span 8}.case-gallery-item.square{grid-column:span 6}
+ .case-media{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:2px;padding:0;background:#eee5e8;box-shadow:none}.case-media.portrait{aspect-ratio:3/4}.case-media.landscape{aspect-ratio:16/10}.case-media.square{aspect-ratio:1}.case-media img,.case-media video{display:block;width:100%;height:100%;object-fit:contain;background:#f1ecee;border-radius:0}
+ .case-play-tag{position:absolute;right:14px;top:14px;background:#fbf8f6;color:#30232b;border-radius:2px;padding:8px 11px;font:600 8px var(--sans);letter-spacing:1px;pointer-events:none}
+ .case-caption{display:flex;justify-content:space-between;gap:12px;padding:12px 2px 0;margin-top:9px;border-top:1px solid #e8dce0}.case-caption strong{font:600 12px/1.4 var(--sans);color:#432f3a}.case-caption span{font:600 8px var(--sans);letter-spacing:.8px;text-transform:uppercase;color:#8b747f;text-align:right}
+ .case-empty{grid-column:1/-1;padding:65px 20px;text-align:center;background:#f3e9ed;font:500 16px var(--sans);color:#795f6b}
+ .case-impact{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;background:#f0e5e9;padding:clamp(35px,6vw,70px);margin-top:65px;border-radius:2px;box-shadow:none}.case-impact h2{font:500 clamp(32px,4vw,52px)/1.05 var(--display);margin:12px 0;color:#30232b}.case-impact p{font:400 14px/1.9 var(--sans);color:#62545b;margin:0}
+ .case-bottom-nav{display:flex;justify-content:space-between;align-items:center;gap:15px;border-top:1px solid #e8dce0;margin-top:75px;padding-top:22px}
+ @keyframes casePop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+ @media(max-width:760px){.case-intro{grid-template-columns:1fr;gap:24px}.case-facts{grid-template-columns:repeat(2,1fr)}.case-brief{grid-template-columns:1fr;gap:20px}.case-process-grid{grid-template-columns:repeat(2,1fr)}.case-process-step:nth-child(2){border-right:0}.case-process-step:nth-child(-n+2){border-bottom:1px solid #d9cbd1}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:span 6}.case-impact{grid-template-columns:1fr}}
+ @media(max-width:480px){.case-masthead{height:58px}.case-masthead button{padding:9px 12px;font-size:8px}.case-topline span:last-child{display:none}.case-facts{grid-template-columns:1fr 1fr}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:1/-1}.case-gallery-heading{align-items:start;flex-direction:column}.case-bottom-nav{align-items:flex-start;flex-direction:column}}
+ @media(prefers-reduced-motion:reduce){.case-gallery-item{animation:none}}
 
-// ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const T = {
-  bg:        '#FAF9F6',
-  bgAlt:     '#F4F3F0',
-  bgCard:    '#FFFFFF',
-  border:    '#E8E8E3',
-  pink:      '#F472B6',
-  text:      '#1c1d21',
-  textSub:   '#555752',
-  textMuted: '#9CA3AF',
-  overlay:   'rgba(250,249,246,0.97)',
+ .case-page{--hot:#ec4f9b;--ink:#35152d;background:#fff3f8;color:var(--ink)}
+ .case-masthead{background:rgba(255,243,248,.94);border-color:#f4c8dc}
+ .case-masthead button,.case-bottom-nav button{border-color:#e8b8d0;color:#35152d;border-radius:7px}
+ .case-masthead button:hover,.case-bottom-nav button:hover{background:#35152d;color:white}
+ .case-masthead-brand span{color:#ec4f9b}
+ .case-topline{border-color:#f1c5da;color:#a65a82}
+ .case-intro{grid-template-columns:minmax(0,1fr) 240px;gap:clamp(28px,5vw,70px);padding:clamp(60px,9vw,118px) 0 44px;align-items:end}
+ .case-eyebrow,.case-section-label{color:#d83e8a;letter-spacing:1.8px}
+ .case-intro h1{font:500 clamp(44px,6.8vw,92px)/1.04 var(--display);letter-spacing:-.025em;margin:20px 0 24px}
+ .case-intro-deck{font-size:clamp(16px,1.5vw,19px);line-height:1.7;color:#79536c}
+ .case-facts{gap:18px}.case-fact{border-color:#edc6d8;padding-top:11px}.case-fact small{color:#a65a82}.case-fact strong{color:#35152d;font-size:13px}
+ .case-hero-image{height:clamp(280px,54vw,720px);border-radius:10px;background:#f8dce9}
+ .case-hero-image img{object-fit:cover}
+ .case-hero-folio{background:#fff;color:#35152d;border-radius:6px}
+ .case-gallery{padding:clamp(76px,10vw,130px) 0 35px}
+ .case-gallery-heading{margin:0 0 36px;align-items:end}
+ .case-gallery-heading h2{font:500 clamp(36px,5vw,64px)/1.08 var(--display);letter-spacing:-.02em;color:#35152d}
+ .case-gallery-heading h2 i{color:#ec4f9b}
+ .case-gallery-count{color:#a65a82}
+ .case-filters{margin:0 0 30px;gap:10px}
+ .case-filters button{border-color:#edc1d7;color:#8d4e70;border-radius:30px;padding:10px 16px}
+ .case-filters button.active,.case-filters button:hover{background:#ec4f9b;color:white;border-color:#ec4f9b}
+ .case-gallery-grid{gap:clamp(18px,2.4vw,34px);align-items:start}
+ .case-gallery-item{animation:none}
+ .case-gallery-item.portrait{grid-column:span 4}.case-gallery-item.landscape{grid-column:span 8}.case-gallery-item.square{grid-column:span 6}
+ .case-media{border-radius:9px;background:#f7e3ed}
+ .case-media.portrait{aspect-ratio:4/5}.case-media.landscape{aspect-ratio:16/10}.case-media.square{aspect-ratio:1}
+ .case-media img,.case-media video{background:#f7e3ed}
+ .case-play-tag{background:#fff;color:#35152d;border-radius:30px}
+ .case-caption{border-color:#edc6d8;padding:13px 3px 0}.case-caption strong{color:#35152d}.case-caption span{color:#a65a82}
+ .case-empty{background:#fce1ee;color:#8d4e70;border-radius:10px}
+ .case-impact{background:#f7d9e8;border-radius:12px;color:#35152d}
+ .case-impact h2{color:#35152d}
+ .case-impact p{color:#79536c}
+ .case-bottom-nav{border-color:#edc6d8}
+ @media(max-width:760px){.case-intro{grid-template-columns:1fr;gap:28px}.case-facts{grid-template-columns:repeat(3,1fr)}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:span 6}}
+ @media(max-width:480px){.case-facts{grid-template-columns:1fr 1fr}.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:1/-1}}
+
+ .work-heading h2{font:400 clamp(52px,8vw,108px)/1.08 var(--display);letter-spacing:-.012em}
+ .work-heading h2 span{transform:none;color:#b85f82}
+ .work-heading p{font-weight:400}
+ .project-card-info h3{font:400 clamp(26px,3.2vw,40px)/1.12 var(--display);letter-spacing:0}
+ .project-card-visual{border-radius:2px;box-shadow:none}
+ .project-card-sticker{border-radius:2px;transform:none;background:#fbf8f6;color:#30232b;font-weight:600}
+ .project-card:hover .project-card-sticker{transform:none;background:#b85f82;color:white}
+ .project-card-spark{display:none}
+ .project-card-index{border-radius:2px}
+ .project-card-info{border-top:1px solid #e5d5dc}
+ .work-filters button{border-radius:2px;box-shadow:none!important}
+ .work-filters button.active{background:#b85f82;border-color:#b85f82;box-shadow:none}
+ .case-intro h1{font:400 clamp(42px,6vw,82px)/1.06 var(--display);letter-spacing:0}
+ .case-intro{padding:clamp(38px,6vw,72px) 0 28px}
+ .case-hero-image{height:clamp(260px,48vw,620px)}
+ .case-gallery{padding:clamp(42px,6vw,76px) 0 25px}
+ .case-gallery-heading h2{font-weight:400;letter-spacing:0}
+ .case-masthead-brand{font-weight:400;letter-spacing:.015em}
+ .case-gallery-item{animation:none}
+ .case-media{border-radius:2px}
+ @media(max-width:760px){.case-gallery-item.portrait,.case-gallery-item.landscape,.case-gallery-item.square{grid-column:span 6}}
+`}</style>
+ <header className="case-masthead"><button onClick={onClose}>← All projects</button><div className="case-masthead-brand">diya<span>✳</span>studio</div><button onClick={onClose}>Close ×</button></header>
+ <div className="case-page-inner"><div className="case-topline"><span>THE CREATIVE FILES / {number}</span><span>Strategy · Storytelling · Execution</span></div>
+ <section className="case-intro"><div><div className="case-eyebrow">PROJECT {number} / {project.client||'Independent work'}</div><h1>{project.label}</h1><p className="case-intro-deck">{project.headline}</p></div><div className="case-facts"><div className="case-fact"><small>Brand</small><strong>{project.client||'Independent project'}</strong></div><div className="case-fact"><small>My role</small><strong>{project.role||'Strategy & creative'}</strong></div><div className="case-fact"><small>Focus</small><strong>{(project.subcats||[]).slice(0,2).join(' · ')||'Brand storytelling'}</strong></div></div></section>
+ <div className="case-hero-image">{project.cover&&<img src={project.cover} alt={project.label+' campaign cover'}/>}<span className="case-hero-folio">THE BIG IDEA {number}</span></div>
+ 
+ <section className="case-gallery"><div className="case-gallery-heading"><div><div className="case-section-label">THE CAMPAIGN ARCHIVE</div><h2>The work. <i>In focus.</i></h2></div><span className="case-gallery-count">{String(shown.length).padStart(2,'0')} ASSETS</span></div>
+ {tags.length>0&&<div className="case-filters"><button className={filter==='All'?'active':''} onClick={()=>setFilter('All')}>All work</button>{tags.map(tag=><button key={tag} className={filter===tag?'active':''} onClick={()=>setFilter(tag)}>{tag}</button>)}</div>}
+ <div className="case-gallery-grid">{shown.length?shown.map((item,i)=><article key={item.id||i} className={'case-gallery-item '+(item.orientation==='portrait'?'portrait':item.orientation==='square'?'square':'landscape')} style={{'--i':i}}><Media item={item}/>{(item.caption||item.title)&&<div className="case-caption"><strong>{item.caption||item.title}</strong><span>{(item.tags||[]).slice(0,2).join(" / ")}</span></div>}{item.href&&<a href={item.href} target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:9,font:'800 9px var(--sans)',letterSpacing:1,textTransform:'uppercase',color:'#ff2993',textDecoration:'none'}}>See it in the wild ↗</a>}</article>):<div className="case-empty">Additional creative from this project will be added here.</div>}</div></section>
+ {project.result&&<section className="case-impact"><div><div className="case-section-label">THE OUTCOME</div><h2>The result.</h2></div><p>{project.result}</p></section>}
+ <nav className="case-bottom-nav"><button onClick={onPrevious}>← Previous project</button><span className="case-gallery-count">{number} / {String(total).padStart(2,'0')}</span><button onClick={onNext}>Next project →</button></nav></div></div>;
+}
+const assetTagAliases={
+ 'Ad Campaigns':'Campaign Creative',
+ 'Campaign Marketing':'Campaign Creative',
+ 'Content':'Social Content',
+ 'Content Marketing':'Social Content',
+ 'Brand Strategy':'Brand Storytelling',
+ 'Experiential Marketing':'Event & Experiential',
+ 'Entertainment Marketing':'Event & Experiential',
+ 'Engagement Strategy':'Community & Engagement',
+ 'Promotional Marketing':'Promotional Content',
+ 'Lead Generation':'Performance & Lead Generation',
+ 'Influencer Marketing':'Influencer Content',
 };
+const normalizeAssetTags=(tags,allowed)=>[...new Set((tags||[]).map(tag=>assetTagAliases[tag]||tag).filter(tag=>allowed.includes(tag)))];
+function ProjectCard({project,index,onOpen,style}){const count=project.assets.length;return <button style={style} className={'project-card card-tone-'+index%5} onClick={onOpen} aria-label={'Open '+project.label+' case study'}><div className="project-card-visual">{project.cover?<img src={project.cover} alt={project.label+' project'} loading="lazy"/>:<div className="project-card-placeholder">✳</div>}<span className="project-card-index">NO. {String(index+1).padStart(2,'0')}</span><span className="project-card-sticker">OPEN THE STORY ↗</span><span className="project-card-spark">✳</span></div><div className="project-card-info"><div><small>{project.client||'Selected project'} · {project.subcats?.[0]||'Creative direction'}</small><h3>{project.label}</h3><p>{project.headline}</p></div><span className="project-card-count">{String(count).padStart(2,'0')}<small>ASSETS</small></span></div></button>}
+export default function Work(){
+ const [filter,setFilter]=useState('All'),[active,setActive]=useState(null);
+ const categorySettings=useMemo(()=>getContent('categories'),[]);
+ const projectCategoryOptions=categorySettings.projectCategories||EMPTY_CATEGORY_OPTIONS;
+ const assetCategoryOptions=categorySettings.assetCategories||EMPTY_CATEGORY_OPTIONS;
+ const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{
+  const raw=Array.isArray(project.videos)?project.videos:(Array.isArray(project.media)?project.media:[]);
+  const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||'',tags:normalizeAssetTags(item.tags,assetCategoryOptions)}));
+  const categories=[...new Set((project.subcats||[]).filter(category=>projectCategoryOptions.includes(category)))];
+  return {...project,subcats:categories,index:i,assets};
+ }),[projectCategoryOptions,assetCategoryOptions]);
+ const categories=['All',...projectCategoryOptions.filter(category=>projects.some(project=>(project.subcats||[]).includes(category)))],visible=filter==='All'?projects:projects.filter(p=>(p.subcats||[]).includes(filter));
+ const open=project=>{setActive(project);setFilter('All')},activeIndex=active?projects.findIndex(p=>p.id===active.id):-1;
+ const move=direction=>{if(projects.length)setActive(projects[(activeIndex+direction+projects.length)%projects.length])};
+ return <section id="work" className="work-playground"><style>{`
+ .work-playground{--hot:#ff2993;--ink:#291522;background:#fff8fc;color:var(--ink);padding:clamp(76px,9vw,130px) clamp(18px,6vw,88px) clamp(90px,10vw,145px);position:relative;overflow:hidden}
+ .work-playground:before{content:'WORK!';position:absolute;right:-.04em;top:55px;font:900 clamp(130px,25vw,360px)/.8 var(--display);letter-spacing:-.1em;color:#ffedf5;pointer-events:none;transform:rotate(-8deg)}
+ .work-playground-inner{max-width:1440px;margin:auto;position:relative;z-index:1}.work-topline{display:flex;justify-content:space-between;gap:15px;border-bottom:2px solid #f4c4dc;padding-bottom:14px;font:800 9px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#a66b8a}
+ .work-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;padding:45px 0 35px}.work-kicker{font:800 10px var(--sans);letter-spacing:2px;text-transform:uppercase;color:#ff2993}
+ .work-heading h2{font:900 clamp(58px,10vw,140px)/.82 var(--display);letter-spacing:-.09em;margin:15px 0 0;max-width:900px}.work-heading h2 span{color:#ff2993;display:inline-block;transform:rotate(-5deg)}
+ .work-heading p{font:600 14px/1.7 var(--sans);color:#886c7d;max-width:250px;margin:0 0 7px}
+ .work-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:17px 0 30px;border-top:1px solid #f4c4dc}.work-filters-label{font:800 8px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:#b27a98;margin-right:6px}
+ .work-filters button{border:1px solid #f1c1da;background:white;border-radius:30px;padding:9px 15px;color:#9b5e7d;font:700 10px var(--sans);cursor:pointer;transition:transform .2s,background .2s,color .2s}.work-filters button:hover{transform:translateY(-3px) rotate(-2deg)}.work-filters button.active{background:#ff2993;border-color:#ff2993;color:white;box-shadow:0 5px 0 #f5b5d5}
+ .work-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(22px,3vw,42px);align-items:start}.project-card{grid-column:span 6;display:block;text-align:left;min-width:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;animation:projectIn .65s both;animation-delay:calc(var(--i)*70ms)}
+ .project-card:nth-child(3n+2){margin-top:clamp(45px,7vw,95px)}.project-card:nth-child(3n+3){grid-column:3/span 8}
+ .project-card-visual{height:clamp(260px,39vw,550px);position:relative;overflow:hidden;border-radius:24px;background:#ffd4e8;isolation:isolate;box-shadow:9px 9px 0 var(--tone)}
+ .card-tone-0{--tone:#ff2993}.card-tone-1{--tone:#c9a5ff}.card-tone-2{--tone:#ffc65c}.card-tone-3{--tone:#ff8dba}.card-tone-4{--tone:#9fd9d1}
+ .project-card:nth-child(3n+2) .project-card-visual{height:clamp(250px,33vw,460px)}.project-card:nth-child(3n+3) .project-card-visual{height:clamp(260px,36vw,500px)}
+ .project-card-visual:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#24152270);pointer-events:none}
+ .project-card-visual img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .6s;filter:saturate(1.12)}.project-card:hover .project-card-visual img{transform:scale(1.07) rotate(1deg);filter:saturate(1.35)}
+ .project-card-placeholder{height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#ffd2e8,#e6d8ff);font:900 100px var(--display);color:#ff2993}
+ .project-card-index{position:absolute;z-index:2;top:16px;left:17px;background:#fff8fc;color:#291522;border-radius:30px;padding:9px 12px;font:800 9px var(--sans);letter-spacing:1px}
+ .project-card-sticker{position:absolute;z-index:2;right:16px;bottom:16px;background:#ff2993;color:white;border-radius:30px;padding:12px 16px;font:800 9px var(--sans);letter-spacing:.8px;transform:rotate(-4deg);transition:transform .25s,background .25s}.project-card:hover .project-card-sticker{transform:rotate(2deg) scale(1.08);background:#291522}
+ .project-card-spark{position:absolute;z-index:2;right:18px;top:14px;font-size:34px;color:#fff;opacity:.9;transition:transform .5s}.project-card:hover .project-card-spark{transform:rotate(90deg) scale(1.25)}
+ .project-card-info{display:flex;justify-content:space-between;gap:16px;padding:15px 3px 0;margin-top:15px;border-top:2px solid #f2c6dc}.project-card-info small{font:800 8px var(--sans);letter-spacing:1.2px;text-transform:uppercase;color:#b27a98}
+ .project-card-info h3{font:900 clamp(25px,3.4vw,43px)/.98 var(--display);letter-spacing:-.055em;margin:8px 0 7px}.project-card-info p{font:600 13px/1.5 var(--sans);color:#8b6e7e;margin:0}
+ .project-card-count{font:900 17px var(--display);color:#ff2993;text-align:right;white-space:nowrap;padding-top:5px}.project-card-count small{display:block;margin-top:4px;font:800 8px var(--sans);letter-spacing:1px}
+ .work-empty{grid-column:1/-1;padding:65px 20px;text-align:center;background:#ffe6f2;border-radius:22px;color:#995474;font:700 16px var(--sans)}
+ @keyframes projectIn{from{opacity:0;transform:translateY(24px) rotate(1deg)}to{opacity:1;transform:none}}
+ @media(max-width:760px){.work-heading{display:block}.work-heading p{margin-top:18px}.project-card,.project-card:nth-child(3n+3){grid-column:span 6}.project-card:nth-child(3n+2){margin-top:35px}.project-card:nth-child(3n+3){margin-top:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(220px,55vw,390px)}}
+ @media(max-width:500px){.work-topline span:last-child{display:none}.work-grid{grid-template-columns:1fr;gap:36px}.project-card,.project-card:nth-child(3n+3){grid-column:1;margin:0}.project-card-visual,.project-card:nth-child(3n+2) .project-card-visual,.project-card:nth-child(3n+3) .project-card-visual{height:clamp(270px,90vw,420px)}.project-card-info h3{font-size:30px}}
+ @media(prefers-reduced-motion:reduce){.project-card{animation:none}}
 
-// ─── CLOUDINARY HELPER ────────────────────────────────────────────────────────
-// Injects Cloudinary transformation params into a URL so Cloudinary
-// automatically serves a compressed, correctly formatted file.
-// Only applied to Cloudinary URLs — local /assets/ paths are untouched.
-function cdnOpt(url, opts = 'q_auto,f_auto') {
-  if (!url || !url.includes('cloudinary.com')) return url;
-  return url.replace('/upload/', `/upload/${opts}/`);
-}
+ .work-playground{background:#fff2f8;color:#35152d;padding:clamp(100px,12vw,170px) clamp(22px,7vw,100px) clamp(110px,13vw,175px)}
+ .work-playground:before{content:'';right:-5vw;top:70px;color:#fbe0ec;transform:none;letter-spacing:-.06em}
+ .work-topline{border-color:#edc1d7;color:#a65a82;padding-bottom:18px;letter-spacing:1.7px}
+ .work-heading{padding:clamp(60px,8vw,110px) 0 clamp(50px,6vw,80px);gap:clamp(35px,7vw,100px)}
+ .work-kicker{color:#d83e8a;letter-spacing:2.2px}
+ .work-heading h2{font:500 clamp(56px,8.5vw,116px)/1.1 var(--display);letter-spacing:-.025em;margin:22px 0 0;max-width:950px}
+ .work-heading h2 span{color:#ec4f9b;transform:none}
+ .work-heading p{font:400 15px/1.85 var(--sans);color:#80566f;max-width:300px;margin:0 0 8px}
+ .work-filters{padding:22px 0 38px;border-color:#edc1d7;gap:10px}
+ .work-filters-label{color:#a65a82;letter-spacing:1.7px}
+ .work-filters button{border:1px solid #edc1d7;background:#fffafd;border-radius:30px;padding:11px 17px;color:#8d4e70;font:600 11px var(--sans)}
+ .work-filters button:hover{transform:translateY(-2px);background:#fce0ed}
+ .work-filters button.active{background:#ec4f9b;border-color:#ec4f9b;color:#fff;box-shadow:none}
+ .work-grid{column-gap:clamp(24px,4vw,58px);row-gap:clamp(55px,7vw,100px)}
+ .project-card{animation:projectIn .55s both;animation-delay:calc(var(--i)*60ms)}
+ .project-card:nth-child(3n+2){margin-top:clamp(45px,7vw,90px)}
+ .project-card-visual{border-radius:10px;background:#f8dce9;box-shadow:none}
+ .project-card-visual:after{inset:60% 0 0;background:linear-gradient(transparent,#28132980)}
+ .project-card-visual img{filter:saturate(1.04)}
+ .project-card:hover .project-card-visual img{transform:scale(1.035);filter:saturate(1.12)}
+ .project-card-index{background:#fff8fb;color:#35152d;border-radius:30px;font-weight:600}
+ .project-card-sticker{background:#fff8fb;color:#35152d;border-radius:30px;font-weight:600;padding:11px 16px}
+ .project-card:hover .project-card-sticker{background:#ec4f9b;color:#fff}
+ .project-card-info{border-color:#edc1d7;padding:20px 3px 0;margin-top:17px}
+ .project-card-info small{color:#a65a82;letter-spacing:1.35px}
+ .project-card-info h3{font:500 clamp(27px,3.3vw,43px)/1.12 var(--display);letter-spacing:-.015em;color:#35152d;margin:12px 0 9px}
+ .project-card-info p{font:400 13px/1.7 var(--sans);color:#80566f}
+ .project-card-count{font:600 18px var(--display);color:#ec4f9b}
+ .work-empty{background:#fce1ee;border-radius:10px;color:#8d4e70}
+ @media(max-width:760px){.work-heading{padding:54px 0 45px}.work-heading p{margin-top:25px}.work-grid{row-gap:48px}}
+ @media(max-width:500px){.work-playground{padding-top:85px}.work-grid{gap:42px}.project-card-info{padding-top:15px}}
 
-function buildAssets(items, prefix) {
-  return items.map((item, i) => ({
-    id:          `${prefix}${i + 1}`,
-    caption:     item.caption,
-    href:        item.href,
-    preview:     cdnOpt(item.preview, 'q_auto,f_auto,vc_auto'),
-    orientation: item.orientation || 'landscape',
-    tags:        item.tags || [],
-    subcat:      item.tags ? item.tags[0] : 'Content',
-  }));
-}
-
-// ─── GLOBAL VIDEO COORDINATOR ─────────────────────────────────────────────────
-const _vis = new Map(), _subs = new Set();
-function reportVisibility(id, r) {
-  r <= 0 ? _vis.delete(id) : _vis.set(id, r);
-  let win = null, best = 0;
-  _vis.forEach((v, k) => { if (v > best) { best = v; win = k; } });
-  _subs.forEach(cb => cb(win));
-}
-function subscribeActive(cb) { _subs.add(cb); return () => _subs.delete(cb); }
-
-// ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
-const CSS = `
-  @keyframes shimmer {
-    0%   { background-position: -400% center; }
-    100% { background-position:  400% center; }
-  }
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(10px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  @keyframes pulseDot {
-    0%,100% { opacity:0.3; transform:scale(0.8); }
-    50%      { opacity:1;   transform:scale(1.2); }
-  }
-  @keyframes spinRing {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  /* Shimmer — pink-cream sweep matching brand palette */
-  .sk {
-    background: linear-gradient(
-      90deg,
-      #F2EEF2 0%, #FAF0F7 30%, #FFE8F5 50%, #FAF0F7 70%, #F2EEF2 100%
-    );
-    background-size: 400% 100%;
-    animation: shimmer 1.8s ease-in-out infinite;
-  }
-
-  /* Cards */
-  .ind-tab {
-    font-family: monospace; font-size: 10px; letter-spacing: 1.5px;
-    text-transform: uppercase; padding: 8px 18px; border-radius: 24px;
-    cursor: pointer; border: 1px solid; transition: all 0.22s ease;
-    background: transparent; white-space: nowrap;
-  }
-  .industry-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-    gap: 12px; margin-top: 36px;
-  }
-  .ind-card {
-    position: relative; overflow: hidden; cursor: pointer;
-    min-height: 280px; border-radius: 6px;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  }
-  .ind-card:hover { box-shadow: 0 20px 50px rgba(0,0,0,0.14); }
-
-  /* Gallery */
-  .gl { animation: fadeUp 0.3s ease forwards; }
-  .gl-l::-webkit-scrollbar { width:2px; }
-  .gl-l::-webkit-scrollbar-thumb { background: var(--c); }
-  .gl-r::-webkit-scrollbar { width:3px; }
-  .gl-r::-webkit-scrollbar-track { background:#F4F3F0; }
-  .gl-r::-webkit-scrollbar-thumb { background:#DDD8DD; border-radius:2px; }
-  .gl-r::-webkit-scrollbar-thumb:hover { background: var(--c); }
-
-  .gl-close {
-    background: transparent; border: 1px solid #E8E8E3;
-    color: #555752; font-family: monospace; font-size: 10px;
-    letter-spacing: 1.5px; cursor: pointer; padding: 9px 20px;
-    border-radius: 24px; transition: all 0.2s ease; white-space: nowrap;
-  }
-  .gl-close:hover { border-color: var(--c); color: var(--c); background: var(--cl); }
-
-  /* Subcat filter — left panel vertical */
-  .sc-menu { display:flex; flex-direction:column; gap:3px; }
-  .sc-item {
-    font-family:monospace; font-size:10px; letter-spacing:0.5px;
-    text-transform:uppercase; text-align:left;
-    padding:9px 12px; border-radius:6px; cursor:pointer;
-    border:1px solid transparent; background:transparent;
-    transition:all 0.18s ease; width:100%; color:#9CA3AF;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .sc-item:hover { color:#555752; background:rgba(244,114,182,0.05); border-color:#E8E8E3; }
-  .sc-item.on { background:var(--cl); border-color:var(--c); color:var(--c); font-weight:600; }
-
-  /* Top bar horizontal subcat tabs */
-  .sc-tab {
-    font-family:monospace; font-size:9px; letter-spacing:1px;
-    text-transform:uppercase; padding:5px 12px; border-radius:16px;
-    cursor:pointer; border:1px solid; transition:all 0.18s; background:transparent;
-    white-space:nowrap; flex-shrink:0;
-  }
-  .sc-tabs { display:flex; gap:5px; overflow-x:auto; }
-  .sc-tabs::-webkit-scrollbar { display:none; }
-
-  /* Video masonry */
-  .vg { column-count:3; column-gap:12px; padding:20px 22px; }
-  .vg > div { margin-bottom:12px; width:100%; display:inline-block; break-inside:avoid; }
-
-  /* Mobile */
-  @media (max-width:900px) { .vg { column-count:2; column-gap:10px; padding:14px 16px; } .vg > div { margin-bottom:10px; } }
-  @media (max-width:800px) {
-    .gl { grid-template-columns:1fr !important; }
-    .gl-l { display:none !important; }
-    .gl-mob { display:flex !important; }
-    .vg { column-count:2; }
-  }
-  @media (min-width:801px) { .gl-mob { display:none !important; } }
-  @media (max-width:480px) { .vg { column-count:1 !important; } }
-  @media (max-width:560px) { .industry-grid { grid-template-columns:1fr; } .ind-tab { font-size:9px; padding:6px 12px; } }
-`;
-
-// ─── VIDEO CARD ───────────────────────────────────────────────────────────────
-function VideoCard({ asset, color }) {
-  const [hovered,     setHovered]     = useState(false);
-  const [tagsOpen,    setTagsOpen]    = useState(false);
-  const [failed,      setFailed]      = useState(false);
-  const [active,      setActive]      = useState(false);
-  const [appeared,    setAppeared]    = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false); // true once first frame available
-  const vRef  = React.useRef(null);
-  const wRef  = React.useRef(null);
-  const cid   = React.useRef(asset.id).current;
-  const isP   = asset.orientation === 'portrait';
-  const extra = asset.tags ? asset.tags.slice(1) : [];
-  //const cl    = color + '18';
-
-  // Fade-in on first appearance
-  React.useEffect(() => {
-    const el = wRef.current; if (!el) return;
-    const o = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setAppeared(true); o.disconnect(); }
-    }, { threshold: 0.05 });
-    o.observe(el); return () => o.disconnect();
-  }, []);
-
-  // Report to coordinator
-  React.useEffect(() => {
-    const el = wRef.current; if (!el) return;
-    const steps = Array.from({ length: 11 }, (_, i) => i / 10);
-    const o = new IntersectionObserver(
-      ([e]) => reportVisibility(cid, e.intersectionRatio),
-      { threshold: steps }
-    );
-    o.observe(el);
-    return () => { o.disconnect(); reportVisibility(cid, 0); };
-  }, [cid]);
-
-  React.useEffect(() => subscribeActive(id => setActive(id === cid)), [cid]);
-
-  React.useEffect(() => {
-    const v = vRef.current; if (!v) return;
-    (hovered || active) ? v.play().catch(() => {}) : v.pause();
-  }, [hovered, active]);
-
-  // Shimmer placeholder — shown before card is near viewport (lazy load)
-  if (!appeared) {
-    return (
-      <div ref={wRef}>
-        <div style={{ width:'100%', paddingTop: isP ? '177.78%' : '56.25%', position:'relative', borderRadius:'10px', overflow:'hidden' }}>
-          <div className="sk" style={{ position:'absolute', inset:0 }} />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div ref={wRef} style={{ animation:'fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards' }}>
-      <a href={asset.href} target="_blank" rel="noopener noreferrer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onClick={e => {
-          const touch = window.matchMedia('(hover:none)').matches;
-          if (extra.length && !tagsOpen && touch) { e.preventDefault(); setTagsOpen(true); }
-        }}
-        style={{
-          display:'block', textDecoration:'none', position:'relative',
-          borderRadius:'10px', overflow:'hidden',
-          border:`1px solid ${hovered ? color : '#E8E8E3'}`,
-          boxShadow: hovered ? `0 14px 36px ${color}28` : '0 2px 8px rgba(0,0,0,0.05)',
-          transition:'border-color 0.25s, box-shadow 0.25s, transform 0.25s',
-          transform: hovered ? 'translateY(-4px)' : 'none',
-          backgroundColor:'#F5EFF5',
-        }}
-      >
-        <div style={{ width:'100%', paddingTop: isP ? '177.78%' : '56.25%', position:'relative', overflow:'hidden' }}>
-          {/* Shimmer — shown ONLY while video is loading from Cloudinary.
-              Once the first frame is available (onLoadedData), shimmer fades out
-              and the video frame acts as a static poster when not playing. */}
-          {!failed && !videoLoaded && (
-            <div className="sk" style={{ position:'absolute', inset:0, zIndex:1 }} />
-          )}
-
-          {!failed ? (
-            <video ref={vRef}
-              src={asset.preview}
-              muted loop playsInline
-              preload="metadata"
-              onError={() => setFailed(true)}
-              onLoadedData={() => setVideoLoaded(true)}
-              style={{
-                position:'absolute', inset:0, width:'100%', height:'100%',
-                objectFit:'cover', zIndex:2,
-                opacity: videoLoaded ? 1 : 0,
-                transition:'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.4s',
-                transform: hovered ? 'scale(1.02)' : 'scale(1)',
-                filter: hovered ? 'brightness(1.06)' : 'brightness(1)',
-              }}
-            />
-          ) : (
-            /* Failed state — styled placeholder linking to Instagram */
-            <div style={{
-              position:'absolute', inset:0, zIndex:2,
-              background:`linear-gradient(135deg, #F5EEF5 0%, ${color}12 50%, #FAF5FA 100%)`,
-              display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'10px',
-            }}>
-              <div style={{ width:'40px', height:'40px', borderRadius:'50%', border:`1.5px solid ${color}50`, display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" opacity="0.7">
-                  <rect x="2" y="2" width="20" height="20" rx="5"/>
-                  <circle cx="12" cy="12" r="4"/>
-                  <circle cx="17.5" cy="6.5" r="0.8" fill={color} stroke="none"/>
-                </svg>
-              </div>
-              <span style={{ fontFamily:'monospace', fontSize:'8px', color:'#ADADAD', letterSpacing:'1px', textTransform:'uppercase' }}>
-                View on Instagram ↗
-              </span>
-            </div>
-          )}
-
-          {/* Gradient for text legibility — always on top of video */}
-          <div style={{
-            position:'absolute', inset:0, zIndex:3, pointerEvents:'none',
-            background:'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.18) 45%, transparent 100%)',
-          }} />
-
-          {/* Instagram icon — top right */}
-          <div style={{
-            position:'absolute', top:'10px', right:'10px', zIndex:5,
-            width:'26px', height:'26px', borderRadius:'50%',
-            background: hovered ? 'linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)' : 'rgba(255,255,255,0.9)',
-            backdropFilter:'blur(8px)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            transition:'all 0.25s', boxShadow:'0 1px 6px rgba(0,0,0,0.12)',
-          }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-              stroke={hovered ? 'white' : '#666'} strokeWidth="2.5">
-              <rect x="2" y="2" width="20" height="20" rx="5"/>
-              <circle cx="12" cy="12" r="4"/>
-              <circle cx="17.5" cy="6.5" r="0.8" fill={hovered ? 'white' : '#666'} stroke="none"/>
-            </svg>
-          </div>
-
-          {/* Primary tag + expandable tags — top left */}
-          <div
-            onClick={e => { e.preventDefault(); e.stopPropagation(); setTagsOpen(o => !o); }}
-            style={{
-              position:'absolute', top:'10px', left:'10px', right:'46px',
-              zIndex:5, display:'flex', flexWrap:'wrap', gap:'4px',
-              cursor: extra.length ? 'pointer' : 'default',
-            }}
-          >
-            <span style={{
-              backgroundColor: color, color:'#fff',
-              padding:'4px 10px', borderRadius:'20px',
-              fontFamily:'monospace', fontSize:'8px', letterSpacing:'0.5px', textTransform:'uppercase',
-              display:'inline-flex', alignItems:'center', gap:'4px',
-              boxShadow:`0 2px 6px ${color}44`,
-            }}>
-              {asset.subcat}
-              {extra.length > 0 && (
-                <span style={{ fontSize:'7px', backgroundColor:'rgba(255,255,255,0.28)', borderRadius:'8px', padding:'1px 5px' }}>
-                  {tagsOpen ? '−' : `+${extra.length}`}
-                </span>
-              )}
-            </span>
-            {tagsOpen && extra.map((t, i) => (
-              <span key={i} style={{
-                backgroundColor:'rgba(255,255,255,0.92)', color:'#555752',
-                padding:'4px 9px', borderRadius:'20px',
-                fontFamily:'monospace', fontSize:'7px', letterSpacing:'0.3px', textTransform:'uppercase',
-                animation:'fadeUp 0.18s ease forwards',
-                boxShadow:'0 1px 4px rgba(0,0,0,0.1)', backdropFilter:'blur(4px)',
-              }}>{t}</span>
-            ))}
-          </div>
-
-          {/* Caption — bottom, always above gradient */}
-          <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'14px', zIndex:4 }}>
-            <p style={{ margin:'0 0 3px', fontSize:'12px', color:'#fff', fontWeight:'500', lineHeight:1.3, textShadow:'0 1px 4px rgba(0,0,0,0.5)' }}>
-              {asset.caption}
-            </p>
-            <span style={{ fontSize:'9px', fontFamily:'monospace', letterSpacing:'0.5px', transition:'color 0.2s', color: hovered ? color : 'rgba(255,255,255,0.6)' }}>
-              Watch on Instagram ↗
-            </span>
-          </div>
-        </div>
-      </a>
-    </div>
-  );
-}
-
-
-// ─── GALLERY OVERLAY ─────────────────────────────────────────────────────────
-function Gallery({ industry, onClose }) {
-  const { color, subcats, assets } = industry;
-  const [activeSubcat, setActiveSubcat] = useState('All');
-  const cl = color + '15';
-
-  const allSubcats = subcats.length > 0 ? ['All', ...subcats] : [];
-  const filtered = activeSubcat === 'All'
-    ? assets
-    : assets.filter(a => a.tags && a.tags.includes(activeSubcat));
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    const k = e => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', k);
-    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', k); };
-  }, [onClose]);
-
-
-  return (
-    <div className="gl" style={{
-      position:'fixed', inset:0, zIndex:9999,
-      backgroundColor: T.bg,
-      display:'grid', gridTemplateColumns:'340px 1fr',
-      '--c': color, '--cl': cl,
-    }}>
-      <style>{CSS}</style>
-
-      {/* ── LEFT PANEL (desktop) ── */}
-      <div className="gl-l" style={{
-        backgroundColor: T.bgAlt, borderRight:`1px solid ${T.border}`,
-        overflowY:'auto', display:'flex', flexDirection:'column',
-        '--c': color, '--cl': cl,
-      }}>
-        <div style={{ padding:'32px 26px 0', flex:1 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'22px' }}>
-            <span style={{ fontFamily:'monospace', fontSize:'11px', color, fontWeight:'700', letterSpacing:'2px' }}>
-              {industry.index}
-            </span>
-            <div style={{ height:'1px', flex:1, backgroundColor: T.border }} />
-          </div>
-
-          <h2 style={{ margin:'0 0 4px', fontSize:'clamp(20px,2vw,26px)', fontWeight:'300', fontFamily:'"Times New Roman",Georgia,serif', color: T.text, lineHeight:1.2, letterSpacing:'-0.4px' }}>
-            {industry.label}
-          </h2>
-          {industry.role && (
-            <p style={{ margin:'0 0 3px', fontSize:'11px', color, fontFamily:'monospace', letterSpacing:'0.5px' }}>
-              {industry.client}
-            </p>
-          )}
-          <p style={{ margin:'0 0 18px', fontSize:'12px', color: T.textMuted, fontWeight:'300' }}>
-            {industry.role}
-          </p>
-          <p style={{ margin:'0 0 16px', fontSize:'13px', color: T.textSub, lineHeight:1.75, fontWeight:'300' }}>
-            {industry.summary}
-          </p>
-
-          {industry.result && (
-            <div style={{ padding:'12px 16px', backgroundColor: color + '10', borderLeft:`3px solid ${color}`, borderRadius:'0 6px 6px 0', marginBottom:'22px' }}>
-              <span style={{ fontSize:'9px', fontFamily:'monospace', color, letterSpacing:'1.5px', textTransform:'uppercase', display:'block', marginBottom:'5px' }}>Result</span>
-              <p style={{ margin:0, fontSize:'13px', color: T.text, lineHeight:1.6, fontWeight:'300' }}>{industry.result}</p>
-            </div>
-          )}
-
-          {allSubcats.length > 1 && (
-            <div style={{ marginBottom:'20px' }}>
-              <p style={{ margin:'0 0 10px', fontSize:'9px', fontFamily:'monospace', color: T.textMuted, letterSpacing:'2px', textTransform:'uppercase' }}>
-                Filter by type
-              </p>
-              <div className="sc-menu" style={{ '--c': color, '--cl': cl }}>
-                {allSubcats.map(cat => {
-                  const on = activeSubcat === cat;
-                  return (
-                    <button key={cat} className={`sc-item${on ? ' on' : ''}`}
-                      onClick={() => setActiveSubcat(cat)}
-                      style={{ '--c': color, '--cl': cl }}
-                    >
-                      <span>{cat}</span>
-                      {on && <span style={{ width:'5px', height:'5px', borderRadius:'50%', backgroundColor: color, flexShrink:0 }} />}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div style={{ height:'1px', backgroundColor: T.border, margin:'0 26px' }} />
-        <div style={{ padding:'16px 26px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px' }}>
-          <span style={{ fontFamily:'monospace', fontSize:'9px', color: T.textMuted, letterSpacing:'1.5px', textTransform:'uppercase' }}>
-            {filtered.length} clips
-          </span>
-          <button className="gl-close" style={{ '--c': color, '--cl': cl }} onClick={onClose}>✕ Close</button>
-        </div>
-      </div>
-
-      {/* ── RIGHT PANEL ── */}
-      <div className="gl-r" style={{ backgroundColor: T.bg, overflowY:'auto', position:'relative', '--c': color }}>
-
-        {/* Sticky top bar */}
-        <div style={{
-          position:'sticky', top:0, zIndex:5,
-          backgroundColor: T.overlay, backdropFilter:'blur(16px)',
-          borderBottom:`1px solid ${T.border}`,
-          padding:'11px 20px',
-          display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px',
-        }}>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px', minWidth:0, flexShrink:1 }}>
-            <span style={{ fontFamily:'monospace', fontSize:'10px', color, fontWeight:'700', flexShrink:0 }}>{industry.index}</span>
-            <span style={{ fontFamily:'monospace', fontSize:'9px', color: T.textMuted, letterSpacing:'1px', textTransform:'uppercase', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-              {industry.label}
-            </span>
-          </div>
-
-          {allSubcats.length > 1 && (
-            <div className="sc-tabs" style={{ flex:1 }}>
-              {allSubcats.map(cat => {
-                const on = activeSubcat === cat;
-                return (
-                  <button key={cat} className="sc-tab"
-                    onClick={() => setActiveSubcat(cat)}
-                    style={{ color: on ? '#fff' : T.textMuted, borderColor: on ? color : T.border, backgroundColor: on ? color : 'transparent' }}
-                  >{cat}</button>
-                );
-              })}
-            </div>
-          )}
-
-          <button className="gl-close" style={{ '--c': color, '--cl': cl, flexShrink:0 }} onClick={onClose}>✕</button>
-        </div>
-
-        {/* Mobile info block */}
-        <div className="gl-mob" style={{ flexDirection:'column', padding:'20px', borderBottom:`1px solid ${T.border}`, backgroundColor: T.bgAlt }}>
-          <p style={{ margin:'0 0 12px', fontSize:'13px', color: T.textSub, lineHeight:1.6, fontWeight:'300' }}>{industry.summary}</p>
-          {industry.result && (
-            <div style={{ padding:'10px 14px', backgroundColor: color + '10', borderLeft:`3px solid ${color}`, borderRadius:'0 4px 4px 0' }}>
-              <span style={{ fontSize:'9px', fontFamily:'monospace', color, letterSpacing:'1.5px', textTransform:'uppercase', display:'block', marginBottom:'4px' }}>Result</span>
-              <p style={{ margin:0, fontSize:'12px', color: T.text, lineHeight:1.55, fontWeight:'300' }}>{industry.result}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Video grid */}
-        {filtered.length > 0 ? (
-          <div className="vg">
-            {filtered.map(a => <VideoCard key={a.id} asset={a} color={color} />)}
-          </div>
-        ) : (
-          <div style={{ padding:'80px 20px', textAlign:'center' }}>
-            <p style={{ fontFamily:'monospace', fontSize:'10px', color: T.textMuted, letterSpacing:'2px', textTransform:'uppercase' }}>
-              No clips in this category yet
-            </p>
-          </div>
-        )}
-
-        <div style={{ padding:'48px 0', textAlign:'center', borderTop:`1px solid ${T.border}`, marginTop:'16px' }}>
-          <button className="gl-close" style={{ '--c': color, '--cl': cl }} onClick={onClose}>↑ Back to top · Close</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── INDUSTRY CARD ────────────────────────────────────────────────────────────
-function IndustryCard({ industry, onClick }) {
-  const [hovered,   setHovered]   = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const isEmpty = !industry.assets || industry.assets.length === 0;
-
-  return (
-    <div
-      className="ind-card"
-      onClick={() => onClick(industry)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ border:`1.5px solid ${hovered ? industry.color : T.border}` }}
-    >
-      {/* LAYER 1 — Shimmer (z:1) — visible while cover photo loads from Cloudinary */}
-      <div className="sk" style={{ position:'absolute', inset:0, zIndex:1, transition:'opacity 0.5s ease', opacity: imgLoaded ? 0 : 1 }} />
-
-      {/* LAYER 2 — Cover image (z:2) — fades in once loaded */}
-      <div style={{
-        position:'absolute', inset:0, zIndex:2,
-        opacity: imgLoaded ? 1 : 0,
-        transition:'opacity 0.5s ease, transform 1.8s cubic-bezier(0.16,1,0.3,1)',
-        transform: hovered ? 'scale(1.06)' : 'scale(1)',
-      }}>
-        <img src={industry.cover} alt="" loading="lazy"
-          onLoad={() => setImgLoaded(true)}
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-        />
-      </div>
-
-      {/* LAYER 3 — Gradient (z:3) — ALWAYS visible, ensures text legibility
-          whether we're showing the shimmer or the photo underneath */}
-      <div style={{
-        position:'absolute', inset:0, zIndex:3, pointerEvents:'none',
-        background:'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.32) 52%, rgba(0,0,0,0.06) 100%)',
-      }} />
-
-      {/* LAYER 4 — SOON badge (z:4) */}
-      {isEmpty && (
-        <div style={{
-          position:'absolute', top:'14px', right:'14px', zIndex:4,
-          backgroundColor:'rgba(255,255,255,0.9)', border:`1px solid ${T.border}`,
-          padding:'3px 9px', borderRadius:'10px',
-          fontFamily:'monospace', fontSize:'8px', color: T.textSub, letterSpacing:'1px',
-        }}>SOON</div>
-      )}
-
-      {/* LAYER 5 — Text (z:5) — ALWAYS on top, never hidden by shimmer or image */}
-      <div style={{ position:'absolute', inset:0, zIndex:5, display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'18px 20px' }}>
-        {/* Index number */}
-        <span style={{ fontFamily:'monospace', fontSize:'11px', color: industry.color, fontWeight:'700', letterSpacing:'2px', textShadow:'0 1px 4px rgba(0,0,0,0.5)' }}>
-          {industry.index}
-        </span>
-
-        {/* Bottom text block */}
-        <div>
-          {/* Category label above title */}
-          <span style={{ display:'block', fontFamily:'monospace', fontSize:'9px', color: industry.color, letterSpacing:'1.5px', textTransform:'uppercase', marginBottom:'6px', textShadow:'0 1px 3px rgba(0,0,0,0.4)', opacity:0.9 }}>
-            {/* subtle category tag */}
-          </span>
-
-          <h3 style={{
-            margin:'0 0 6px',
-            fontSize:'clamp(18px, 2vw, 23px)', fontWeight:'400',
-            fontFamily:'"Times New Roman", Georgia, serif',
-            color:'#ffffff', lineHeight:1.2, letterSpacing:'-0.2px',
-            textShadow:'0 2px 8px rgba(0,0,0,0.5)',
-          }}>
-            {industry.label}
-          </h3>
-
-          <p style={{ margin:'0 0 14px', fontSize:'12px', color:'rgba(255,255,255,0.68)', fontWeight:'300', lineHeight:1.5, textShadow:'0 1px 3px rgba(0,0,0,0.3)' }}>
-            {industry.headline}
-          </p>
-
-          {/* CTA pill — appears on hover */}
-          <div style={{ opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(6px)', transition:'all 0.3s cubic-bezier(0.16,1,0.3,1)' }}>
-            <span style={{
-              display:'inline-block', fontFamily:'monospace', fontSize:'10px',
-              color: isEmpty ? 'rgba(255,255,255,0.7)' : '#fff',
-              backgroundColor: isEmpty ? 'rgba(255,255,255,0.15)' : industry.color,
-              padding:'7px 18px', borderRadius:'20px', letterSpacing:'1px', textTransform:'uppercase',
-              boxShadow: isEmpty ? 'none' : `0 4px 16px ${industry.color}60`,
-              backdropFilter: isEmpty ? 'blur(4px)' : 'none',
-            }}>
-              {isEmpty ? 'Coming Soon' : 'Open Gallery ↗'}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── MAIN ─────────────────────────────────────────────────────────────────────
-export default function Work() {
-  const [activeFilter, setActiveFilter] = useState('ALL');
-  const [openGallery,  setOpenGallery]  = useState(null);
-
-  // Industries come from the admin panel; number and id them by position.
-  const INDUSTRIES = getContent('work').industries.map((ind, i) => ({
-    ...ind,
-    id:      ind.id || `industry-${i + 1}`,
-    index:   String(i + 1).padStart(2, '0'),
-    subcats: ind.subcats || [],
-    assets:  buildAssets(ind.videos || [], `${ind.id || i}-`),
-  }));
-
-  const displayed = activeFilter === 'ALL'
-    ? INDUSTRIES
-    : INDUSTRIES.filter(ind => ind.id === activeFilter);
-
-  return (
-    <section id="work" style={{ padding:'clamp(80px, 10vw, 140px) 8%', backgroundColor: T.bg }}>
-      <style>{CSS}</style>
-
-      <div style={{ maxWidth:'1300px', margin:'0 auto' }}>
-
-        {/* Section header */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'40px' }}>
-          <div>
-            <span style={{ fontSize:'11px', textTransform:'uppercase', letterSpacing:'2px', color: T.pink, display:'block', marginBottom:'14px', fontFamily:'monospace', fontWeight:'600' }}>
-              ✦ Selected Work
-            </span>
-            <h2 style={{ fontSize:'clamp(28px, 4vw, 46px)', fontWeight:'300', margin:0, fontFamily:'"Times New Roman", Times, Georgia, serif', color: T.text, letterSpacing:'-0.5px', lineHeight:1.2 }}>
-              Real brands. Measurable results.
-            </h2>
-          </div>
-          <p style={{ fontSize:'13px', color: T.textSub, fontWeight:'300', margin:0, maxWidth:'240px', lineHeight:1.6, textAlign:'right' }}>
-            Select an industry to see campaigns and video work.
-          </p>
-        </div>
-
-        {/* Industry filter tabs */}
-        <div style={{ display:'flex', gap:'6px', flexWrap:'wrap' }}>
-          <button className="ind-tab" onClick={() => setActiveFilter('ALL')}
-            style={{ color: activeFilter === 'ALL' ? '#fff' : T.textSub, borderColor: activeFilter === 'ALL' ? T.pink : T.border, backgroundColor: activeFilter === 'ALL' ? T.pink : 'transparent' }}>
-            All Industries
-          </button>
-          {INDUSTRIES.map(ind => {
-            const on = activeFilter === ind.id;
-            return (
-              <button key={ind.id} className="ind-tab" onClick={() => setActiveFilter(ind.id)}
-                style={{ color: on ? '#fff' : T.textSub, borderColor: on ? ind.color : T.border, backgroundColor: on ? ind.color : 'transparent' }}>
-                {ind.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Divider */}
-        <div style={{ marginTop:'28px', marginBottom:'4px', display:'flex', alignItems:'center', gap:'12px' }}>
-          <div style={{ width:'5px', height:'5px', borderRadius:'50%', backgroundColor: T.pink, flexShrink:0 }} />
-          <span style={{ fontFamily:'monospace', fontSize:'10px', color: T.textMuted, letterSpacing:'2px', textTransform:'uppercase' }}>
-            {activeFilter === 'ALL' ? `${INDUSTRIES.length} industries` : INDUSTRIES.find(i => i.id === activeFilter)?.label}
-          </span>
-          <div style={{ flex:1, height:'1px', backgroundColor: T.border }} />
-        </div>
-
-        {/* Industry cards */}
-        <div className="industry-grid">
-          {displayed.map(ind => <IndustryCard key={ind.id} industry={ind} onClick={setOpenGallery} />)}
-        </div>
-
-      </div>
-
-      {openGallery && (
-        <Gallery
-          industry={openGallery}
-          onClose={() => setOpenGallery(null)}
-        />
-      )}
-    </section>
-  );
+ `}</style>
+ <div className="work-playground-inner"><div className="work-topline"><span>02 / THE PORTFOLIO PLAYGROUND</span><span>{String(visible.length).padStart(2,'0')} STORIES · CLICK TO EXPLORE ↘</span></div>
+ <div className="work-heading"><div><div className="work-kicker">A little strategy. A lot of imagination.</div><h2>Made to <span>move.</span></h2></div><p>Campaigns, content worlds and brand moments — each one with a thought behind the pretty.</p></div>
+ {categories.length>1&&<div className="work-filters"><span className="work-filters-label">Find your flavour</span>{categories.map(c=><button key={c} className={filter===c?'active':''} onClick={()=>setFilter(c)}>{c==='All'?'Everything ✳':c}</button>)}</div>}
+ <div className="work-grid">{visible.length?visible.map((p,i)=><ProjectCard key={p.id} style={{'--i':i}} project={p} index={projects.indexOf(p)} onOpen={()=>open(p)}/>):<div className="work-empty">More selected work will be added soon.</div>}</div></div>
+ {active&&<ProjectPage project={active} index={activeIndex} total={projects.length} onClose={()=>setActive(null)} onNext={()=>move(1)} onPrevious={()=>move(-1)}/>}
+ </section>;
 }
