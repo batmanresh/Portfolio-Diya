@@ -9,12 +9,29 @@ export default function Admin() {
   const [session, setSession] = useState(undefined); // undefined = still checking
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
-    return () => data.subscription.unsubscribe();
+    let mounted = true;
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Session check timed out')), 8000)
+    );
+    Promise.race([supabase.auth.getSession(), timeout])
+      .then(({ data, error }) => {
+        if (error) throw error;
+        if (mounted) setSession(data.session);
+      })
+      .catch(error => {
+        console.error('Admin session check failed:', error);
+        if (mounted) setSession(null);
+      });
+    const { data } = supabase.auth.onAuthStateChange((_event, s) => {
+      if (mounted) setSession(s);
+    });
+    return () => {
+      mounted = false;
+      data.subscription.unsubscribe();
+    };
   }, []);
 
-  if (session === undefined) return null;
+  if (session === undefined) return <div className="admin"><p className="loading">Checking admin session…</p></div>;
   return <div className="admin">{session ? <Dashboard user={session.user} /> : <Login />}</div>;
 }
 
