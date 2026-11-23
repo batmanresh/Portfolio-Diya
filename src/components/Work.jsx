@@ -133,7 +133,7 @@ export default function Work(){
  const projectCategoryOptions=categorySettings.projectCategories||EMPTY_CATEGORY_OPTIONS;
  const assetCategoryOptions=categorySettings.assetCategories||EMPTY_CATEGORY_OPTIONS;
  const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{
-  const raw=project.media&&project.media.length?project.media:project.videos||[];
+  const raw=Array.isArray(project.videos)?project.videos:(Array.isArray(project.media)?project.media:[]);
   const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||'',tags:normalizeAssetTags(item.tags,assetCategoryOptions)}));
   const categories=[...new Set((project.subcats||[]).filter(category=>projectCategoryOptions.includes(category)))];
   return {...project,subcats:categories,index:i,assets};
