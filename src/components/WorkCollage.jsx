@@ -7,7 +7,7 @@ function ShowcaseMedia({item}) {
  const video=item.type==='video'||(item.type!=='image'&&isVideo(src));
  return video
   ? <video src={src} poster={item.thumbnail||undefined} muted loop autoPlay playsInline preload="metadata" aria-label={item.title||'Featured campaign film'}/>
-  : <img src={item.thumbnail||src} alt={item.title||'Featured creative work'} loading="lazy"/>;
+  : <img src={item.thumbnail||src} alt={item.alt||item.title||'Featured creative work'} loading="lazy"/>;
 }
 
 export default function WorkCollage(){
@@ -47,7 +47,7 @@ export default function WorkCollage(){
    <div className="journal-top"><span>{topLeft}</span><span>{topRight}</span></div>
    <div className="journal-heading"><div><div className="journal-kicker">{kicker}</div><h2 className="journal-title">{titleLineOne}<br/><em>{titleLineTwo}</em></h2></div><p className="journal-intro">{intro}</p></div>
   </div>
-  <div className="journal-rail-wrap"><div className="journal-rail">{pieces.length?pieces.map((item,i)=><article className="journal-card" key={item.id||i}><ShowcaseMedia item={item}/><span className="journal-card-index">SELECTED FRAME&nbsp; {String(i+1).padStart(2,'0')}</span><div className="journal-card-copy"><small>{item.category||'Creative direction'}</small><strong>{item.title||'A moment in the making'}</strong></div></article>):<div className="journal-empty">Your next favourite project will live here.</div>}</div></div>
+  <div className="journal-rail-wrap"><div className="journal-rail">{pieces.length?pieces.map((item,i)=><article className="journal-card" key={item.id||i}><ShowcaseMedia item={item}/><div className="journal-card-copy"><small>{item.category||'Creative direction'}</small><strong>{item.title||'A moment in the making'}</strong></div></article>):<div className="journal-empty">Your next favourite project will live here.</div>}</div></div>
   <div className="journal-inner"><div className="journal-bottom"><span>{footerLeft}</span><span>{footerRight} &nbsp; ↗</span></div></div>
  </section>;
 }
