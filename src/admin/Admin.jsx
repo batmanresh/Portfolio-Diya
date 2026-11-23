@@ -92,9 +92,31 @@ function Dashboard({ user }) {
 
   const section = sections.find(s => s.key === active);
 
-  const setField = (key, value) => {
-    setContent(c => ({ ...c, [active]: { ...c[active], [key]: value } }));
-    setUnsaved(u => ({ ...u, [active]: true }));
+  const setField = (key, value, categoryChange) => {
+    setContent(current => {
+      const next = { ...current, [active]: { ...current[active], [key]: value } };
+      // Keep existing assignments connected when a category is renamed or deleted.
+      if (active === 'categories' && categoryChange && current.work?.industries) {
+        const { type, oldName, newName } = categoryChange;
+        const updateList = list => (list || []).flatMap(item => {
+          if (item !== oldName) return [item];
+          return type === 'rename' && newName ? [newName] : [];
+        });
+        next.work = {
+          ...current.work,
+          industries: current.work.industries.map(project => {
+            if (type === 'project') return { ...project, subcats: updateList(project.subcats) };
+            if (type === 'asset') {
+              const updateAssets = assets => (assets || []).map(asset => ({ ...asset, tags: updateList(asset.tags) }));
+              return { ...project, videos: updateAssets(project.videos), media: updateAssets(project.media) };
+            }
+            return project;
+          })
+        };
+      }
+      return next;
+    });
+    setUnsaved(u => ({ ...u, [active]: true, ...(categoryChange ? { work: true } : {}) }));
     setStatus(null);
   };
 
