@@ -23,9 +23,10 @@ const sections=[
   {key:'footerLeft',label:'Footer left text',type:'text'},
   {key:'footerRight',label:'Footer right text',type:'text'},
   {key:'items',label:'Editorial frames',type:'list',itemName:'frame',titleKey:'title',fields:[
-   {key:'title',label:'Editorial caption',type:'text'},
-   {key:'category',label:'Credit / category line',type:'text'},
-   {key:'src',label:'Photo or video',type:'media'},
+   {key:'title',label:'Text shown on the image',type:'text'},
+   {key:'category',label:'Small category label',type:'text'},
+   {key:'src',label:'Image or video',type:'media'},
+   {key:'alt',label:'Image description (accessibility)',type:'text'},
    {key:'thumbnail',label:'Custom thumbnail / video poster',type:'image'},
    {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
    {key:'shape',label:'Preferred crop',type:'select',options:['wide','portrait','square']},
@@ -56,7 +57,7 @@ const sections=[
    {key:'storyboard',label:'Creative direction / storyboard notes',type:'textarea'},
    {key:'pullQuote',label:'A short pull quote (optional)',type:'text'},
    {key:'result',label:'Results / impact',type:'textarea'},
-   {key:'subcats',label:'Project categories (one per line)',type:'lines'},
+   {key:'subcats',label:'Project categories',type:'multi-select',options:["Education Marketing","F&B Marketing","Event Marketing","Real Estate Marketing","Hospitality Marketing","Lifestyle Marketing","Brand Strategy","Social Media Marketing","Content Marketing","Campaign Marketing","Digital Advertising","Influencer Marketing","Experiential Marketing","Product Marketing","Lead Generation","Creative Direction"],help:'Choose one or more clear categories. These choices become the filters visitors can use in Selected Work.'},
    {key:'videos',label:'Photo & video gallery',type:'list',itemName:'creative asset',titleKey:'caption',fields:mediaFields}
   ]}
  ]},
