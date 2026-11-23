@@ -111,7 +111,6 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  {project.result&&<section className="case-impact"><div><div className="case-section-label">THE OUTCOME</div><h2>The result.</h2></div><p>{project.result}</p></section>}
  <nav className="case-bottom-nav"><button onClick={onPrevious}>← Previous project</button><span className="case-gallery-count">{number} / {String(total).padStart(2,'0')}</span><button onClick={onNext}>Next project →</button></nav></div></div>;
 }
-const primaryCategory={fnb:'F&B Marketing',education:'Education Marketing',events:'Event Marketing',realestate:'Real Estate Marketing',design:'Creative Direction',hospitality:'Hospitality Marketing',lifestyle:'Lifestyle Marketing'};
 const assetTagAliases={
  'Ad Campaigns':'Campaign Creative',
  'Campaign Marketing':'Campaign Creative',
@@ -135,9 +134,7 @@ export default function Work(){
  const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{
   const raw=project.media&&project.media.length?project.media:project.videos||[];
   const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||'',tags:normalizeAssetTags(item.tags,assetCategoryOptions)}));
-  const primary=primaryCategory[project.id];
-  const chosen=(project.subcats||[]).filter(category=>projectCategoryOptions.includes(category));
-  const categories=[...new Set([primary&&projectCategoryOptions.includes(primary)?primary:null,...chosen].filter(Boolean))];
+  const categories=[...new Set((project.subcats||[]).filter(category=>projectCategoryOptions.includes(category)))];
   return {...project,subcats:categories,index:i,assets};
  }),[projectCategoryOptions,assetCategoryOptions]);
  const categories=['All',...projectCategoryOptions.filter(category=>projects.some(project=>(project.subcats||[]).includes(category)))],visible=filter==='All'?projects:projects.filter(p=>(p.subcats||[]).includes(filter));
