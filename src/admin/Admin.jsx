@@ -142,7 +142,7 @@ function Dashboard({ user }) {
 
           <div key={active} className="fields">
             {section.fields.map(f => (
-              <Field key={f.key} field={f} value={content[active][f.key]} onChange={v => setField(f.key, v)} />
+              <Field key={f.key} field={f} value={content[active][f.key]} onChange={v => setField(f.key, v)} projectCategoryOptions={content.categories?.projectCategories || []} assetCategoryOptions={content.categories?.assetCategories || []} />
             ))}
           </div>
 
