@@ -4,6 +4,10 @@
 // the saved version is used instead.
 
 const defaults = {
+  categories: {
+    projectCategories: ['Education Marketing','F&B Marketing','Event Marketing','Real Estate Marketing','Hospitality Marketing','Lifestyle Marketing','Brand Strategy','Social Media Marketing','Content Marketing','Campaign Marketing','Digital Advertising','Influencer Marketing','Experiential Marketing','Product Marketing','Lead Generation','Creative Direction'],
+    assetCategories: ['Brand Storytelling','Campaign Creative','Social Content','Influencer Content','Event & Experiential','Product Storytelling','Community & Engagement','Promotional Content','Performance & Lead Generation'],
+  },
   showcase: {
     topLeft: 'THE CREATIVE JOURNAL',
     topRight: 'A rotating edit of selected work',
