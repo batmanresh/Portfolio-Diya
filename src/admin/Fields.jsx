@@ -15,6 +15,7 @@ export function Field({field,value,onChange}){
   case 'lines': input=<LinesInput value={value||[]} onChange={onChange}/>;break;
   case 'color': input=<div className="row"><input type="color" value={value||'#e77ca9'} onChange={e=>onChange(e.target.value)}/><input type="text" value={value||''} onChange={e=>onChange(e.target.value)}/></div>;break;
   case 'select': input=<select value={value||field.options[0]} onChange={e=>onChange(e.target.value)}>{field.options.map(o=><option key={o} value={o}>{o==='auto'?'Auto detect':o[0].toUpperCase()+o.slice(1)}</option>)}</select>;break;
+  case 'multi-select': {const selected=Array.isArray(value)?value:[];input=<div className="multi-select-options">{field.options.map(option=><label key={option} className={selected.includes(option)?'multi-select-option selected':'multi-select-option'}><input type="checkbox" checked={selected.includes(option)} onChange={e=>onChange(e.target.checked?[...selected,option]:selected.filter(item=>item!==option))}/><span>{option}</span></label>)}</div>;break;}
   case 'image':case 'video':case 'media':case 'file':input=<MediaInput field={field} value={value||''} onChange={onChange}/>;break;
   case 'list':input=<ListInput field={field} value={value||[]} onChange={onChange}/>;break;
   default:input=<input type="text" value={value||''} onChange={e=>onChange(e.target.value)} placeholder={field.placeholder||''}/>;
