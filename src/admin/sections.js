@@ -5,10 +5,14 @@ const mediaFields=[
  {key:'thumbnail',label:'Custom thumbnail / video poster (optional)',type:'image'},
  {key:'type',label:'Media type',type:'select',options:['auto','image','video']},
  {key:'orientation',label:'Image shape',type:'select',options:['landscape','portrait','square']},
- {key:'tags',label:'Categories (one per line)',type:'lines'},
+ {key:'tags',label:'Creative asset categories',type:'asset-multi-select',help:'Choose the specific type of work shown in this photo or video. Visitors can filter this project gallery by these categories.'},
  {key:'href',label:'Published link (optional)',type:'text'},
 ];
 const sections=[
+ {key:'categories',title:'Category manager',description:'Create and organise the filters used in Selected Work and inside each project gallery. Add your own categories at any time.',fields:[
+  {key:'projectCategories',label:'Selected Work categories',type:'category-list',help:'These appear as filters across your project cards.'},
+  {key:'assetCategories',label:'Creative asset categories',type:'category-list',help:'These appear as filters inside each project’s photo and video gallery.'}
+ ]},
  {key:'showcase',title:'Featured showcase',description:'Control the lookbook’s copy, colours and every image or film. Upload, reorder and edit frames here.',fields:[
   {key:'topLeft',label:'Top left eyebrow',type:'text'},
   {key:'topRight',label:'Top right descriptor',type:'text'},
@@ -57,7 +61,7 @@ const sections=[
    {key:'storyboard',label:'Creative direction / storyboard notes',type:'textarea'},
    {key:'pullQuote',label:'A short pull quote (optional)',type:'text'},
    {key:'result',label:'Results / impact',type:'textarea'},
-   {key:'subcats',label:'Project categories',type:'multi-select',options:["Education Marketing","F&B Marketing","Event Marketing","Real Estate Marketing","Hospitality Marketing","Lifestyle Marketing","Brand Strategy","Social Media Marketing","Content Marketing","Campaign Marketing","Digital Advertising","Influencer Marketing","Experiential Marketing","Product Marketing","Lead Generation","Creative Direction"],help:'Choose one or more clear categories. These choices become the filters visitors can use in Selected Work.'},
+   {key:'subcats',label:'Project categories',type:'project-multi-select',help:'Choose one or more categories created in Category Manager. These become the public Selected Work filters.'},
    {key:'videos',label:'Photo & video gallery',type:'list',itemName:'creative asset',titleKey:'caption',fields:mediaFields}
   ]}
  ]},
