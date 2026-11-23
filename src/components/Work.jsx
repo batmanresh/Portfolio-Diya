@@ -111,13 +111,36 @@ function ProjectPage({project,index,total,onClose,onNext,onPrevious}){
  {project.result&&<section className="case-impact"><div><div className="case-section-label">THE OUTCOME</div><h2>The result.</h2></div><p>{project.result}</p></section>}
  <nav className="case-bottom-nav"><button onClick={onPrevious}>← Previous project</button><span className="case-gallery-count">{number} / {String(total).padStart(2,'0')}</span><button onClick={onNext}>Next project →</button></nav></div></div>;
 }
-const categoryOptions=['Education Marketing','F&B Marketing','Event Marketing','Real Estate Marketing','Hospitality Marketing','Lifestyle Marketing','Brand Strategy','Social Media Marketing','Content Marketing','Campaign Marketing','Digital Advertising','Influencer Marketing','Experiential Marketing','Product Marketing','Lead Generation','Creative Direction'];
 const primaryCategory={fnb:'F&B Marketing',education:'Education Marketing',events:'Event Marketing',realestate:'Real Estate Marketing',design:'Creative Direction',hospitality:'Hospitality Marketing',lifestyle:'Lifestyle Marketing'};
+const assetTagAliases={
+ 'Ad Campaigns':'Campaign Creative',
+ 'Campaign Marketing':'Campaign Creative',
+ 'Content':'Social Content',
+ 'Content Marketing':'Social Content',
+ 'Brand Strategy':'Brand Storytelling',
+ 'Experiential Marketing':'Event & Experiential',
+ 'Entertainment Marketing':'Event & Experiential',
+ 'Engagement Strategy':'Community & Engagement',
+ 'Promotional Marketing':'Promotional Content',
+ 'Lead Generation':'Performance & Lead Generation',
+ 'Influencer Marketing':'Influencer Content',
+};
+const normalizeAssetTags=(tags,allowed)=>[...new Set((tags||[]).map(tag=>assetTagAliases[tag]||tag).filter(tag=>allowed.includes(tag)))];
 function ProjectCard({project,index,onOpen,style}){const count=project.assets.length;return <button style={style} className={'project-card card-tone-'+index%5} onClick={onOpen} aria-label={'Open '+project.label+' case study'}><div className="project-card-visual">{project.cover?<img src={project.cover} alt={project.label+' project'} loading="lazy"/>:<div className="project-card-placeholder">✳</div>}<span className="project-card-index">NO. {String(index+1).padStart(2,'0')}</span><span className="project-card-sticker">OPEN THE STORY ↗</span><span className="project-card-spark">✳</span></div><div className="project-card-info"><div><small>{project.client||'Selected project'} · {project.subcats?.[0]||'Creative direction'}</small><h3>{project.label}</h3><p>{project.headline}</p></div><span className="project-card-count">{String(count).padStart(2,'0')}<small>ASSETS</small></span></div></button>}
 export default function Work(){
  const [filter,setFilter]=useState('All'),[active,setActive]=useState(null);
- const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{const raw=project.media&&project.media.length?project.media:project.videos||[];const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||''}));const chosen=(project.subcats||[]).filter(category=>categoryOptions.includes(category));const categories=[...new Set([primaryCategory[project.id]||null,...chosen].filter(Boolean))];return {...project,subcats:categories,index:i,assets}}),[]);
- const categories=['All',...new Set(projects.flatMap(p=>p.subcats||[]).filter(Boolean))],visible=filter==='All'?projects:projects.filter(p=>(p.subcats||[]).includes(filter));
+ const categorySettings=useMemo(()=>getContent('categories'),[]);
+ const projectCategoryOptions=categorySettings.projectCategories||[];
+ const assetCategoryOptions=categorySettings.assetCategories||[];
+ const projects=useMemo(()=>(getContent('work').industries||[]).map((project,i)=>{
+  const raw=project.media&&project.media.length?project.media:project.videos||[];
+  const assets=raw.map((item,j)=>({...item,id:item.id||project.id+'-'+j,src:srcOf(item),type:item.type||'auto',thumbnail:item.thumbnail||'',tags:normalizeAssetTags(item.tags,assetCategoryOptions)}));
+  const primary=primaryCategory[project.id];
+  const chosen=(project.subcats||[]).filter(category=>projectCategoryOptions.includes(category));
+  const categories=[...new Set([primary&&projectCategoryOptions.includes(primary)?primary:null,...chosen].filter(Boolean))];
+  return {...project,subcats:categories,index:i,assets};
+ }),[projectCategoryOptions,assetCategoryOptions]);
+ const categories=['All',...projectCategoryOptions.filter(category=>projects.some(project=>(project.subcats||[]).includes(category)))],visible=filter==='All'?projects:projects.filter(p=>(p.subcats||[]).includes(filter));
  const open=project=>{setActive(project);setFilter('All')},activeIndex=active?projects.findIndex(p=>p.id===active.id):-1;
  const move=direction=>{if(projects.length)setActive(projects[(activeIndex+direction+projects.length)%projects.length])};
  return <section id="work" className="work-playground"><style>{`
