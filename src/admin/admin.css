@@ -23,3 +23,15 @@
 .admin .multi-select-option input{width:14px;height:14px;margin:0;accent-color:#ec4f9b}
 .admin .multi-select-option.selected{background:#fce6f0;border-color:#ec9bc1;color:#8f3e68}
 .admin .field-help{display:block;margin-top:8px;color:#987b8c;font-size:11px;line-height:1.6}
+
+.admin .category-manager{display:grid;gap:12px}
+.admin .category-manager-add{display:flex;gap:8px}
+.admin .category-manager-add input{min-width:0;flex:1}
+.admin .category-manager button{border:1px solid #e8c9d8;border-radius:9px;background:#fbedf3;color:#754b60;padding:10px 14px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.admin .category-manager button:disabled{opacity:.4;cursor:default}
+.admin .category-manager-list{display:grid;gap:7px}
+.admin .category-manager-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.admin .category-manager-row span{flex:1;min-width:0;font-size:12px;color:var(--ink)}
+.admin .category-manager-row input{min-width:0;flex:1}
+.admin .category-manager .category-delete{background:#fff;color:#a65d77;border-color:#f0dce5}
+@media(max-width:480px){.admin .category-manager-add{flex-wrap:wrap}.admin .category-manager-add input{flex-basis:100%}.admin .category-manager-row{flex-wrap:wrap}.admin .category-manager-row span{flex-basis:100%}}
